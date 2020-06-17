@@ -23,6 +23,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public int prepareTimes = 0;
     public long fileLength=0;
     public double prepareTime=0;
+    public double readTime=0;
     public byte[] bytesBuffer=new byte[100*1024*1024];
     public ArrayList<MappedByteBuffer> mbArray=new  ArrayList<MappedByteBuffer>();
     public File f;
@@ -94,7 +95,13 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //            System.out.println("prepare耗时"+(endTime-startTime)*1.0/1000 + "chunck size="+a+"MB");
 //            Runtime.getRuntime().gc();
         }
-
+        Long startTime = System.currentTimeMillis();
+        for(MappedByteBuffer mb: mbArray){
+//            System.out.println("读入");
+            mb.get(bytesBuffer,0,mb.limit());
+        }
+        Long endTime = System.currentTimeMillis();
+        readTime=(endTime-startTime)*1.0/1000;
 
     }
     //读入
@@ -102,16 +109,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
-        int bytes=0;
-        Long startTime = System.currentTimeMillis();
-        for(MappedByteBuffer mb: mbArray){
-//            System.out.println("读入");
-            mb.get(bytesBuffer,0,mb.limit());
-        }
-        Long endTime = System.currentTimeMillis();
 
         if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+((endTime-startTime)*1.0/1000));
+            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime+" filename="+f.getAbsolutePath());
 
         }
         checkPairTimes += 1;
