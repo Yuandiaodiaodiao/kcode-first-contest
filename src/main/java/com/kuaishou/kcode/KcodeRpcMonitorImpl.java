@@ -41,7 +41,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public List<String> checkPair(String caller, String responder, String time) {
 
         if(responder.length()>0){
-            throw new Error("文件长度"+fileLength);
+            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength);
 
         }
         checkPairTimes += 1;
