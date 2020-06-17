@@ -22,13 +22,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public HashSet<String> responderSet = new HashSet<String>();
     public int prepareTimes = 0;
     public long fileLength=0;
+    public float prepareTime=0;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
         prepareTimes+=1;
     }
-
-    //读入
-    public void prepare(String path) {
+    public void realPrepare(String path){
         File f=new File(path);
         fileLength=f.length();
         prepareTimes++;
@@ -55,7 +54,14 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    }
+    //读入
+    public void prepare(String path) {
+        Long startTime = System.currentTimeMillis();
+        realPrepare(path);
+        Long endTime = System.currentTimeMillis();
+        prepareTime=(endTime-startTime)/1000;
+//        System.out.println("prepare耗时"+(endTime-startTime)/1000);
 
     }
     //读入
@@ -65,7 +71,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public List<String> checkPair(String caller, String responder, String time) {
 
         if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength);
+            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"时间"+prepareTime);
 
         }
         checkPairTimes += 1;
