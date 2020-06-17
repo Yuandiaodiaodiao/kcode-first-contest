@@ -22,7 +22,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public HashSet<String> responderSet = new HashSet<String>();
     public int prepareTimes = 0;
     public long fileLength=0;
-    public float prepareTime=0;
+    public double prepareTime=0;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
         prepareTimes+=1;
@@ -60,7 +60,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long startTime = System.currentTimeMillis();
         realPrepare(path);
         Long endTime = System.currentTimeMillis();
-        prepareTime=(endTime-startTime)/1000;
+        prepareTime=(endTime-startTime)*1.0/1000;
 //        System.out.println("prepare耗时"+(endTime-startTime)/1000);
 
     }
