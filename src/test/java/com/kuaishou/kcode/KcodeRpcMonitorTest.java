@@ -16,9 +16,10 @@ import java.util.Set;
 public class KcodeRpcMonitorTest {
     public static void main(String[] args) throws Exception {
         KcodeRpcMonitor kcodeRpcMonitor = new KcodeRpcMonitorImpl();
-
+        Long startTime = System.currentTimeMillis();
         kcodeRpcMonitor.prepare("D:\\Github\\KcodeRpcMonitor-master\\2kcodeRpcMonitor.data");
-
+        Long endTime = System.currentTimeMillis();
+        System.out.println("prepare耗时"+(endTime-startTime)/1000);
         // 读取checkPair.result文件
         Map<CheckPairKey, Set<String>> checkPairMap = createCheckPairMap("D:\\Github\\KcodeRpcMonitor-master\\checkPair.result");
 

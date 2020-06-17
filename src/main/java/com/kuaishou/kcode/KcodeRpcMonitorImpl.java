@@ -1,6 +1,11 @@
 package com.kuaishou.kcode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,19 +25,38 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
         prepareTimes+=1;
-
     }
 
     //读入
     public void prepare(String path) {
         File f=new File(path);
+        fileLength=f.length();
         prepareTimes++;
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+            long chunck=1020*1024*1024;
+            int chunckint= Long.valueOf(chunck).intValue();
+            byte[] bbb = new byte[chunckint];
+            RandomAccessFile raf = new RandomAccessFile(f, "r");
+            FileChannel channel = raf.getChannel();
+            for(long i=0;i<=fileLength;i+=chunck){
+//                System.out.println("读入"+i);
+                channel.position(i);
+                MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY,0,chunck);
+                buff.get(bbb);
+                byte a;
+                for(int j=0 ;j<bbb.length;j++){
+                    a=bbb[j];
+//                    System.out.print((char)(a));
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        fileLength=f.length();
+
+
     }
     //读入
 
