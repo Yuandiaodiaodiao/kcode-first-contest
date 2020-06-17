@@ -26,6 +26,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public void prepare(String path) {
         File f=new File(path);
         prepareTimes++;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     //读入
     public void Prepare(String path) {

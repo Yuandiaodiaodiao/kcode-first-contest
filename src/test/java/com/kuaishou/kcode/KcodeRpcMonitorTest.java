@@ -17,13 +17,13 @@ public class KcodeRpcMonitorTest {
     public static void main(String[] args) throws Exception {
         KcodeRpcMonitor kcodeRpcMonitor = new KcodeRpcMonitorImpl();
 
-        kcodeRpcMonitor.prepare("读取更换成自己本地的kcodeRpcMonitor.data路径");
+        kcodeRpcMonitor.prepare("D:\\Github\\KcodeRpcMonitor-master\\2kcodeRpcMonitor.data");
 
         // 读取checkPair.result文件
-        Map<CheckPairKey, Set<String>> checkPairMap = createCheckPairMap("请更换成自己本地的checkPair.result路径 ");
+        Map<CheckPairKey, Set<String>> checkPairMap = createCheckPairMap("D:\\Github\\KcodeRpcMonitor-master\\checkPair.result");
 
         // 读取checkResponder.result文件
-        Map<CheckResponderKey, String> checkResponderMap = createCheckResponderMap("请更换成自己本地的checkResponder.result路径");
+        Map<CheckResponderKey, String> checkResponderMap = createCheckResponderMap("D:\\Github\\KcodeRpcMonitor-master\\checkResponder.result");
 
         // 评测checkPair
         checkPair(kcodeRpcMonitor, checkPairMap);
