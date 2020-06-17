@@ -14,6 +14,7 @@ public interface KcodeRpcMonitor {
      * @param path, 需要分析文件的路径（绝对路径），由评测系统输入
      */
     void prepare(String path) throws Exception;
+    void Prepare(String path) throws Exception;
 
     /**
      * @param caller 主调服务名称

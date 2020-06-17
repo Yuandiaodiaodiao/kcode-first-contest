@@ -18,12 +18,17 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public int prepareTimes = 0;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-
+        prepareTimes+=1;
 
     }
 
     //读入
     public void prepare(String path) {
+        File f=new File(path);
+        prepareTimes++;
+    }
+    //读入
+    public void Prepare(String path) {
         File f=new File(path);
         prepareTimes++;
     }
