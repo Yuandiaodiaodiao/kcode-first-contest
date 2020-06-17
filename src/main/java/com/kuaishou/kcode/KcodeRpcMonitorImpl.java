@@ -15,7 +15,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public int checkPairTimes = 0;
     public HashSet<String> callerSet = new HashSet<String>();
     public HashSet<String> responderSet = new HashSet<String>();
-
+    public int prepareTimes = 0;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
 
@@ -25,6 +25,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //读入
     public void prepare(String path) {
         File f=new File(path);
+        prepareTimes++;
     }
 
     //查询1
@@ -37,7 +38,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询2
     public String checkResponder(String responder, String start, String end) {
-        String s="checkPairTimes"+checkPairTimes+"callerSet.size"+callerSet.size()+"responderSet.size"+responderSet.size();
+        String s="checkPairTimes"+checkPairTimes+"callerSet.size"+callerSet.size()+"responderSet.size"+responderSet.size()+"   "+prepareTimes;
         if(responder.length()>0){
             throw new Error(s);
 
