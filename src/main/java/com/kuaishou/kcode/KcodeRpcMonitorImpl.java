@@ -32,7 +32,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         fileLength=f.length();
         prepareTimes++;
         try {
-            long chunck=1020*1024*1024;
+            long chunck=2024*1024*1024;
             int chunckint= Long.valueOf(chunck).intValue();
             byte[] bbb = new byte[chunckint];
             RandomAccessFile raf = new RandomAccessFile(f, "r");
@@ -44,6 +44,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 buff.get(bbb);
                 byte a;
                 for(int j=0 ;j<bbb.length;j++){
+
                     a=bbb[j];
 //                    System.out.print((char)(a));
                 }
