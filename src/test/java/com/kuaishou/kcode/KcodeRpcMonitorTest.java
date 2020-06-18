@@ -30,11 +30,13 @@ public class KcodeRpcMonitorTest {
         // 读取checkResponder.result文件
         Map<CheckResponderKey, CheckResponderResult> checkResponderMap = createCheckResponderMap("D:\\Github\\KcodeRpcMonitor-master\\checkResponder.result");
 
-        // 评测checkResponder
-        checkResponder(kcodeRpcMonitor, checkResponderMap);
+
 
         // 评测checkPair
         checkPair(kcodeRpcMonitor, checkPairMap);
+
+        // 评测checkResponder
+        checkResponder(kcodeRpcMonitor, checkResponderMap);
 
 
 

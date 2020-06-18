@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class RawBufferSolve {
     private byte[] byteBuff;
     public int startMinute = 0;
-    private int nowTime = 0;
+    public int nowTime = 0;
     public int byteLinePos = 0;
     public String lastStr;
     public byte[] byteLine = new byte[100];
@@ -226,10 +226,10 @@ public class RawBufferSolve {
         System.arraycopy(service2, 0, stringConcatBuff, strIndexA, strIndexB);
         String twoServices = new String(stringConcatBuff, 0, strIndexA + strIndexB);
         String secondServices = new String(stringConcatBuff, strIndexA, strIndexB);
-        ip1=stringIp2Long("255.254.253.252");
-        ip2=stringIp2Long("255.254.253.252");
+//        ip1=stringIp2Long("255.254.253.252");
+//        ip2=stringIp2Long("255.254.253.252");
         long twoIPs = ( ip1 << 32) +  ip2;
-        String s = Long2Ip(twoIPs);
+//        String s = Long2Ip(twoIPs);
 
         HashMap<String, HashMap<Long, CheckPairPayLoad>> timeLevel = hashM.get(minTime);
         if (timeLevel == null) {

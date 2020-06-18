@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import static java.lang.System.nanoTime;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+
 public class SolveMinuteThread extends Thread{
     private RawBufferSolve rbs;
     private ArrayBlockingQueue abq;
@@ -22,10 +25,12 @@ public class SolveMinuteThread extends Thread{
                     break;
 
                 }
-                System.out.println("hmap size="+hmap.size());
+//                System.out.println("hmap size="+hmap.size());
                 if(hmap.size()==0){
                     break;
                 }
+                long startNs = nanoTime();
+
                 for (Map.Entry entry : hmap.entrySet()) {
                     HashMap<Long, CheckPairPayLoad>serviceMap= (HashMap<Long, CheckPairPayLoad>) entry.getValue();
                     for(Map.Entry entry2: serviceMap.entrySet()){
@@ -35,6 +40,7 @@ public class SolveMinuteThread extends Thread{
                         payLoad.p99=P99Solve.solve(payLoad.bucket,allTimes);
                     }
                 }
+                System.out.println("Thread 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

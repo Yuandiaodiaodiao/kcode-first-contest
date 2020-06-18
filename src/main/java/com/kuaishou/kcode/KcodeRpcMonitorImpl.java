@@ -26,61 +26,65 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public HashSet<String> callerSet = new HashSet<String>();
     public HashSet<String> responderSet = new HashSet<String>();
     public int prepareTimes = 0;
-    public long fileLength=0;
-    public double prepareTime=0;
-    public double readTime=0;
-    public byte[] bytesBuffer=new byte[100*1024*1024];
-    public ArrayList<MappedByteBuffer> mbArray=new  ArrayList<MappedByteBuffer>();
+    public long fileLength = 0;
+    public double prepareTime = 0;
+    public double readTime = 0;
+    public byte[] bytesBuffer = new byte[100 * 1024 * 1024];
+    public ArrayList<MappedByteBuffer> mbArray = new ArrayList<MappedByteBuffer>();
     public File f;
-    public FileChannel  channel;
-    public RawBufferSolve rbs=new RawBufferSolve();
+    public FileChannel channel;
+    public RawBufferSolve rbs = new RawBufferSolve();
 
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-        prepareTimes+=1;
+        prepareTimes += 1;
     }
-    public void hackTime(String path,long chunck){
-        try{
-            f=new File(path);
-            fileLength=f.length();
+
+    public void hackTime(String path, long chunck) {
+        try {
+            f = new File(path);
+            fileLength = f.length();
             RandomAccessFile raf = new RandomAccessFile(f, "r");
 
             channel = raf.getChannel();
             ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
-            for(long i=0;i<=fileLength;i+=chunck){
+            for (long i = 0; i <= fileLength; i += chunck) {
                 channel.position(i);
-                MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY,0,Math.min(chunck,fileLength-i));
+                MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY, 0, Math.min(chunck, fileLength - i));
                 mbArray.add(buff);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
 
         }
 
     }
-    public void realPrepare(String path,long chunck,int chunckint){
+
+    public void realPrepare(String path, long chunck, int chunckint) {
 
         prepareTimes++;
         try {
 
-            File f=new File(path);
-            fileLength=f.length();
+            File f = new File(path);
+            fileLength = f.length();
             byte[] bbb = new byte[chunckint];
             RandomAccessFile raf = new RandomAccessFile(f, "r");
             channel = raf.getChannel();
             ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
 
-            for(long i=0;i<=fileLength;i+=chunck){
+            for (long i = 0; i <= fileLength; i += chunck) {
                 buf1.clear();
-                int readed=channel.read(buf1);
+                int readed = channel.read(buf1);
                 buf1.flip();
-                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i)+"readed="+readed);
+                
+                System.out.println("limit=" + buf1.limit() + " fileLength-i=" + (fileLength - i) + "readed=" + readed);
                 rbs.run(buf1, (int) chunck);
             }
+            rbs.abq.add(rbs.hashM.get(rbs.nowTime));
+            rbs.abq.add(new HashMap<String, HashMap<Long, CheckPairPayLoad>>());
             long startNs = nanoTime();
             rbs.solveResponder();
             System.out.println("solveResponder 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
 
-            rbs.abq.add(new HashMap<String, HashMap<Long, CheckPairPayLoad>>());
             rbs.thread1.join();
 
         } catch (FileNotFoundException e) {
@@ -90,29 +94,31 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("rbs.readedBytes="+rbs.readedBytes + "readLines="+rbs.readedLines);
+        System.out.println("rbs.readedBytes=" + rbs.readedBytes + "readLines=" + rbs.readedLines);
     }
+
     //读入
-    private void sleepPrepare(){
+    private void sleepPrepare() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void prepare(String path) {
         P99Solve.testP99();
         System.out.println(DFORMAT.format(0));
-        int a=1000;
-            long chunck=a*1024*1024;
-            int chunckint= a*1024*1024;
-            Long startTime = System.currentTimeMillis();
-            realPrepare(path,chunck,chunckint);
+        int a = 1000;
+        long chunck = a * 1024 * 1024;
+        int chunckint = a * 1024 * 1024;
+        Long startTime = System.currentTimeMillis();
+        realPrepare(path, chunck, chunckint);
 //            hackTime(path,chunck);
-            Long endTime = System.currentTimeMillis();
-            prepareTime=(endTime-startTime)*1.0/1000;
+        Long endTime = System.currentTimeMillis();
+        prepareTime = (endTime - startTime) * 1.0 / 1000;
 //            Runtime.getRuntime().gc();
     }
     //读入
@@ -120,72 +126,117 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
-
+        int t = 0;
+        try {
+            t = (int) (format.parse(time).getTime() / 60000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        HashMap<String, HashMap<Long, CheckPairPayLoad>> serviceMap = rbs.hashM.get(t);
+        if (serviceMap == null) {
+            return new ArrayList<String>();
+        }
+        HashMap<Long, CheckPairPayLoad> ipMap = serviceMap.get(caller + responder);
+        if (ipMap == null) {
+            return new ArrayList<String>();
+        }
+        ArrayList<String> as = new ArrayList<>(64);
+        for (Map.Entry entry2 : ipMap.entrySet()) {
+            long ipTwo = (long) entry2.getKey();
+            CheckPairPayLoad payLoad = (CheckPairPayLoad) entry2.getValue();
+            StringBuilder str = new StringBuilder(40);
+            int ip2 = (int) (long) (ipTwo);
+            long ip1 = (ipTwo >>> 32);
+            str.append((int) ((ip1 >> 24) & 0x000000FF));
+            str.append('.');
+            str.append((int) ((ip1 >> 16) & 0x000000FF));
+            str.append('.');
+            str.append((int) ((ip1 >> 8) & 0x000000FF));
+            str.append('.');
+            str.append((int) (ip1 & 0x000000FF));
+            str.append(',');
+            str.append((int) ((ip2 >> 24) & 0x000000FF));
+            str.append('.');
+            str.append((int) ((ip2 >> 16) & 0x000000FF));
+            str.append('.');
+            str.append((int) ((ip2 >> 8) & 0x000000FF));
+            str.append('.');
+            str.append((int) (ip2 & 0x000000FF));
+            str.append(',');
+            str.append(DFORMAT.format(payLoad.rate));
+            str.append(',');
+            str.append(payLoad.p99);
+            as.add(str.toString());
+        }
+        return as;
 //        if(responder.length()>0){
 //            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
 //
 //        }
-        rbs.analyseHashMap();
-        checkPairTimes += 1;
-        callerSet.add(caller);
-        responderSet.add(responder);
-        return new ArrayList<String>();
+//        rbs.analyseHashMap();
+//        checkPairTimes += 1;
+//        callerSet.add(caller);
+//        responderSet.add(responder);
     }
+
     public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    public int getTime(String timeStr){
+
+    public int getTime(String timeStr) {
         try {
-            return  (int) (format.parse(timeStr).getTime() / 60000 );
+            return (int) (format.parse(timeStr).getTime() / 60000);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return 0;
     }
-    private static final String NOANSWER="-1.00%";
-    private static final String ZEROANSWER=".00%";
+
+    private static final String NOANSWER = "-1.00%";
+    private static final String ZEROANSWER = ".00%";
     //查询2
-    public static  CheckResponderTimePayLoad a;
-    public static  CheckResponderTimePayLoad b;
+    public static CheckResponderTimePayLoad a;
+    public static CheckResponderTimePayLoad b;
+
     public String checkResponder(String responder, String start, String end) {
 //        TreeMap<Integer,CheckResponderPayLoad> tm=rbs.hashM2.get(responder);
-        CheckResponderTimePayLoad[] db=rbs.hashM3.get(responder);
+        CheckResponderTimePayLoad[] db = rbs.hashM3.get(responder);
 
-        if(db==null){
+        if (db == null) {
             return NOANSWER;
         }
-        int t1=0;
-        int t2=0;
+        int t1 = 0;
+        int t2 = 0;
         try {
-            t1 = (int) (format.parse(start).getTime() / 60000 )-rbs.startMinute;
-            t2=(int) (format.parse(end).getTime() / 60000 )-rbs.startMinute;
+            t1 = (int) (format.parse(start).getTime() / 60000) - rbs.startMinute;
+            t2 = (int) (format.parse(end).getTime() / 60000) - rbs.startMinute;
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(t2<t1){
+        if (t2 < t1) {
             return NOANSWER;
         }
-        int calleeTimes=0;
+        int calleeTimes = 0;
 
-        t1-=1;
-        if(t1<0){
-            t1=0;
-        }else if(t1>31){
-            t1=31;
+        t1 -= 1;
+        if (t1 < 0) {
+            t1 = 0;
+        } else if (t1 > 31) {
+            t1 = 31;
         }
 
 
-        if(t2<0){
-            t2=0;
-        }else if(t2>31){
-            t2=31;
+        if (t2 < 0) {
+            t2 = 0;
+        } else if (t2 > 31) {
+            t2 = 31;
         }
-        a=db[t1];
-        b=db[t2];
-        calleeTimes=b.calledTimes-a.calledTimes;
-        if(calleeTimes>0){
-            return DFORMAT.format((b.rate-a.rate)/calleeTimes);
-        }else{
-          return NOANSWER;
+        a = db[t1];
+        b = db[t2];
+        calleeTimes = b.calledTimes - a.calledTimes;
+        if (calleeTimes > 0) {
+            return DFORMAT.format((b.rate - a.rate) / calleeTimes);
+        } else {
+            return NOANSWER;
         }
     }
 
