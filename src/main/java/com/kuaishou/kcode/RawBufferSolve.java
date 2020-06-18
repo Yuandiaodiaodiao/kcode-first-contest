@@ -22,19 +22,25 @@ public class RawBufferSolve {
 
     private void printArray(byte[] input, int limit) {
         for (int a = 0; a < limit && input[a] != '\n'; ++a) {
-            System.out.print((char) input[a]);
+            printByte(input[a]);
         }
         System.out.println();
     }
-
+    private void printByte(byte input){
+        System.out.print((char)input);
+    }
     public void run(ByteBuffer inputB, int limit) {
 
 
         byte b;
-
+        boolean out=false;
+        if(byteLinePos==57)out=true;
         while(inputB.hasRemaining()) {
             readedBytes += 1;
             b = inputB.get();
+            if(out){
+                printByte(b);
+            }
 //            System.out.print((char)b);
             byteLine[byteLinePos++] = b;
             if (b == '\n') {
@@ -47,11 +53,11 @@ public class RawBufferSolve {
                 byteLinePos = 0;
             }
         }
-        if (byteLinePos == 55) {
+        if (byteLinePos == 57) {
             printArray(byteLineLast, 100);
             printArray(byteLine, byteLinePos);
         }
-//        System.out.println("读完一轮 pos="+byteLinePos);
+        System.out.println("读完一轮 pos="+byteLinePos);
 
     }
 

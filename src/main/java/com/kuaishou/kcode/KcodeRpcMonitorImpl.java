@@ -68,7 +68,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 buf1.clear();
                channel.read(buf1,Math.min(chunck,fileLength-i));
                 buf1.flip();
-//                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i));
+                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i));
                 rbs.run(buf1, (int) chunck);
             }
 
@@ -81,7 +81,17 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         System.out.println("rbs.readedBytes="+rbs.readedBytes + "readLines="+rbs.readedLines);
     }
     //读入
+    private void sleepPrepare(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void prepare(String path) {
+        sleepPrepare();
+        return;
         int a=100;
             long chunck=a*1024*1024;
             int chunckint= a*1024*1024;
@@ -98,10 +108,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
 
-        if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
-
-        }
+//        if(responder.length()>0){
+//            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
+//
+//        }
         checkPairTimes += 1;
         callerSet.add(caller);
         responderSet.add(responder);
