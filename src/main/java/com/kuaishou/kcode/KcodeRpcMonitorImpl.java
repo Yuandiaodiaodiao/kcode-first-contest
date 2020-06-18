@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             RandomAccessFile raf = new RandomAccessFile(f, "r");
 
             channel = raf.getChannel();
+            ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
             for(long i=0;i<=fileLength;i+=chunck){
                 channel.position(i);
                 MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY,0,Math.min(chunck,fileLength-i));
@@ -52,27 +54,22 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public void realPrepare(String path,long chunck,int chunckint){
 
         prepareTimes++;
-
+        RawBufferSolve rbs=new RawBufferSolve();
         try {
 
             File f=new File(path);
             fileLength=f.length();
             byte[] bbb = new byte[chunckint];
             RandomAccessFile raf = new RandomAccessFile(f, "r");
-            FileChannel channel = raf.getChannel();
+            channel = raf.getChannel();
+            ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
+
             for(long i=0;i<=fileLength;i+=chunck){
-//                System.out.println("读入"+i);
-                channel.position(i);
-                MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY,0,Math.max(chunck,fileLength-i));
-                mbArray.add(buff);
-//                buff.get(bbb);
-//
-//                byte a;
-//                for(int j=0 ;j<chunck;j++){
-//
-//                    a=bbb[j];
-////                    System.out.print((char)(a));
-//                }
+                buf1.clear();
+               channel.read(buf1,Math.min(chunck,fileLength-i));
+                buf1.flip();
+                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i));
+                rbs.run(buf1, (int) chunck);
             }
 
 
@@ -81,28 +78,19 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("rbs.readedBytes="+rbs.readedBytes + "readLines="+rbs.readedLines);
     }
     //读入
     public void prepare(String path) {
-        for(int a=100;a<=100;a+=100){
+        int a=100;
             long chunck=a*1024*1024;
             int chunckint= a*1024*1024;
             Long startTime = System.currentTimeMillis();
-//            realPrepare(path,chunck,chunckint);
-            hackTime(path,chunck);
+            realPrepare(path,chunck,chunckint);
+//            hackTime(path,chunck);
             Long endTime = System.currentTimeMillis();
             prepareTime=(endTime-startTime)*1.0/1000;
-//            System.out.println("prepare耗时"+(endTime-startTime)*1.0/1000 + "chunck size="+a+"MB");
 //            Runtime.getRuntime().gc();
-        }
-        Long startTime = System.currentTimeMillis();
-        for(MappedByteBuffer mb: mbArray){
-//            System.out.println("读入");
-            mb.get(bytesBuffer,0,mb.limit());
-        }
-        Long endTime = System.currentTimeMillis();
-        readTime=(endTime-startTime)*1.0/1000;
-
     }
     //读入
 
@@ -111,7 +99,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public List<String> checkPair(String caller, String responder, String time) {
 
         if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime+" filename="+f.getAbsolutePath());
+            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
 
         }
         checkPairTimes += 1;
