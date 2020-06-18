@@ -68,7 +68,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 buf1.clear();
                channel.read(buf1,Math.min(chunck,fileLength-i));
                 buf1.flip();
-                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i));
+//                System.out.println("limit="+buf1.limit()+" fileLength-i="+(fileLength-i));
                 rbs.run(buf1, (int) chunck);
             }
 

@@ -126,7 +126,7 @@ public class RawBufferSolve {
         minTime /= 60;
         if (minTime > nowTime) {
             nowTime = minTime;
-            System.out.println(timec);
+//            System.out.println(timec);
         } else if (minTime == nowTime) {
 
         } else {
