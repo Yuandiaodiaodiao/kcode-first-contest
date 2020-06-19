@@ -37,9 +37,9 @@ public class RawBufferSolve {
         for (Map.Entry entry : hashM3.entrySet()) {
             hashM3Array[HashCode.hash((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
         }
-        for (Map.Entry entry : hashM3.entrySet()) {
-            hashM3Array2[HashCode.hash2((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
-        }
+//        for (Map.Entry entry : hashM3.entrySet()) {
+//            hashM3Array2[HashCode.hash2((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
+//        }
     }
     public void solveResponder() {
         for (String key : hashM2.keySet()) {
