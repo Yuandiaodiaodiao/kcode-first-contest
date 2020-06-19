@@ -26,13 +26,21 @@ public class RawBufferSolve {
     public HashMap<String, CheckResponderTimePayLoad[]> hashM3 = new HashMap<>(128);
     public ArrayList<HashMap<String, ArrayList<String>>> hashM4 = new ArrayList<>(64);
     public SolveMinuteThread thread1;
-
+    public CheckResponderTimePayLoad[][] hashM3Array =new CheckResponderTimePayLoad[10000][];
+    public CheckResponderTimePayLoad[][] hashM3Array2 =new CheckResponderTimePayLoad[10000][];
     public RawBufferSolve() {
         thread1=new SolveMinuteThread(this);
         thread1.start();
 
     }
-
+    public void hashMap2Array(){
+        for (Map.Entry entry : hashM3.entrySet()) {
+            hashM3Array[HashCode.hash((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
+        }
+        for (Map.Entry entry : hashM3.entrySet()) {
+            hashM3Array2[HashCode.hash2((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
+        }
+    }
     public void solveResponder() {
         for (String key : hashM2.keySet()) {
             TreeMap<Integer, CheckResponderPayLoad> tm = hashM2.get(key);
@@ -70,6 +78,7 @@ public class RawBufferSolve {
             }
             hashM3.put(key, dbarray);
         }
+        hashMap2Array();
 
     }
 

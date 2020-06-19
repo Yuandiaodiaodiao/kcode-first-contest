@@ -1,9 +1,6 @@
 package com.kuaishou.kcode;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -109,7 +106,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void prepare(String path) {
-        DiskReadTest.test(path);
+//        DiskReadTest.test(path);
 //        TimeParse.testParseData("2020-06-01 09:44");
 //        P99Solve.testP99();
 //        System.out.println(DFORMAT.format(0));
@@ -163,12 +160,32 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询2
     public static CheckResponderTimePayLoad a;
     public static CheckResponderTimePayLoad b;
-
+    public static ArrayList<String >respond=new ArrayList<>();
     public String checkResponder(String responder, String start, String end) {
 //        TreeMap<Integer,CheckResponderPayLoad> tm=rbs.hashM2.get(responder);
-        CheckResponderTimePayLoad[] db = rbs.hashM3.get(responder);
+//        respond.add(responder);
+//        if(respond.size()>310){
+//
+//            File fservice = new File("responder.txt");
+//            FileWriter out = null;
+//            try {
+//                out = new FileWriter(fservice);
+//                for (String a : respond) {
+//                    out.write(a);
+//                    out.write("\n");
+//                }
+//                out.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            throw new Error();
+//        }
+//        CheckResponderTimePayLoad[] db = rbs.hashM3.get(responder);
+        CheckResponderTimePayLoad[] db = rbs.hashM3Array[HashCode.hash(responder)];
+//        CheckResponderTimePayLoad[] db2 = rbs.hashM3Array[HashCode.hash2(responder)];
 
-        if (db == null) {
+        if (db==null) {
             return NOANSWER;
         }
         int t1 = TimeParse.parse(start) - rbs.startMinute;
