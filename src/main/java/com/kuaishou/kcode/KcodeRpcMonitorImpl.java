@@ -220,7 +220,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询1
     public static int q1Times=0;
     public List<String> checkPair(String caller, String responder, String time) {
-        if(q1Times>=149970){
+//        if(q1Times>=149970){
+//            countDownLatch.countDown();
+//        }
+        if(q1Times>=199970){
             countDownLatch.countDown();
         }
         q1Times++;
