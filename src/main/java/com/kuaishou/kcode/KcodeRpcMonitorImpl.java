@@ -229,21 +229,22 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        }
 //        q1Times++;
         int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - rbs.startMinute;
-        if (t >= rbs.hashM4.size() || t < 0) {
+        if (t > 31 || t < 0) {
             return NOANSWERARRAY;
         }
-        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
-        if (serviceMap == null || serviceMap.size() == 0) {
-            return NOANSWERARRAY;
-        }
-
-        ArrayList<String> ans = serviceMap.get(caller + responder);
-
-        if (ans == null) {
-            return NOANSWERARRAY;
-        } else {
-            return ans;
-        }
+        return rbs.hashM4Array[HashCode.hashTwoString(caller,responder)][t].payload;
+//        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
+//        if (serviceMap == null || serviceMap.size() == 0) {
+//            return NOANSWERARRAY;
+//        }
+//
+//        ArrayList<String> ans = serviceMap.get(caller + responder);
+//
+//        if (ans == null) {
+//            return NOANSWERARRAY;
+//        } else {
+//            return ans;
+//        }
 //        if(responder.length()>0){
 //            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
 //

@@ -8,17 +8,34 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import static java.lang.System.nanoTime;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
-
+import com.kuaishou.kcode.ArrayPayLoad;
 public class SolveMinuteThread extends Thread {
     private RawBufferSolve rbs;
     private ArrayBlockingQueue abq;
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
+    public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     SolveMinuteThread(RawBufferSolve rbsin) {
         rbs = rbsin;
         abq = rbs.abq;
     }
 
+    public void solveArray(int time){
+        int m4index = time - rbs.startMinute;
+        HashMap<String, ArrayList<String>> answerHashMap=rbs.hashM4.get(m4index);
+        for(Map.Entry entry : answerHashMap.entrySet()){
+            String[] s= ((String) entry.getKey()).split(" ");
+            rbs.hashM4Array[HashCode.hashTwoString(s[0],s[1])][m4index]= (new ArrayPayLoad((ArrayList<String>) entry.getValue()));
+        }
+        for(int i=0;i<=9999;++i){
+            for(int j=0;j<32;++j){
+                if(rbs.hashM4Array[i][j]==null){
+                    rbs.hashM4Array[i][j]=new ArrayPayLoad(NOANSWERARRAY);
+                }
+            }
+        }
+    }
+//    public void AddNull
     @Override
     public void run() {
         super.run();
@@ -80,7 +97,7 @@ public class SolveMinuteThread extends Thread {
                     }
                 }
 //                System.out.println("Thread 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
-
+            solveArray(time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
