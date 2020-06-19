@@ -227,7 +227,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        if(q1Times>=199970){
 //            countDownLatch.countDown();
 //        }
-        q1Times++;
+//        q1Times++;
         int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - rbs.startMinute;
         if (t >= rbs.hashM4.size() || t < 0) {
             return NOANSWERARRAY;
