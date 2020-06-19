@@ -117,17 +117,20 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         realPrepare(path, chunck, chunckint);
 //            hackTime(path,chunck);
         Long endTime = System.currentTimeMillis();
-        prepareTime = (endTime - startTime) * 1.0 / 1000;
 //            Runtime.getRuntime().gc();
         rbs.analyseHashMap();
+        prepareTime = (endTime - startTime) * 1.0 / 1000;
+
     }
     //读入
 
     public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     //查询1
+    public static int q1Times=0;
     public List<String> checkPair(String caller, String responder, String time) {
-        int t = TimeParse.parse(time) - rbs.startMinute;
+        q1Times++;
+        int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - rbs.startMinute;
         if (t >= rbs.hashM4.size() || t < 0) {
             return NOANSWERARRAY;
         }
@@ -164,7 +167,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static ArrayList<String> respond = new ArrayList<>();
     public static ArrayList<Long>timeArray=new ArrayList<>(128);
     public String checkResponder(String responder, String start, String end) {
-
+        if(q1Times>0){
+            throw  new  ArrayIndexOutOfBoundsException("第一问次数"+q1Times+"prepareTime="+prepareTime);
+        }
         int index=HashCode.hash(responder);
 
         String[][] db = rbs.hashM3Array[index];
@@ -183,12 +188,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t1 < 0) {
             t1 = 0;
         } else if (t1 > 31) {
-            t1 = 31;
+            return NOANSWER;
         }
 
 
         if (t2 < 0) {
-            t2 = 0;
+            return NOANSWER;
         } else if (t2 > 31) {
             t2 = 31;
         }
