@@ -3,6 +3,7 @@ package com.kuaishou.kcode;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.ByteBuffer;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -26,16 +27,33 @@ public class RawBufferSolve {
     public HashMap<String, CheckResponderTimePayLoad[]> hashM3 = new HashMap<>(128);
     public ArrayList<HashMap<String, ArrayList<String>>> hashM4 = new ArrayList<>(64);
     public SolveMinuteThread thread1;
-    public CheckResponderTimePayLoad[][] hashM3Array =new CheckResponderTimePayLoad[10000][];
-    public CheckResponderTimePayLoad[][] hashM3Array2 =new CheckResponderTimePayLoad[10000][];
+    public String[][][] hashM3Array =new String[10000][][];
+    public CheckResponderTimePayLoad[][][] hashM3Array2 =new CheckResponderTimePayLoad[10000][][];
     public RawBufferSolve() {
         thread1=new SolveMinuteThread(this);
         thread1.start();
 
     }
+    private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
+    private static final String NOANSWER = "-1.00%";
+
     public void hashMap2Array(){
         for (Map.Entry entry : hashM3.entrySet()) {
-            hashM3Array[HashCode.hash((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();
+            String[][] c=new String[32][32];
+            CheckResponderTimePayLoad[] db=(CheckResponderTimePayLoad[]) entry.getValue();
+            for(int a=0;a<=31;++a){
+                for(int b=0;b<=31;++b){
+                    CheckResponderTimePayLoad i = db[a];
+                    CheckResponderTimePayLoad j = db[b];
+                    int calleeTimes = j.calledTimes - i.calledTimes;
+                    if (calleeTimes > 0) {
+                        c[a][b]= DFORMAT.format((j.rate - i.rate) / calleeTimes);
+                    } else {
+                        c[a][b]= NOANSWER;
+                    }
+                }
+            }
+            hashM3Array[HashCode.hash((String) entry.getKey())]= c;
         }
 //        for (Map.Entry entry : hashM3.entrySet()) {
 //            hashM3Array2[HashCode.hash2((String) entry.getKey())]= (CheckResponderTimePayLoad[]) entry.getValue();

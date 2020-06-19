@@ -162,10 +162,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static CheckResponderTimePayLoad a;
     public static CheckResponderTimePayLoad b;
     public static ArrayList<String> respond = new ArrayList<>();
-
+    public static ArrayList<Long>timeArray=new ArrayList<>(128);
     public String checkResponder(String responder, String start, String end) {
 
-        CheckResponderTimePayLoad[] db = rbs.hashM3Array[HashCode.hash(responder)];
+        int index=HashCode.hash(responder);
+
+        String[][] db = rbs.hashM3Array[index];
 
         if (db == null) {
             return NOANSWER;
@@ -190,14 +192,17 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } else if (t2 > 31) {
             t2 = 31;
         }
-        a = db[t1];
-        b = db[t2];
-        calleeTimes = b.calledTimes - a.calledTimes;
-        if (calleeTimes > 0) {
-            return DFORMAT.format((b.rate - a.rate) / calleeTimes);
-        } else {
-            return NOANSWER;
-        }
+        return db[t1][t2];
+//        a = db[t1];
+//        b = db[t2];
+//
+//
+//        calleeTimes = b.calledTimes - a.calledTimes;
+//        if (calleeTimes > 0) {
+//            return DFORMAT.format((b.rate - a.rate) / calleeTimes);
+//        } else {
+//            return NOANSWER;
+//        }
     }
 
 }
