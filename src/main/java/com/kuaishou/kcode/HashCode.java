@@ -55,7 +55,7 @@ public class HashCode {
         return (hashcode1 % 99) * 100 + (hashcode2 % 99);
     }
     public static int hashTwoString(String str1,String str2){
-        return (hash2(str1)*10000+hash2(str2))%9933;
+        return (hash2(str1)*10000+hash2(str2))%5109;
     }
     public static int hash2(String str) {
         int len = str.length();
@@ -66,8 +66,8 @@ public class HashCode {
         char c;
         for (; i < len; ++i) {
             c = str.charAt(i);
-            if (i <= 5) {
-                hashcode1 = c * 20 + hashcode1;
+            if (i <= 7) {
+                hashcode1 = c * 17 + hashcode1;
             } else if (c <= '9') {
                 numberIndex = i;
                 break;
@@ -75,8 +75,9 @@ public class HashCode {
         }
 
         for (; i < len; ++i) {
+            c=str.charAt(i);
             if (i - numberIndex >= 2) {
-                hashcode2 =  hashcode2 * 5;
+                hashcode2 =c*3 + hashcode2 * 8;
             } else {
                 hashcode2 = str.charAt(i) + hashcode2 * 10;
             }
