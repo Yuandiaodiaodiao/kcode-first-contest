@@ -109,6 +109,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void prepare(String path) {
+        DiskReadTest.test(path);
 //        TimeParse.testParseData("2020-06-01 09:44");
 //        P99Solve.testP99();
 //        System.out.println(DFORMAT.format(0));

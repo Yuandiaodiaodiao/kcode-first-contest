@@ -16,6 +16,11 @@ public class TimeParse {
     }
 
     public static int parse(String time){
+
+
+        return sixMonthStartTime+((time.charAt(9)-'0')+(time.charAt(8)-'0')*10-1)*1440+((time.charAt(11)-'0')*10+(time.charAt(12)-'0'))*60+(time.charAt(14)-'0')*10+(time.charAt(15)-'0');
+    }
+    public static int old_parse(String time){
         int data2=time.charAt(8)-'0';
         int data1=time.charAt(9)-'0';
         int day=data1+data2*10;
