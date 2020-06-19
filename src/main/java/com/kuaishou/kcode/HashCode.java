@@ -1,7 +1,34 @@
 package com.kuaishou.kcode;
 
 public class HashCode {
-    public static int hash(String str) {
+    public static int hash(String str){
+        int len = str.length();
+        int numberIndex = 0;
+        int hashcode1 = 0;
+        int hashcode2 = 0;
+        int i = 0;
+        char c;
+        for (; i < len; ++i) {
+            c = str.charAt(i);
+            if (i <= 6) {
+                hashcode1 =c + hashcode1;
+            } else if (c <= '9') {
+                numberIndex = i;
+                break;
+            }
+        }
+
+        for (; i < len; ++i) {
+            c=str.charAt(i);
+            if (i - numberIndex >= 2) {
+                hashcode2 =  (((int)c)<<3)+ hashcode2;
+            } else {
+                hashcode2 = c + (hashcode2<<5);
+            }
+        }
+        return ((hashcode1 % 70)<<5) + (hashcode2 % 71);
+    }
+    public static int hash3(String str) {
         int len = str.length();
         int numberIndex = 0;
         int hashcode1 = 0;
