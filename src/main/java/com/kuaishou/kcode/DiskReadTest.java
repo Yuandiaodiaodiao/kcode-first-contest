@@ -17,7 +17,7 @@ public class DiskReadTest {
         File f = new File(path);
         long fileLength = f.length();
         RandomAccessFile raf = null;
-        long chunck = 200 * 1024 * 1024;
+        long chunck = 170 * 1024 * 1024;
         try {
             raf = new RandomAccessFile(f, "r");
             FileChannel channel = raf.getChannel();
@@ -27,6 +27,7 @@ public class DiskReadTest {
             ByteBuffer buf=ByteBuffer.allocateDirect((int) chunck);
 
             canuse.add(buf);
+            canuse.add(ByteBuffer.allocateDirect((int) chunck));
             canuse.add(ByteBuffer.allocateDirect((int) chunck));
             canuse.add(ByteBuffer.allocateDirect((int) chunck));
             canuse.add(ByteBuffer.allocateDirect((int) chunck));
@@ -106,6 +107,24 @@ public class DiskReadTest {
                     e.printStackTrace();
                 }
             });
+            Thread t5 = new Thread(() -> {
+                try {
+//                    byte[] buff=new byte[321*1024*1024];
+                    while (true) {
+                        ByteBuffer b = (ByteBuffer) canread.take();
+                        if(b.limit()==0){canread.put(b);return;}
+                        Byte by;
+                        while(b.hasRemaining()){
+//                            b.get(buff,0,b.remaining());
+                            by=b.get();
+                        }
+
+                        canuse.put(b);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
             t1.start();
             t2.start();
             t3.start();
@@ -125,10 +144,12 @@ public class DiskReadTest {
             canread.put(buf);
             canread.put(buf);
             canread.put(buf);
+            canread.put(buf);
             t1.join();
             t2.join();
             t3.join();
             t4.join();
+            t5.join();
             String s = ("磁盘耗时(ms):" + (nanoTime() - startNs) / 1000000.0);
             throw new ArrayIndexOutOfBoundsException(s + "文件长度" + fileLength / 1024.0 / 1024 + "MB");
 

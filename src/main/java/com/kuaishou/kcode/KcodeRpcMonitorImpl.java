@@ -122,6 +122,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
 //            Runtime.getRuntime().gc();
+        rbs.analyseHashMap();
     }
     //读入
 

@@ -289,10 +289,12 @@ public class RawBufferSolve {
         int timeLength = hashM.keySet().size();
         ArrayList<Integer> servicePairLength = new ArrayList<>();
         ArrayList<Integer> ipPairLength = new ArrayList<>();
+        ArrayList<String> ServiceNames = new ArrayList<>();
         for (Integer timeT : hashM.keySet()) {
             HashMap<String, HashMap<Long, CheckPairPayLoad>> nameSet = hashM.get(timeT);
             servicePairLength.add(nameSet.keySet().size());
             for (String strT : nameSet.keySet()) {
+                ServiceNames.add(strT);
                 HashMap<Long, CheckPairPayLoad> ipSet = nameSet.get(strT);
                 ipPairLength.add(nameSet.keySet().size());
                 for (Long ipT : ipSet.keySet()) {
@@ -301,6 +303,10 @@ public class RawBufferSolve {
                 }
             }
         }
+        ArrayList<String> ServiceNames2 = new ArrayList<>();
+
+        ServiceNames2.addAll(hashM3.keySet());
+
         try {
             File fservice = new File("service.txt");
             FileWriter out = new FileWriter(fservice);
@@ -316,6 +322,22 @@ public class RawBufferSolve {
                 out.write("\n");
             }
             out.close();
+
+            fip = new File("serviceNames.txt");
+            out = new FileWriter(fip);
+            for (String a : ServiceNames) {
+                out.write(a);
+                out.write("\n");
+            }
+            out.close();
+            fip = new File("serviceNames2.txt");
+            out = new FileWriter(fip);
+            for (String a : ServiceNames2) {
+                out.write(a);
+                out.write("\n");
+            }
+            out.close();
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
