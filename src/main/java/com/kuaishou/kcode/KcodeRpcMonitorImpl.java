@@ -75,7 +75,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 buf1.clear();
                 int readed = channel.read(buf1);
                 buf1.flip();
-                
+
 //                System.out.println("limit=" + buf1.limit() + " fileLength-i=" + (fileLength - i) + "readed=" + readed);
                 rbs.run(buf1, (int) chunck);
             }
@@ -109,6 +109,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void prepare(String path) {
+//        TimeParse.testParseData("2020-06-01 09:44");
 //        P99Solve.testP99();
 //        System.out.println(DFORMAT.format(0));
         int a = 1000;
@@ -126,24 +127,20 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
-        int t = 0;
-        try {
-            t = (int) (format.parse(time).getTime() / 60000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        t-=rbs.startMinute;
-        if(t>=rbs.hashM4.size() ||t<0){
-            return  new ArrayList<String>();
-        }
-        HashMap<String, ArrayList<String>> serviceMap=rbs.hashM4.get(t);
-        if (serviceMap == null||serviceMap.size()==0) {
+        int t = TimeParse.parse(time)-rbs.startMinute;
+        if (t >= rbs.hashM4.size() || t < 0) {
             return new ArrayList<String>();
         }
+        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
+        if (serviceMap == null || serviceMap.size() == 0) {
+            return new ArrayList<String>();
+        }
+
         ArrayList<String> ans = serviceMap.get(caller + responder);
+
         if (ans == null) {
             return new ArrayList<String>();
-        }else{
+        } else {
             return ans;
         }
 //        if(responder.length()>0){
@@ -158,14 +155,6 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    public int getTime(String timeStr) {
-        try {
-            return (int) (format.parse(timeStr).getTime() / 60000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 
     private static final String NOANSWER = "-1.00%";
     private static final String ZEROANSWER = ".00%";
@@ -180,15 +169,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (db == null) {
             return NOANSWER;
         }
-        int t1 = 0;
-        int t2 = 0;
-        try {
-            t1 = (int) (format.parse(start).getTime() / 60000) - rbs.startMinute;
-            t2 = (int) (format.parse(end).getTime() / 60000) - rbs.startMinute;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        int t1 = TimeParse.parse(start) - rbs.startMinute;
+        int t2 = TimeParse.parse(end) - rbs.startMinute;
         if (t2 < t1) {
             return NOANSWER;
         }

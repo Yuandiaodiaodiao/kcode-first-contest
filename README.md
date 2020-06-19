@@ -63,9 +63,9 @@ commentService2,172.17.60.3,userServie,172.17.60.4,true,91,1590975771032
 （2020-06-01 09:44）userServie无调用
  那么userServie在2020-06-01 09:42到2020-06-01 09:44的平均成功率为（66.66%）/ 1 = 66.66%【示例数据仅仅在2020-06-01 09:42有调用】
 ```
-如果计算结果是0，请表示成 **.00%**
-
-
+如果计算结果是0，请表示成 **.00%**  
+0123456789012345
+2020-06-01 09:44  
 ## 操作说明
 - 报名成功之后，参赛 git 信息会以短信形式发送给选手(已参过热身赛同学，直接跳到第二步)
 - 登录 https://kcode-git.kuaishou.com/ 或直接下载 [初赛初始代码](https://kcode-git.kuaishou.com/kcode/KcodeRpcMonitor/-/archive/master/KcodeRpcMonitor-master.zip)
