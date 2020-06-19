@@ -12,12 +12,12 @@ public class HashCode {
                 if(c<='9'){
                     numberIndex=i;
                     hashcode2=c;
-                }else{
+                }else if(i<=6){
                     hashcode1=c*31+hashcode1;
                 }
             }else {
                 if(i-numberIndex>=2){
-                    hashcode2=c*0+hashcode2*5;
+                    hashcode2=hashcode2*5;
                 }else{
                     hashcode2=c+hashcode2*10;
                 }
