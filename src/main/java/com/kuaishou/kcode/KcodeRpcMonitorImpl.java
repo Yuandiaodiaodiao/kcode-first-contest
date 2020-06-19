@@ -123,10 +123,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     }
     //读入
 
-    public static ArrayList<String>NOANSWERARRAY=new ArrayList<String>();
+    public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
+
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
-        int t = TimeParse.parse(time)-rbs.startMinute;
+        int t = TimeParse.parse(time) - rbs.startMinute;
         if (t >= rbs.hashM4.size() || t < 0) {
             return NOANSWERARRAY;
         }
@@ -160,36 +161,17 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询2
     public static CheckResponderTimePayLoad a;
     public static CheckResponderTimePayLoad b;
-    public static ArrayList<String >respond=new ArrayList<>();
-    public String checkResponder(String responder, String start, String end) {
-//        TreeMap<Integer,CheckResponderPayLoad> tm=rbs.hashM2.get(responder);
-//        respond.add(responder);
-//        if(respond.size()>310){
-//
-//            File fservice = new File("responder.txt");
-//            FileWriter out = null;
-//            try {
-//                out = new FileWriter(fservice);
-//                for (String a : respond) {
-//                    out.write(a);
-//                    out.write("\n");
-//                }
-//                out.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            throw new Error();
-//        }
-//        CheckResponderTimePayLoad[] db = rbs.hashM3.get(responder);
-        CheckResponderTimePayLoad[] db = rbs.hashM3Array[HashCode.hash(responder)];
-//        CheckResponderTimePayLoad[] db2 = rbs.hashM3Array[HashCode.hash2(responder)];
+    public static ArrayList<String> respond = new ArrayList<>();
 
-        if (db==null) {
+    public String checkResponder(String responder, String start, String end) {
+
+        CheckResponderTimePayLoad[] db = rbs.hashM3Array[HashCode.hash(responder)];
+
+        if (db == null) {
             return NOANSWER;
         }
-        int t1 = TimeParse.parse(start) - rbs.startMinute;
-        int t2 = TimeParse.parse(end) - rbs.startMinute;
+        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - rbs.startMinute;
+        int t2 = 25721712 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - rbs.startMinute;
         if (t2 < t1) {
             return NOANSWER;
         }

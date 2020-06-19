@@ -20,7 +20,7 @@ public class HashCode {
 
         for (; i < len; ++i) {
             if (i - numberIndex >= 2) {
-                hashcode2 = str.charAt(i) * 0 + hashcode2 * 5;
+                hashcode2 =  hashcode2 * 5;
             } else {
                 hashcode2 = str.charAt(i) + hashcode2 * 10;
             }
