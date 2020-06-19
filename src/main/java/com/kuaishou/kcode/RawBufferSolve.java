@@ -29,6 +29,7 @@ public class RawBufferSolve {
     public SolveMinuteThread thread1;
     public String[][][] hashM3Array =new String[10000][][];
     public CheckResponderTimePayLoad[][][] hashM3Array2 =new CheckResponderTimePayLoad[10000][][];
+//    public HashSet<String>serviceNameSet=new HashSet<>(8192);
     public RawBufferSolve() {
         thread1=new SolveMinuteThread(this);
         thread1.start();
@@ -250,6 +251,7 @@ public class RawBufferSolve {
         }
 //        lastStr=outstr;
         int stringConcatPos = 0;
+//        serviceNameSet.add(new String(service1,0,strIndexA)+" "+new String(service2,0,strIndexB));
         System.arraycopy(service1, 0, stringConcatBuff, 0, strIndexA);
         System.arraycopy(service2, 0, stringConcatBuff, strIndexA, strIndexB);
         String twoServices = new String(stringConcatBuff, 0, strIndexA + strIndexB);

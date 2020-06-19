@@ -206,12 +206,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //            hackTime(path,chunck);
         Long endTime = System.currentTimeMillis();
 //            Runtime.getRuntime().gc();
-        rbs.analyseHashMap();
+//        rbs.analyseHashMap();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
-        hotResponder[0].start();
-        hotResponder[1].start();
-        hotResponder[2].start();
-        hotResponder[3].start();
+//        hotResponder[0].start();
+//        hotResponder[1].start();
+//        hotResponder[2].start();
+//        hotResponder[3].start();
     }
     //读入
 
@@ -220,12 +220,13 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询1
     public static int q1Times=0;
     public List<String> checkPair(String caller, String responder, String time) {
+//        rbs.serviceNameSet.add(caller+" "+responder);
 //        if(q1Times>=149970){
 //            countDownLatch.countDown();
 //        }
-        if(q1Times>=199970){
-            countDownLatch.countDown();
-        }
+//        if(q1Times>=199970){
+//            countDownLatch.countDown();
+//        }
         q1Times++;
         int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - rbs.startMinute;
         if (t >= rbs.hashM4.size() || t < 0) {
@@ -264,6 +265,23 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static ArrayList<String> respond = new ArrayList<>();
     public static ArrayList<Long>timeArray=new ArrayList<>(128);
     public String checkResponder(String responder, String start, String end) {
+//        if(q1Times>0){
+//            File fservice = new File("serviceSpaceName.txt");
+//            FileWriter out = null;
+//            try {
+//                out = new FileWriter(fservice);
+//                for (String a : rbs.serviceNameSet) {
+//                    out.write(a);
+//                    out.write("\n");
+//                }
+//                out.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            throw  new Error();
+//        }
+
+
 //        if(q1Times>0){
 //            throw  new  ArrayIndexOutOfBoundsException("第一问次数"+q1Times+"prepareTime="+prepareTime);
 //        }
