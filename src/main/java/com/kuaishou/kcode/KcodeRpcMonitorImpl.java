@@ -232,6 +232,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t > 31 || t < 0) {
             return NOANSWERARRAY;
         }
+//        System.out.println("评测 "+HashCode.hashTwoString(caller,responder) +" time= "+ t);
         return rbs.hashM4Array[HashCode.hashTwoString(caller,responder)][t].payload;
 //        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
 //        if (serviceMap == null || serviceMap.size() == 0) {
