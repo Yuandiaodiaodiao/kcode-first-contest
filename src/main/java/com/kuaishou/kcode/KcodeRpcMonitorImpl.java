@@ -125,22 +125,22 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     }
     //读入
 
-
+    public static ArrayList<String>NOANSWERARRAY=new ArrayList<String>();
     //查询1
     public List<String> checkPair(String caller, String responder, String time) {
         int t = TimeParse.parse(time)-rbs.startMinute;
         if (t >= rbs.hashM4.size() || t < 0) {
-            return new ArrayList<String>();
+            return NOANSWERARRAY;
         }
         HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
         if (serviceMap == null || serviceMap.size() == 0) {
-            return new ArrayList<String>();
+            return NOANSWERARRAY;
         }
 
         ArrayList<String> ans = serviceMap.get(caller + responder);
 
         if (ans == null) {
-            return new ArrayList<String>();
+            return NOANSWERARRAY;
         } else {
             return ans;
         }

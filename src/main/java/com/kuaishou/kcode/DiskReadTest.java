@@ -17,7 +17,7 @@ public class DiskReadTest {
         File f = new File(path);
         long fileLength = f.length();
         RandomAccessFile raf = null;
-        long chunck = 320 * 1024 * 1024;
+        long chunck = 250 * 1024 * 1024;
         try {
             raf = new RandomAccessFile(f, "r");
             FileChannel channel = raf.getChannel();
@@ -29,14 +29,18 @@ public class DiskReadTest {
             canuse.add(buf);
             canuse.add(ByteBuffer.allocateDirect((int) chunck));
             canuse.add(ByteBuffer.allocateDirect((int) chunck));
+            canuse.add(ByteBuffer.allocateDirect((int) chunck));
             long startNs = nanoTime();
             Thread t1 = new Thread(() -> {
                 try {
+//                    byte[] buff=new byte[321*1024*1024];
                     while (true) {
                         ByteBuffer b = (ByteBuffer) canread.take();
-                        if(!b.hasRemaining())return;
+                        if(b.limit()==0){canread.put(b);return;}
+
                         Byte by;
                         while(b.hasRemaining()){
+//                            b.get(buff,0,b.remaining());
                             by=b.get();
                         }
 
@@ -48,11 +52,32 @@ public class DiskReadTest {
             });
             Thread t2 = new Thread(() -> {
                 try {
+//                    byte[] buff=new byte[321*1024*1024];
                     while (true) {
                         ByteBuffer b = (ByteBuffer) canread.take();
-                        if(!b.hasRemaining())return;
+                        if(b.limit()==0){canread.put(b);return;}
+
                         Byte by;
                         while(b.hasRemaining()){
+//                            b.get(buff,0,b.remaining());
+                            by=b.get();
+                        }
+
+                        canuse.put(b);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            Thread t3 = new Thread(() -> {
+                try {
+//                    byte[] buff=new byte[321*1024*1024];
+                    while (true) {
+                        ByteBuffer b = (ByteBuffer) canread.take();
+                        if(b.limit()==0){canread.put(b);return;}
+                        Byte by;
+                        while(b.hasRemaining()){
+//                            b.get(buff,0,b.remaining());
                             by=b.get();
                         }
 
@@ -64,6 +89,7 @@ public class DiskReadTest {
             });
             t1.start();
             t2.start();
+            t3.start();
             for (long i = 0; i <= fileLength; i += chunck) {
                 buf= (ByteBuffer) canuse.take();
                 buf.clear();
@@ -72,10 +98,15 @@ public class DiskReadTest {
                 canread.put(buf);
 
             }
+            buf= (ByteBuffer) canuse.take();
+            buf.limit(0);
+            canread.put(buf);
+            canread.put(buf);
             canread.put(buf);
             canread.put(buf);
             t1.join();
             t2.join();
+            t3.join();
             String s = ("磁盘耗时(ms):" + (nanoTime() - startNs) / 1000000.0);
             throw new ArrayIndexOutOfBoundsException(s + "文件长度" + fileLength / 1024.0 / 1024 + "MB");
 
