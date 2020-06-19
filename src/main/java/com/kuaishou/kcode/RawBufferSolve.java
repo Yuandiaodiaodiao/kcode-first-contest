@@ -24,6 +24,7 @@ public class RawBufferSolve {
     public HashMap<Integer, HashMap<String, HashMap<Long, CheckPairPayLoad>>> hashM = new HashMap<>(256);
     public HashMap<String, TreeMap<Integer, CheckResponderPayLoad>> hashM2 = new HashMap<>(256);
     public HashMap<String, CheckResponderTimePayLoad[]> hashM3 = new HashMap<>(128);
+    public ArrayList<HashMap<String, ArrayList<String>>> hashM4 = new ArrayList<>(64);
     public SolveMinuteThread thread1;
 
     public RawBufferSolve() {
@@ -205,11 +206,11 @@ public class RawBufferSolve {
         }
         if (minTime > nowTime) {
             if(nowTime!=0){
-                abq.add(hashM.get(nowTime));
+                abq.add(nowTime);
             }
             nowTime = minTime;
             //刷新time
-            System.out.println(timec);
+//            System.out.println(timec);
         } else if (minTime == nowTime) {
 
         } else {

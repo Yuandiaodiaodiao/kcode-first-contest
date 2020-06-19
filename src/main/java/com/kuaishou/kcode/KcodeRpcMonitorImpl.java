@@ -76,14 +76,14 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 int readed = channel.read(buf1);
                 buf1.flip();
                 
-                System.out.println("limit=" + buf1.limit() + " fileLength-i=" + (fileLength - i) + "readed=" + readed);
+//                System.out.println("limit=" + buf1.limit() + " fileLength-i=" + (fileLength - i) + "readed=" + readed);
                 rbs.run(buf1, (int) chunck);
             }
-            rbs.abq.add(rbs.hashM.get(rbs.nowTime));
-            rbs.abq.add(new HashMap<String, HashMap<Long, CheckPairPayLoad>>());
+            rbs.abq.add(rbs.nowTime);
+            rbs.abq.add(-1);
             long startNs = nanoTime();
             rbs.solveResponder();
-            System.out.println("solveResponder 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
+//            System.out.println("solveResponder 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
 
             rbs.thread1.join();
 
@@ -94,7 +94,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("rbs.readedBytes=" + rbs.readedBytes + "readLines=" + rbs.readedLines);
+//        System.out.println("rbs.readedBytes=" + rbs.readedBytes + "readLines=" + rbs.readedLines);
     }
 
     //读入
@@ -109,8 +109,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void prepare(String path) {
-        P99Solve.testP99();
-        System.out.println(DFORMAT.format(0));
+//        P99Solve.testP99();
+//        System.out.println(DFORMAT.format(0));
         int a = 1000;
         long chunck = a * 1024 * 1024;
         int chunckint = a * 1024 * 1024;
@@ -132,43 +132,20 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        HashMap<String, HashMap<Long, CheckPairPayLoad>> serviceMap = rbs.hashM.get(t);
-        if (serviceMap == null) {
+        t-=rbs.startMinute;
+        if(t>=rbs.hashM4.size() ||t<0){
+            return  new ArrayList<String>();
+        }
+        HashMap<String, ArrayList<String>> serviceMap=rbs.hashM4.get(t);
+        if (serviceMap == null||serviceMap.size()==0) {
             return new ArrayList<String>();
         }
-        HashMap<Long, CheckPairPayLoad> ipMap = serviceMap.get(caller + responder);
-        if (ipMap == null) {
+        ArrayList<String> ans = serviceMap.get(caller + responder);
+        if (ans == null) {
             return new ArrayList<String>();
+        }else{
+            return ans;
         }
-        ArrayList<String> as = new ArrayList<>(64);
-        for (Map.Entry entry2 : ipMap.entrySet()) {
-            long ipTwo = (long) entry2.getKey();
-            CheckPairPayLoad payLoad = (CheckPairPayLoad) entry2.getValue();
-            StringBuilder str = new StringBuilder(40);
-            int ip2 = (int) (long) (ipTwo);
-            long ip1 = (ipTwo >>> 32);
-            str.append((int) ((ip1 >> 24) & 0x000000FF));
-            str.append('.');
-            str.append((int) ((ip1 >> 16) & 0x000000FF));
-            str.append('.');
-            str.append((int) ((ip1 >> 8) & 0x000000FF));
-            str.append('.');
-            str.append((int) (ip1 & 0x000000FF));
-            str.append(',');
-            str.append((int) ((ip2 >> 24) & 0x000000FF));
-            str.append('.');
-            str.append((int) ((ip2 >> 16) & 0x000000FF));
-            str.append('.');
-            str.append((int) ((ip2 >> 8) & 0x000000FF));
-            str.append('.');
-            str.append((int) (ip2 & 0x000000FF));
-            str.append(',');
-            str.append(DFORMAT.format(payLoad.rate));
-            str.append(',');
-            str.append(payLoad.p99);
-            as.add(str.toString());
-        }
-        return as;
 //        if(responder.length()>0){
 //            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
 //
