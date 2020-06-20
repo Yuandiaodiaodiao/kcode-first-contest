@@ -208,6 +208,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //            Runtime.getRuntime().gc();
 //        rbs.analyseHashMap();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
+//        try {
+//            Thread.sleep(10*60*1000-(startTime-endTime)+19*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        hotResponder[0].start();
 //        hotResponder[1].start();
 //        hotResponder[2].start();
