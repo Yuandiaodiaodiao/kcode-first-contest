@@ -211,6 +211,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
         System.out.println("准备时间" + prepareTime);
+        Long startTime2 = System.currentTimeMillis();
+        HeatCache.HeatCheckPair();
+        Long endTime2 = System.currentTimeMillis();
+        System.out.println("预热时间 ms" + ((endTime2 - startTime2) * 1.0 / 1000));
+
         return;
 //        System.out.println("来了嗷 老弟");
 //        int a = 500;
