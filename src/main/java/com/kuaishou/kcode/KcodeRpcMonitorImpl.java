@@ -33,94 +33,96 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public File f;
     public FileChannel channel;
     public RawBufferSolve rbs = new RawBufferSolve();
-    public Thread[] hotResponder=new Thread[4];
+    public Thread[] hotResponder = new Thread[4];
     public CountDownLatch countDownLatch = new CountDownLatch(1);//创建锁
+    public PrepareMultiThreadManager manager = new PrepareMultiThreadManager();
 
+    //    public PrepareMultiThreadManager manager;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-        hotResponder[0]=new Thread(()->{
+        hotResponder[0] = new Thread(() -> {
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            long t=nanoTime();
+            long t = nanoTime();
             String s;
-            for(int a=0;a<2500;++a){
-                if(rbs.hashM3Array[a]!=null){
-                    String [][] rb=rbs.hashM3Array[a];
-                    for(int b=0;b<32;++b){
-                        for(int c=0;c<32;++c){
-                            s=rb[b][c];
+            for (int a = 0; a < 2500; ++a) {
+                if (rbs.hashM3Array[a] != null) {
+                    String[][] rb = rbs.hashM3Array[a];
+                    for (int b = 0; b < 32; ++b) {
+                        for (int c = 0; c < 32; ++c) {
+                            s = rb[b][c];
                         }
                     }
                 }
 
             }
-            System.out.println("准备完成 耗时ms="+NANOSECONDS.toMillis(nanoTime() - t)+" q1time="+q1Times);
+            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
-        hotResponder[1]=new Thread(()->{
+        hotResponder[1] = new Thread(() -> {
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            long t=nanoTime();
+            long t = nanoTime();
             String s;
-            for(int a=2500;a<5000;++a){
-                if(rbs.hashM3Array[a]!=null){
-                    String [][] rb=rbs.hashM3Array[a];
-                    for(int b=0;b<32;++b){
-                        for(int c=0;c<32;++c){
-                            s=rb[b][c];
+            for (int a = 2500; a < 5000; ++a) {
+                if (rbs.hashM3Array[a] != null) {
+                    String[][] rb = rbs.hashM3Array[a];
+                    for (int b = 0; b < 32; ++b) {
+                        for (int c = 0; c < 32; ++c) {
+                            s = rb[b][c];
                         }
                     }
                 }
 
             }
-            System.out.println("准备完成 耗时ms="+NANOSECONDS.toMillis(nanoTime() - t)+" q1time="+q1Times);
+            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
-        hotResponder[2]=new Thread(()->{
+        hotResponder[2] = new Thread(() -> {
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            long t=nanoTime();
+            long t = nanoTime();
             String s;
-            for(int a=5000;a<7500;++a){
-                if(rbs.hashM3Array[a]!=null){
-                    String [][] rb=rbs.hashM3Array[a];
-                    for(int b=0;b<32;++b){
-                        for(int c=0;c<32;++c){
-                            s=rb[b][c];
+            for (int a = 5000; a < 7500; ++a) {
+                if (rbs.hashM3Array[a] != null) {
+                    String[][] rb = rbs.hashM3Array[a];
+                    for (int b = 0; b < 32; ++b) {
+                        for (int c = 0; c < 32; ++c) {
+                            s = rb[b][c];
                         }
                     }
                 }
 
             }
-            System.out.println("准备完成 耗时ms="+NANOSECONDS.toMillis(nanoTime() - t)+" q1time="+q1Times);
+            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
-        hotResponder[3]=new Thread(()->{
+        hotResponder[3] = new Thread(() -> {
             try {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            long t=nanoTime();
+            long t = nanoTime();
             String s;
-            for(int a=7500;a<10000;++a){
-                if(rbs.hashM3Array[a]!=null){
-                    String [][] rb=rbs.hashM3Array[a];
-                    for(int b=0;b<32;++b){
-                        for(int c=0;c<32;++c){
-                            s=rb[b][c];
+            for (int a = 7500; a < 10000; ++a) {
+                if (rbs.hashM3Array[a] != null) {
+                    String[][] rb = rbs.hashM3Array[a];
+                    for (int b = 0; b < 32; ++b) {
+                        for (int c = 0; c < 32; ++c) {
+                            s = rb[b][c];
                         }
                     }
                 }
 
             }
-            System.out.println("准备完成 耗时ms="+NANOSECONDS.toMillis(nanoTime() - t)+" q1time="+q1Times);
+            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
         prepareTimes += 1;
     }
@@ -193,26 +195,36 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
+    public void newPrepare(String path) {
+        manager.setPath(path);
+        manager.start();
+        manager.stop();
+        return;
+    }
+
     public void prepare(String path) {
-//        DiskReadTest.test(path);
-//        TimeParse.testParseData("2020-06-01 09:44");
-//        P99Solve.testP99();
-//        System.out.println(DFORMAT.format(0));
-        int a = 1000;
-        long chunck = a * 1024 * 1024;
-        int chunckint = a * 1024 * 1024;
+
+
         Long startTime = System.currentTimeMillis();
-        realPrepare(path, chunck, chunckint);
-//            hackTime(path,chunck);
+        System.out.println("来了嗷 老弟");
+        newPrepare(path);
         Long endTime = System.currentTimeMillis();
-//            Runtime.getRuntime().gc();
-//        rbs.analyseHashMap();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
-        try {
-            Thread.sleep(10*60*1000-(startTime-endTime)+19*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println("准备时间" + prepareTime);
+        return;
+//        System.out.println("来了嗷 老弟");
+//        int a = 500;
+//        long chunck = a * 1024 * 1024;
+//        int chunckint = a * 1024 * 1024;
+//        Long startTime = System.currentTimeMillis();
+//        realPrepare(path, chunck, chunckint);
+//        Long endTime = System.currentTimeMillis();
+//        prepareTime = (endTime - startTime) * 1.0 / 1000;
+//        try {
+//            Thread.sleep(10*60*1000-(startTime-endTime)+19*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        hotResponder[0].start();
 //        hotResponder[1].start();
 //        hotResponder[2].start();
@@ -223,7 +235,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     //查询1
-    public static int q1Times=0;
+    public static int q1Times = 0;
+
     public List<String> checkPair(String caller, String responder, String time) {
 //        rbs.serviceNameSet.add(caller+" "+responder);
 //        if(q1Times>=149970){
@@ -233,12 +246,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //            countDownLatch.countDown();
 //        }
 //        q1Times++;
-        int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - rbs.startMinute;
-        if (t > 31 || t < 0) {
+        int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
+        if (t > 29 || t < 0) {
             return NOANSWERARRAY;
         }
 //        System.out.println("评测 "+HashCode.hashTwoString(caller,responder) +" time= "+ t);
-        return rbs.hashM4Array[HashCode.hashTwoString(caller,responder)][t].payload;
+        return PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
 //        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
 //        if (serviceMap == null || serviceMap.size() == 0) {
 //            return NOANSWERARRAY;
@@ -270,40 +283,21 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static CheckResponderTimePayLoad a;
     public static CheckResponderTimePayLoad b;
     public static ArrayList<String> respond = new ArrayList<>();
-    public static ArrayList<Long>timeArray=new ArrayList<>(128);
+    public static ArrayList<Long> timeArray = new ArrayList<>(128);
+
     public String checkResponder(String responder, String start, String end) {
-//        if(q1Times>0){
-//            File fservice = new File("serviceSpaceName.txt");
-//            FileWriter out = null;
-//            try {
-//                out = new FileWriter(fservice);
-//                for (String a : rbs.serviceNameSet) {
-//                    out.write(a);
-//                    out.write("\n");
-//                }
-//                out.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            throw  new Error();
-//        }
 
 
-//        if(q1Times>0){
-//            throw  new  ArrayIndexOutOfBoundsException("第一问次数"+q1Times+"prepareTime="+prepareTime);
-//        }
-
-        String[][] db = rbs.hashM3Array[HashCode.hash(responder)];
+        String[][] db = PrepareMultiThreadDataCore.CheckResponderPayLoadArray[HashCode.hash(responder)];
 
         if (db == null) {
             return NOANSWER;
         }
-        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - rbs.startMinute;
-        int t2 = 25721712 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - rbs.startMinute;
+        int t1 = 25721713 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+        int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
         if (t2 < t1) {
             return NOANSWER;
         }
-        int calleeTimes = 0;
 
         t1 -= 1;
         if (t1 < 0) {
@@ -319,16 +313,6 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             t2 = 31;
         }
         return db[t1][t2];
-//        a = db[t1];
-//        b = db[t2];
-//
-//
-//        calleeTimes = b.calledTimes - a.calledTimes;
-//        if (calleeTimes > 0) {
-//            return DFORMAT.format((b.rate - a.rate) / calleeTimes);
-//        } else {
-//            return NOANSWER;
-//        }
     }
 
 }
