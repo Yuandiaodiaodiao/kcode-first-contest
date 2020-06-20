@@ -17,7 +17,7 @@ public class DiskReadTest {
         File f = new File(path);
         long fileLength = f.length();
         RandomAccessFile raf = null;
-        long chunck = 170 * 1024 * 1024;
+        long chunck = 1 * 1024 * 1024;
         try {
             raf = new RandomAccessFile(f, "r");
             FileChannel channel = raf.getChannel();
