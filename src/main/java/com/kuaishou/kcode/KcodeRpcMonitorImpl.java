@@ -247,14 +247,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        if(responder.length()>0){
 //            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
 //        }
-//        rbs.serviceNameSet.add(caller+" "+responder);
-//        if(q1Times>=149970){
-//            countDownLatch.countDown();
-//        }
-//        if(q1Times>=199970){
-//            countDownLatch.countDown();
-//        }
-//        q1Times++;
+
         int t = 25721712 + (((time.charAt(9) + time.charAt(8) * 10) * 24 + time.charAt(11) * 10 + time.charAt(12)) * 6 + time.charAt(14)) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
         if (t > 29 || t < 0) {
             return NOANSWERARRAY;
