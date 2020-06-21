@@ -90,14 +90,14 @@ public class HashCode {
     public static int hashTwoString(String str1, String str2) {
         return ((hash5(str1) << 4) + (hash5(str2))) % 4999;
     }
-    public static int hashTwoByte(byte[] b1, int len1, byte[] b2, int len2) {
-        return ((hash5byte(b1, len1) << 4) + (hash5byte(b2, len2))) % 4999;
-    }
+
 
     public static int hashTwoByte3(byte[] b1, int len1, byte[] b2, int len2) {
         return ((hash4byte(b1, len1) << 11) + (hash4byte(b2, len2))) % 5000;
     }
-
+    public static int hashTwoByte(byte[] b1, int len1, byte[] b2, int len2) {
+        return ((hash5byte(b1, len1) << 4) + (hash5byte(b2, len2))) % 4999;
+    }
     public static int hash5byte(byte[] b1, int len) {
         int hashcode2 = 0;
         int hashcode1 = b1[0];
