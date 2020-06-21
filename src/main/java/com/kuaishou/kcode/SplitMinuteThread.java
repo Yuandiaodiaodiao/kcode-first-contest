@@ -149,12 +149,12 @@ public class SplitMinuteThread extends Thread {
                     lastBuffLength = 0;
                 } else {
                     //断了或者退出了 反正是会有字符串剩余 0 1 2 3\n  lastEnterIndex=3 startIndex=0 复制长度0 1 2 3 =4
-                    if (lastEnterIndex - startIndex + 1 < 0 || lastEnterIndex - startIndex + 1 > buff.length || lastEnterIndex - startIndex + 1 > ba.limit()) {
-                        System.out.println("aaaa");
-                    }
-                    long t = System.currentTimeMillis();
+//                    if (lastEnterIndex - startIndex + 1 < 0 || lastEnterIndex - startIndex + 1 > buff.length || lastEnterIndex - startIndex + 1 > ba.limit()) {
+//                        System.out.println("aaaa");
+//                    }
+//                    long t = System.currentTimeMillis();
                     ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
-                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1));
+//                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(System.currentTimeMillis() - t)*1000)+"MB/s");
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
                     if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
@@ -163,7 +163,7 @@ public class SplitMinuteThread extends Thread {
 //                        System.out.println("我还可以");
                     } else {
                         //空间不够了 要把剩余的拷贝到数组首部(其实可以循环数组实现的 但是太乱了 这得自己封装一个数组了)
-                        System.arraycopy(buff, lastEnterIndex + 1, buff, 0, endIndex - (lastEnterIndex + 1));
+                        System.arraycopy(buff, lastEnterIndex + 1, buff, 0, lastBuffLength);
                         lastBuffIndex = 0;
 
                     }
