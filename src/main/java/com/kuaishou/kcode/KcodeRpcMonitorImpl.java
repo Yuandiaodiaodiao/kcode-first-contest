@@ -12,6 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CountDownLatch;
 
 import static java.lang.System.nanoTime;
+import static java.lang.System.setOut;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
@@ -296,28 +297,13 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static String[][] responderCache;
     public static String [][] db;
     public String checkResponder(String responder, String start, String end) {
-        int hash=HashCode.hash(responder);
-        if(hash==lastHash){
-            db=responderCache;
-        }else{
-            db=PrepareMultiThreadDataCore.CheckResponderPayLoadArray[hash];
-            if (db == null) {
-                return NOANSWER;
-            }
-            responderCache=db;
-            lastHash=hash;
-        }
 
 
-        int t1 = 25721713 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+
+        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
         int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
-        if (t2 < t1) {
-            return NOANSWER;
-        }
 
-        t1 -= 1;
-
-        if (t1 > 31 || t2 < 0) {
+        if (t1 > 31 || t2 < 0 ||t2 < t1+1) {
             return NOANSWER;
         }
         if (t1 < 0) {
@@ -326,7 +312,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t2 > 31) {
             t2 = 31;
         }
-        return db[t1][t2];
+        if(t1==0){
+            return db[t2][HashCode.hash(responder)];
+        }
+        return PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][HashCode.hash(responder)];
     }
 
 }

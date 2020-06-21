@@ -8,6 +8,7 @@ public class PrepareMultiThreadDataCore {
     public static ArrayList[][] hashCheckPairArray=new ArrayList[5001][32] ;
     public static CheckResponderPayLoad[][] hashCheckResponder =new CheckResponderPayLoad[32][5001];
     public static String[][][] CheckResponderPayLoadArray =new String[5001][][];
+    public static String[][][] CheckResponderFastArray =new String[32][32][5001];
 
 
 }
