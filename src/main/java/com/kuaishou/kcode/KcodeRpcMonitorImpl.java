@@ -299,11 +299,15 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t1 > 31 || t2 < 0 ||t2 < t1+1) {
             return NOANSWER;
         }
-        t1=(t1<0)?0:t1;
         t2=(t2>31)?31:t2;
+        t1=(t1<0)?0:t1;
 
         int hashcode=HashCode.hash(responder);
-        return (t1==0)?db[t2][hashcode]:PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][hashcode];
+        if(t1==0){
+            return db[t2][hashcode];
+        }else{
+            return PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][hashcode];
+        }
 
     }
 
