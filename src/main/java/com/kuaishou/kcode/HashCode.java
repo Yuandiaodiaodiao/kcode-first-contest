@@ -7,11 +7,9 @@ public class HashCode {
         int hashcode2 = 0;
         int i = 0;
         byte c;
+        hashcode1=b1[0];
         for (; i < len; ++i) {
-            c = b1[i];
-            if (i <= 6) {
-                hashcode1 = c + hashcode1;
-            } else if (c <= '9') {
+         if (b1[i] <= '9') {
                 numberIndex = i;
                 break;
             }
@@ -20,26 +18,24 @@ public class HashCode {
         for (; i < len; ++i) {
             c = b1[i];
             if (i - numberIndex >= 2) {
-                hashcode2 = (((int) c) << 3) + hashcode2;
+                hashcode2 = (((int)c) << 1) +( hashcode2<<3);
             } else {
-                hashcode2 = c + (hashcode2 << 5);
+                hashcode2 = c + (hashcode2 << 6);
             }
         }
-        return ((hashcode1 % 70) << 5) + (hashcode2 % 71);
+        return ((hashcode1 % 30) << 5) + (hashcode2 % 75);
     }
 
     public static int hash(String str) {
         int len = str.length();
         int numberIndex = 0;
-        int hashcode1 = 0;
         int hashcode2 = 0;
         int i = 0;
-        char c;
+        char c=str.charAt(0);
+        int hashcode1 = c;
+
         for (; i < len; ++i) {
-            c = str.charAt(i);
-            if (i <= 6) {
-                hashcode1 = c + hashcode1;
-            } else if (c <= '9') {
+            if (str.charAt(i) <= '9') {
                 numberIndex = i;
                 break;
             }
@@ -48,12 +44,12 @@ public class HashCode {
         for (; i < len; ++i) {
             c = str.charAt(i);
             if (i - numberIndex >= 2) {
-                hashcode2 = (((int) c) << 3) + hashcode2;
+                hashcode2 = (((int) c) << 1) + (hashcode2<<3);
             } else {
-                hashcode2 = c + (hashcode2 << 5);
+                hashcode2 = c + (hashcode2 << 6);
             }
         }
-        return ((hashcode1 % 70) << 5) + (hashcode2 % 71);
+        return ((hashcode1 % 30) << 5) + (hashcode2 % 75);
     }
 
     public static int hash3(String str) {
