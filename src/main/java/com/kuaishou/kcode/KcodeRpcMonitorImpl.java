@@ -244,7 +244,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     public List<String> checkPair(String caller, String responder, String time) {
         if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("准备时间a + prepareTime");
+            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
         }
 //        rbs.serviceNameSet.add(caller+" "+responder);
 //        if(q1Times>=149970){
