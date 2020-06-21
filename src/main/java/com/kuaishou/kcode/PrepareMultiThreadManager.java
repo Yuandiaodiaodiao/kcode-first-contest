@@ -45,6 +45,7 @@ public class PrepareMultiThreadManager {
             drt.join();
 
             smt.join();
+            smt.freeMemory();
             ByteBuffer b=ByteBuffer.allocate(1);
             b.limit(0);
             unsolvedMinutes.put(b);
@@ -53,6 +54,9 @@ public class PrepareMultiThreadManager {
             unsolvedMinutes.put(b);
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i].join();
+            }
+            while(!solvedMinutes.isEmpty()){
+                solvedMinutes.poll();
             }
             SolveRespondThread.solve();
         } catch (InterruptedException e) {

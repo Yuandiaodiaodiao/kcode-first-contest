@@ -206,7 +206,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
         Long startTime = System.currentTimeMillis();
-//        System.out.println("来了嗷 老弟");
+        System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
@@ -292,15 +292,23 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static CheckResponderTimePayLoad b;
     public static ArrayList<String> respond = new ArrayList<>();
     public static ArrayList<Long> timeArray = new ArrayList<>(128);
-
+    public static int lastHash=-1;
+    public static String[][] responderCache;
+    public static String [][] db;
     public String checkResponder(String responder, String start, String end) {
-
-
-        String[][] db = PrepareMultiThreadDataCore.CheckResponderPayLoadArray[HashCode.hash(responder)];
-
-        if (db == null) {
-            return NOANSWER;
+        int hash=HashCode.hash(responder);
+        if(hash==lastHash){
+            db=responderCache;
+        }else{
+            db=PrepareMultiThreadDataCore.CheckResponderPayLoadArray[hash];
+            if (db == null) {
+                return NOANSWER;
+            }
+            responderCache=db;
+            lastHash=hash;
         }
+
+
         int t1 = 25721713 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
         int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
         if (t2 < t1) {
@@ -308,16 +316,14 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         }
 
         t1 -= 1;
-        if (t1 < 0) {
-            t1 = 0;
-        } else if (t1 > 31) {
+
+        if (t1 > 31 || t2 < 0) {
             return NOANSWER;
         }
-
-
-        if (t2 < 0) {
-            return NOANSWER;
-        } else if (t2 > 31) {
+        if (t1 < 0) {
+            t1 = 0;
+        }
+        if (t2 > 31) {
             t2 = 31;
         }
         return db[t1][t2];

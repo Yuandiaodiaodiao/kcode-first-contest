@@ -34,7 +34,9 @@ public class SplitMinuteThread extends Thread {
         this.canuse = canuse;
         this.canread = canread;
     }
-
+    public void freeMemory(){
+        buff=null;
+    }
     @Override
     public void run() {
         super.run();
