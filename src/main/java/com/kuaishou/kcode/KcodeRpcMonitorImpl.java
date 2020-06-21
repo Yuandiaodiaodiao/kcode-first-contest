@@ -293,8 +293,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
 
-        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
-        int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+//        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+//        int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+
+        int t1 = 25721712 + start.charAt(9)* 1440+ start.charAt(8) *14400+ start.charAt(11) * 600 + start.charAt(12)* 60+ start.charAt(14)* 10  + start.charAt(15) - SplitMinuteThread.firstTime;
+        int t2 = 25721713 + end.charAt(9)* 1440+ end.charAt(8) *14400+ end.charAt(11) * 600 + end.charAt(12)* 60+ end.charAt(14)* 10  + end.charAt(15) - SplitMinuteThread.firstTime;
 
         if (t1 > 31 || t2 < 0 ||t2 < t1+1) {
             return NOANSWER;
@@ -302,6 +305,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t1 < 0) {
             t1 = 0;
         }
+
         if (t2 > 31) {
             t2 = 31;
         }
