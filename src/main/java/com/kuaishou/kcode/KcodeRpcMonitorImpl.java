@@ -249,11 +249,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        }
 
         int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
-        if (t > 29 || t < 0) {
-            return NOANSWERARRAY;
-        }
+            return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
 //        System.out.println("评测 "+HashCode.hashTwoString(caller,responder) +" time= "+ t);
-        return PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
 //        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
 //        if (serviceMap == null || serviceMap.size() == 0) {
 //            return NOANSWERARRAY;
@@ -302,17 +299,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         if (t1 > 31 || t2 < 0 ||t2 < t1+1) {
             return NOANSWER;
         }
-        if (t1 < 0) {
-            t1 = 0;
-        }
+        t1=(t1<0)?0:t1;
+        t2=(t2>31)?31:t2;
 
-        if (t2 > 31) {
-            t2 = 31;
-        }
-        if(t1==0){
-            return db[t2][HashCode.hash(responder)];
-        }
-        return PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][HashCode.hash(responder)];
+        int hashcode=HashCode.hash(responder);
+        return (t1==0)?db[t2][hashcode]:PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][hashcode];
+
     }
 
 }
