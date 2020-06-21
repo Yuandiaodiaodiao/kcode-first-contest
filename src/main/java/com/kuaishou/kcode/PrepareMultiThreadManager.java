@@ -15,7 +15,7 @@ public class PrepareMultiThreadManager {
     public static int RAM_CHUNCK_SIZE = 2000 * 1024 * 1024;
     public static int Time_CHUNCK_SIZE = 500 * 1024 * 1024;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=6;
+    public static int THREAD_NUMBER=5;
     PrepareMultiThreadManager(){
         for(int a=0;a<THREAD_NUMBER+1;++a){
             solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
