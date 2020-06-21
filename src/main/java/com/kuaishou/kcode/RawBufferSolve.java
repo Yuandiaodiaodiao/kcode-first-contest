@@ -33,7 +33,7 @@ public class RawBufferSolve {
 //    public HashSet<String>serviceNameSet=new HashSet<>(8192);
     public RawBufferSolve() {
         thread1=new SolveMinuteThread(this);
-        thread1.start();
+//        thread1.start();
 
     }
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
