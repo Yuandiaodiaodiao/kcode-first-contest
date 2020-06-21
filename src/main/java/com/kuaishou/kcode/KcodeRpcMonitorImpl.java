@@ -206,15 +206,15 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
         Long startTime = System.currentTimeMillis();
-        System.out.println("来了嗷 老弟");
+//        System.out.println("来了嗷 老弟");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
-        System.out.println("准备时间" + prepareTime);
+//        System.out.println("准备时间" + prepareTime);
         Long startTime2 = System.currentTimeMillis();
         HeatCache.HeatCheckPair();
         Long endTime2 = System.currentTimeMillis();
-        System.out.println("预热时间 ms" + ((endTime2 - startTime2) * 1.0 / 1000));
+//        System.out.println("预热时间 ms" + ((endTime2 - startTime2) * 1.0 / 1000));
 
         return;
 //        System.out.println("来了嗷 老弟");
@@ -243,9 +243,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static int q1Times = 0;
 
     public List<String> checkPair(String caller, String responder, String time) {
-        if(responder.length()>0){
-            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
-        }
+//        if(responder.length()>0){
+//            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
+//        }
 //        rbs.serviceNameSet.add(caller+" "+responder);
 //        if(q1Times>=149970){
 //            countDownLatch.countDown();
