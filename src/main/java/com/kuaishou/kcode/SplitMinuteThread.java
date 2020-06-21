@@ -13,6 +13,7 @@ public class SplitMinuteThread extends Thread {
 
     public static int firstTime = -1;
     int nowTime = 0;
+    int nowSecondByteNum = 0;
     int nowSecond;
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
@@ -34,18 +35,20 @@ public class SplitMinuteThread extends Thread {
         this.canuse = canuse;
         this.canread = canread;
     }
-    public void freeMemory(){
-        buff=null;
+
+    public void freeMemory() {
+        buff = null;
     }
+
     @Override
     public void run() {
         super.run();
         try {
             while (true) {
-                int remaining=0;
-                if(lastBuffLength>PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE/8){
+                int remaining = 0;
+                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 8) {
 //                    System.out.println("单走一个6");
-                }else{
+                } else {
 
                     ByteBuffer b = canread.take();
                     if (b.limit() == 0) {
@@ -70,8 +73,8 @@ public class SplitMinuteThread extends Thread {
 
                 int startIndex = lastBuffIndex;
                 int bufferIndex = startIndex;
-                int endIndex = remaining + startIndex+lastBuffLength;
-                int lastEnterIndex = bufferIndex-1;
+                int endIndex = remaining + startIndex + lastBuffLength;
+                int lastEnterIndex = bufferIndex - 1;
                 boolean getEnter = false;
                 int startMinute = nowTime;
                 if (firstTime == -1) {
@@ -86,7 +89,15 @@ public class SplitMinuteThread extends Thread {
                             nowTime = firstTime;
                             startMinute = nowTime;
                             minuteTime = nowTime * 60;
-                            nowSecond = minuteTime % 1000; //nowSecond是一个0~999的值  对于一个时间n 如果n+60+60<=999那么不会出现意外 那么基准n<879 就有效 否则要计算完整time
+                            for (int i = 3; i <= 10; ++i) {
+                                int mulI = (int) Math.pow(10, i);
+                                if (minuteTime % mulI < mulI - 121) {
+                                    nowSecond = minuteTime % mulI;
+                                    nowSecondByteNum = i;
+                                    break;
+                                }
+                            }
+                            //nowSecond是一个0~999的值  对于一个时间n 如果n+60+60<=999那么不会出现意外 那么基准n<879 就有效 否则要计算完整time
                             // 那么 当另一个(time>=nowSecond&&time<nowSecond+60)时 认为是在一个分钟内
                             break;
                         }
@@ -94,37 +105,35 @@ public class SplitMinuteThread extends Thread {
                 }
                 for (; bufferIndex < endIndex; ++bufferIndex) {
                     if (buff[bufferIndex] == 10) { //find \n
-                        int lastThreeNumber= (buff[bufferIndex - 6]-48)*100+(buff[bufferIndex-5]-48)*10+(buff[bufferIndex-4]-48);
-                        int secondTime = buff[bufferIndex - 6] * 100 + buff[bufferIndex - 5] * 10 + buff[bufferIndex - 4] - 5328;
-                        secondTime=lastThreeNumber;
-                        if (nowSecond < 800) {
-                            if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
-                                //下一分钟
-                                int minuteTime = 0;
-                                for (int timepos = -13; timepos < -3; ++timepos) {
-                                    //从时间戳的头取到倒数第四位
-                                    minuteTime = buff[bufferIndex + timepos] - 48 + minuteTime * 10;
-                                }
-                                nowTime = minuteTime / 60;
-                                minuteTime =nowTime * 60;
-                                nowSecond = minuteTime % 1000;
-                                getEnter = true;
-                                //分钟刷新了
-                                break;
-                            }
-                        } else {
+                        int secondTime = 0;
+                        for (int i = nowSecondByteNum + 3; i > 3; --i) {
+                            secondTime = buff[bufferIndex - i] - 48 + secondTime * 10;
+                        }
+//                        int lastThreeNumber= (buff[bufferIndex - 6]-48)*100+(buff[bufferIndex-5]-48)*10+(buff[bufferIndex-4]-48);
+//                        secondTime = buff[bufferIndex - 6] * 100 + buff[bufferIndex - 5] * 10 + buff[bufferIndex - 4] - 5328;
+//                        secondTime=lastThreeNumber;
+
+                        if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
+                            //下一分钟
                             int minuteTime = 0;
                             for (int timepos = -13; timepos < -3; ++timepos) {
                                 //从时间戳的头取到倒数第四位
                                 minuteTime = buff[bufferIndex + timepos] - 48 + minuteTime * 10;
                             }
-                            if (minuteTime / 60 > nowTime) {
-                                nowTime = minuteTime /60;
-                                minuteTime = nowTime * 60;
-                                nowSecond = minuteTime % 1000;
-                                getEnter = true;
-                                break; //分钟刷新
+                            nowTime = minuteTime / 60;
+                            minuteTime = nowTime * 60;
+
+                            for (int i = 3; i <= 10; ++i) {
+                                int mulI = (int) Math.pow(10, i);
+                                if (minuteTime % mulI < mulI - 121) {
+                                    nowSecond = minuteTime % mulI;
+                                    nowSecondByteNum = i;
+                                    break;
+                                }
                             }
+                            getEnter = true;
+                            //分钟刷新了
+                            break;
                         }
                         //希望换行没事
                         lastEnterIndex = bufferIndex;
@@ -140,13 +149,15 @@ public class SplitMinuteThread extends Thread {
                     lastBuffLength = 0;
                 } else {
                     //断了或者退出了 反正是会有字符串剩余 0 1 2 3\n  lastEnterIndex=3 startIndex=0 复制长度0 1 2 3 =4
-                    if( lastEnterIndex - startIndex + 1 <0|| lastEnterIndex - startIndex + 1 > buff.length ||lastEnterIndex - startIndex + 1>ba.limit()){
+                    if (lastEnterIndex - startIndex + 1 < 0 || lastEnterIndex - startIndex + 1 > buff.length || lastEnterIndex - startIndex + 1 > ba.limit()) {
                         System.out.println("aaaa");
                     }
+                    long t = System.currentTimeMillis();
                     ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
+                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1));
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
-                    if (1L+endIndex+ PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length-100) {
+                    if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
                         //还能继续读
                         lastBuffIndex = lastEnterIndex + 1;
 //                        System.out.println("我还可以");
@@ -163,7 +174,7 @@ public class SplitMinuteThread extends Thread {
                 if (startMinute != nowTime) {
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.put(ba);
-                    ba=PrepareMultiThreadManager.solvedMinutes.take();
+                    ba = PrepareMultiThreadManager.solvedMinutes.take();
                     ba.clear();
                 }
 

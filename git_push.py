@@ -16,6 +16,7 @@ def git_push():
     os.system("git status")
     os.system("git commit -a -m \"flush score\" ")
     os.system("git push")
+    print("finish!!!")
 
 # schedule.every(1).minutes.do(flush_score)
 # schedule.every(10).minutes.do(git_push)
