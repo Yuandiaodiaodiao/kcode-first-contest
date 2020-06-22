@@ -55,7 +55,7 @@ public class SplitMinuteThread extends Thread {
                         //扔出最后一minute
 
 //                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
-                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
+//                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                         canread.put(b);
@@ -102,10 +102,10 @@ public class SplitMinuteThread extends Thread {
                         }
                     }
                 }
-                if(ba.position()<400000000){
+                if(ba.position()<431000000){
                     //新的分钟
                     //那直接读就完事了
-                    int safeArea=400000000-ba.position();
+                    int safeArea=431000000-ba.position();
                     bufferIndex+=Math.min(safeArea,endIndex-bufferIndex);
                     bufferIndex-=300;
                     bufferIndex=Math.max(startIndex,bufferIndex);
@@ -180,7 +180,7 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("难顶");
 //                }
                 if (startMinute != nowTime) {
-                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
+//                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
 
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.put(ba);
