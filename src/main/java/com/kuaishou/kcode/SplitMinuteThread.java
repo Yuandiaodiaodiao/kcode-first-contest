@@ -103,6 +103,14 @@ public class SplitMinuteThread extends Thread {
                         }
                     }
                 }
+                if(ba.position()<400000000){
+                    //新的分钟
+                    //那直接读就完事了
+                    int safeArea=400000000-ba.position();
+                    bufferIndex+=Math.min(safeArea,endIndex-bufferIndex);
+                    bufferIndex-=300;
+                    bufferIndex=Math.max(startIndex,bufferIndex);
+                }
                 for (; bufferIndex < endIndex; ++bufferIndex) {
                     if (buff[bufferIndex] == 10) { //find \n
                         int secondTime = 0;
