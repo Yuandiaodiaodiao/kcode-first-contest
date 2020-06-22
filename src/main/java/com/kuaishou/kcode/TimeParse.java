@@ -2,8 +2,21 @@ package com.kuaishou.kcode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TimeParse {
+    public static void main(String[] args){
+        try {
+            long x=1592299980131L;
+            System.out.println((long)(format.parse("2020-06-15 11:07").getTime()));
+            System.out.println(format.format(new Date(x)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public static int sixMonthStartTime;
 

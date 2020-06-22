@@ -247,9 +247,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
         int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
-        if(t==1){
-            throw new ArrayIndexOutOfBoundsException("time "+time);
-        }
+//        if(t==1){
+//            throw new ArrayIndexOutOfBoundsException("time "+time);
+//        }
         return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
 
 
