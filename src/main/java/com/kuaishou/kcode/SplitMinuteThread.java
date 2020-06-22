@@ -137,7 +137,7 @@ public class SplitMinuteThread extends Thread {
                         }
                         //希望换行没事
                         lastEnterIndex = bufferIndex;
-                        bufferIndex=Math.min(bufferIndex+58,endIndex-1);
+                        bufferIndex=Math.min(bufferIndex+59,endIndex-1);
                     }
                 }
 //                if(nowTime==26538355){
