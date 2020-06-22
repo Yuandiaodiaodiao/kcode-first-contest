@@ -244,9 +244,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public static int q1Times = 0;
 
     public List<String> checkPair(String caller, String responder, String time) {
-//        if(responder.length()>0){
-//            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
-//        }
+        if(responder.length()>0){
+            throw new ArrayIndexOutOfBoundsException("准备时间"+ prepareTime);
+        }
 
         int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
 
