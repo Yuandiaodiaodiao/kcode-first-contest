@@ -18,7 +18,7 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
-
+    public static int MINBUFFERLEN=500*1024*1024;
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
         TIME_SIZE = size2;
@@ -53,10 +53,9 @@ public class SplitMinuteThread extends Thread {
                     ByteBuffer b = canread.take();
                     if (b.limit() == 0) {
                         //扔出最后一minute
-                        Thread t = Thread.currentThread();
-                        String name = t.getName();
-//                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
 
+//                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
+                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                         canread.put(b);
@@ -181,6 +180,8 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("难顶");
 //                }
                 if (startMinute != nowTime) {
+                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
+
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                     ba = PrepareMultiThreadManager.solvedMinutes.take();
