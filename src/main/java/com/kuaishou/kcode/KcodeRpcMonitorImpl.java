@@ -245,8 +245,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     public List<String> checkPair(String caller, String responder, String time) {
 
+        int t = 26427312 + time.charAt(9)* 1440+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15) - SplitMinuteThread.firstTime;
 
-        int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
+//        int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
 //        if(t==1){
 //            throw new ArrayIndexOutOfBoundsException("time "+time);
 //        }
@@ -301,18 +302,22 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 //        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
 //        int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
-        
-        int t1 = 25721712 + start.charAt(9)* 1440+ start.charAt(8) *14400+ start.charAt(11) * 600 + start.charAt(12)* 60+ start.charAt(14)* 10  + start.charAt(15) - SplitMinuteThread.firstTime;
-        int t2 = 25721713 + end.charAt(9)* 1440+ end.charAt(8) *14400+ end.charAt(11) * 600 + end.charAt(12)* 60+ end.charAt(14)* 10  + end.charAt(15) - SplitMinuteThread.firstTime;
 
-        if (t1 > 31 || t2 < 0 ||t2 < t1+1) {
+//        int t1 = 25721712 + start.charAt(9)* 1440+ start.charAt(8) *14400+ start.charAt(11) * 600 + start.charAt(12)* 60+ start.charAt(14)* 10  + start.charAt(15) - SplitMinuteThread.firstTime;
+//        int t2 = 25721713 + end.charAt(9)* 1440+ end.charAt(8) *14400+ end.charAt(11) * 600 + end.charAt(12)* 60+ end.charAt(14)* 10  + end.charAt(15) - SplitMinuteThread.firstTime;
+
+        int t1 = 26427312 + start.charAt(9)* 1440+ start.charAt(11) * 600 + start.charAt(12)* 60+ start.charAt(14)* 10  + start.charAt(15) - SplitMinuteThread.firstTime;
+        int t2 = 26427313 + end.charAt(9)* 1440+ end.charAt(11) * 600 + end.charAt(12)* 60+ end.charAt(14)* 10  + end.charAt(15) - SplitMinuteThread.firstTime;
+//        if(t2<t1+1){
+//            System.out.println("翻车");
+//        }
+        if (t1 > 31 || t2 < 0 ) {
             return NOANSWER;
         }
         t2=(t2>31)?31:t2;
-        t1=(t1<0)?0:t1;
 
         int hashcode=HashCode.hash(responder);
-        if(t1==0){
+        if(t1<=0){
             return db[t2][hashcode];
         }else{
             return PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][hashcode];
