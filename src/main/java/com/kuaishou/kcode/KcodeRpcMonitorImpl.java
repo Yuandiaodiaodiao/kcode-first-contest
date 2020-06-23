@@ -23,7 +23,6 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
-    public int prepareTimes = 0;
     public long fileLength = 0;
     public double prepareTime = 0;
     public ArrayList<MappedByteBuffer> mbArray = new ArrayList<MappedByteBuffer>();
@@ -35,78 +34,15 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //    public PrepareMultiThreadManager manager;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-        System.out.println("构造函数启动");
-        prepareTimes += 1;
 
     }
 
-    public void hackTime(String path, long chunck) {
-        try {
-            f = new File(path);
-            fileLength = f.length();
-            RandomAccessFile raf = new RandomAccessFile(f, "r");
 
-            channel = raf.getChannel();
-            ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
-            for (long i = 0; i <= fileLength; i += chunck) {
-                channel.position(i);
-                MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY, 0, Math.min(chunck, fileLength - i));
-                mbArray.add(buff);
-            }
-        } catch (IOException e) {
 
-        }
 
-    }
 
-    public void realPrepare(String path, long chunck, int chunckint) {
 
-        prepareTimes++;
-        try {
 
-            File f = new File(path);
-            fileLength = f.length();
-            byte[] bbb = new byte[chunckint];
-            RandomAccessFile raf = new RandomAccessFile(f, "r");
-            channel = raf.getChannel();
-            ByteBuffer buf1 = ByteBuffer.allocateDirect((int) chunck);
-
-            for (long i = 0; i <= fileLength; i += chunck) {
-                buf1.clear();
-                int readed = channel.read(buf1);
-                buf1.flip();
-
-//                System.out.println("limit=" + buf1.limit() + " fileLength-i=" + (fileLength - i) + "readed=" + readed);
-                rbs.run(buf1, (int) chunck);
-            }
-            rbs.abq.add(rbs.nowTime);
-            rbs.abq.add(-1);
-            long startNs = nanoTime();
-            rbs.solveResponder();
-//            System.out.println("solveResponder 耗时(ms):" + NANOSECONDS.toMillis(nanoTime() - startNs));
-
-            rbs.thread1.join();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        System.out.println("rbs.readedBytes=" + rbs.readedBytes + "readLines=" + rbs.readedLines);
-    }
-
-    //读入
-    private void sleepPrepare() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void newPrepare(String path) {
         manager=new PrepareMultiThreadManager();
@@ -125,36 +61,15 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime) * 1.0 / 1000;
 //        System.out.println("准备时间" + prepareTime);
-        Long startTime2 = System.currentTimeMillis();
         HeatCache.HeatCheckPair();
-        Long endTime2 = System.currentTimeMillis();
-//        System.out.println("预热时间 ms" + ((endTime2 - startTime2) * 1.0 / 1000));
 
-        return;
-//        System.out.println("来了嗷 老弟");
-//        int a = 500;
-//        long chunck = a * 1024 * 1024;
-//        int chunckint = a * 1024 * 1024;
-//        Long startTime = System.currentTimeMillis();
-//        realPrepare(path, chunck, chunckint);
-//        Long endTime = System.currentTimeMillis();
-//        prepareTime = (endTime - startTime) * 1.0 / 1000;
-//        try {
-//            Thread.sleep(10*60*1000-(startTime-endTime)+19*1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        hotResponder[0].start();
-//        hotResponder[1].start();
-//        hotResponder[2].start();
-//        hotResponder[3].start();
+
     }
     //读入
 
     public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     //查询1
-    public static int q1Times = 0;
 
     public List<String> checkPair(String str1, String str2, String time) {
 
@@ -174,48 +89,14 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                 + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997)<<5  )+t];
 
 
-//        if(t > 29 || t < 0){
-//            return NOANSWERARRAY;
-//        }  else{
-//            return PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
-//        }
 
-//        System.out.println("评测 "+HashCode.hashTwoString(caller,responder) +" time= "+ t);
-//        HashMap<String, ArrayList<String>> serviceMap = rbs.hashM4.get(t);
-//        if (serviceMap == null || serviceMap.size() == 0) {
-//            return NOANSWERARRAY;
-//        }
-//
-//        ArrayList<String> ans = serviceMap.get(caller + responder);
-//
-//        if (ans == null) {
-//            return NOANSWERARRAY;
-//        } else {
-//            return ans;
-//        }
-//        if(responder.length()>0){
-//            throw new ArrayIndexOutOfBoundsException("文件长度"+fileLength+"prepare时间"+prepareTime+"getTime="+readTime);
-//
-//        }
-//        rbs.analyseHashMap();
-//        checkPairTimes += 1;
-//        callerSet.add(caller);
-//        responderSet.add(responder);
     }
 
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 
     private static final String NOANSWER = "-1.00%";
-    private static final String ZEROANSWER = ".00%";
     //查询2
-    public static CheckResponderTimePayLoad a;
-    public static CheckResponderTimePayLoad b;
-    public static ArrayList<String> respond = new ArrayList<>();
-    public static ArrayList<Long> timeArray = new ArrayList<>(128);
-    public static int lastHash=-1;
-    public static String[][] responderCache;
-    public static String [][] db;
+
     public String checkResponder(String responder, String start, String end) {
 
 
