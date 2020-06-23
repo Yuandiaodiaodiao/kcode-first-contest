@@ -41,7 +41,8 @@ public class SplitMinuteThread extends Thread {
     public void freeMemory() {
         buff = null;
     }
-
+    public static long SplitMinute_waitBuffer=0;
+    public static long SplitMinute_waitBa=0;
     @Override
     public void run() {
         super.run();
@@ -51,8 +52,11 @@ public class SplitMinuteThread extends Thread {
                 if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 8) {
 //                    System.out.println("单走一个6");
                 } else {
-
+                    long t1=System.currentTimeMillis();
                     ByteBuffer b = canread.take();
+                    long t2=System.currentTimeMillis();
+                    SplitMinute_waitBuffer+=(t2-t1);
+                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
                     if (b.limit() == 0) {
                         //扔出最后一minute
 
@@ -186,7 +190,10 @@ public class SplitMinuteThread extends Thread {
 
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.put(ba);
+                    long ta=System.currentTimeMillis();
                     ba = PrepareMultiThreadManager.solvedMinutes.take();
+                    long tb=System.currentTimeMillis();
+                    SplitMinute_waitBa+=(tb-ta);
                     ba.clear();
                 }
 
