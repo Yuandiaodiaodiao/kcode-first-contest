@@ -19,8 +19,9 @@ public class SplitMinuteThread extends Thread {
     int lastBuffLength = 0;
     ByteBuffer ba;
 
-    public static int MINBUFFERLEN=436773150;
-//    public static int MINBUFFERLEN=430773150;
+//    public static int MINBUFFERLEN=436773150;
+    public static int MAXBUFFERLEN=0;
+    public static int MINBUFFERLEN=430773150;
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
         TIME_SIZE = size2;
@@ -62,6 +63,8 @@ public class SplitMinuteThread extends Thread {
 
 //                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
 //                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
+                        MAXBUFFERLEN=Math.max(MAXBUFFERLEN,ba.position());
+
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                         canread.put(b);
@@ -186,6 +189,7 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("难顶");
 //                }
                 if (startMinute != nowTime) {
+                    MAXBUFFERLEN=Math.max(MAXBUFFERLEN,ba.position());
 //                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
 
                     ba.flip();

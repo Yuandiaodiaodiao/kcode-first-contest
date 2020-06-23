@@ -26,8 +26,8 @@ public class SolveMinuteByteBufferThread extends Thread{
         while (true){
             ByteBuffer f = unsolvedMinutes.take();
             if (f.limit() == 0) {
-                Thread t = Thread.currentThread();
-                String name = t.getName();
+//                Thread t = Thread.currentThread();
+//                String name = t.getName();
 //                System.out.println( name+"结束");
                 unsolvedMinutes.put(f);
                 return;
