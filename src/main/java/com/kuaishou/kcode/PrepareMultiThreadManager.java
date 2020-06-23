@@ -29,13 +29,14 @@ public class PrepareMultiThreadManager {
             smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
             smt.LinkBlockingQueue(canuse,canread);
             smt.start();
-            canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
 
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
 
             }
+
             System.out.println("异步加载结束");
         });
         prepareThread.start();

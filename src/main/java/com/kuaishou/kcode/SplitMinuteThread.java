@@ -44,6 +44,7 @@ public class SplitMinuteThread extends Thread {
     public void run() {
         super.run();
         try {
+
             buff = new byte[BUFF_SIZE];
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();

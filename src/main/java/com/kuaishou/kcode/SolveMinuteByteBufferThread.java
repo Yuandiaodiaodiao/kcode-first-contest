@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
 
 public class SolveMinuteByteBufferThread extends Thread{
     ArrayBlockingQueue<ByteBuffer> unsolvedMinutes ;
@@ -25,7 +24,7 @@ public class SolveMinuteByteBufferThread extends Thread{
     public void run() {
         super.run();
         try {
-            solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
+            solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
 
             while (true){
             ByteBuffer f = unsolvedMinutes.take();
