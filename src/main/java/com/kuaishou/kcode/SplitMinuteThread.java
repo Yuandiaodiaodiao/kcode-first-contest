@@ -3,6 +3,8 @@ package com.kuaishou.kcode;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
+
 public class SplitMinuteThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> canuse;
     ArrayBlockingQueue<ByteBuffer> canread;
@@ -24,13 +26,8 @@ public class SplitMinuteThread extends Thread {
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
         TIME_SIZE = size2;
-        buff = new byte[BUFF_SIZE];
-        try {
-            ba = PrepareMultiThreadManager.solvedMinutes.take();
-            ba.clear();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+
     }
 
     public void LinkBlockingQueue(ArrayBlockingQueue<ByteBuffer> canuse, ArrayBlockingQueue<ByteBuffer> canread) {
@@ -47,6 +44,9 @@ public class SplitMinuteThread extends Thread {
     public void run() {
         super.run();
         try {
+            buff = new byte[BUFF_SIZE];
+            ba = PrepareMultiThreadManager.solvedMinutes.take();
+            ba.clear();
             while (true) {
                 int remaining = 0;
                 if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 8) {

@@ -20,11 +20,10 @@ public class PrepareMultiThreadManager {
 
     PrepareMultiThreadManager(){
         Thread prepareThread=new Thread(()->{
-            canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
 
 
 
-            solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
+
 
 
             smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
@@ -35,7 +34,6 @@ public class PrepareMultiThreadManager {
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
-                solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
 
             }
             System.out.println("异步加载结束");

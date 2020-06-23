@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.concurrent.ArrayBlockingQueue;
 
+
 public class DiskReadThread extends Thread {
     long fileLength;
     FileChannel channel;
@@ -39,6 +40,7 @@ public class DiskReadThread extends Thread {
     public void run() {
         super.run();
         try {
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
 
             ByteBuffer buf = ByteBuffer.allocate(1);
             for (long i = 0; i <= fileLength; i += CHUNCK_SIZE) {
