@@ -243,7 +243,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询1
     public static int q1Times = 0;
 
-    public List<String> checkPair(String caller, String responder, String time) {
+    public List<String> checkPair(String str1, String str2, String time) {
 
         int t = 26427312 + time.charAt(9)* 1440+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15) - SplitMinuteThread.firstTime;
 
@@ -251,7 +251,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        if(t==1){
 //            throw new ArrayIndexOutOfBoundsException("最小化BA= "+SplitMinuteThread.MINBUFFERLEN);
 //        }
-        return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArray[HashCode.hashTwoString(caller, responder)][t];
+        int len1=str1.length();
+        int len2=str2.length();
+
+        return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArray[((((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<5)+(str1.charAt(len1-3)<<10)+(str1.charAt(len1-2)<<15 )+(str1.charAt(len1-1)<<20))% 90) << 4) + (str1.charAt(0) % 29))
+                + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997)][t];
 
 
 //        if(t > 29 || t < 0){

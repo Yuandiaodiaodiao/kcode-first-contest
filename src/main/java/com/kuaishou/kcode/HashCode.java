@@ -1,6 +1,51 @@
 package com.kuaishou.kcode;
 
 public class HashCode {
+
+
+
+
+
+    public static void main(String[] args){
+        String s1="imService78Err";
+        String s2="deviceService10";
+        int hasha=hashTwoString(s1,s2);
+        byte[] b1=s1.getBytes();
+        byte[] b2=s2.getBytes();
+        int hashb=hashTwoByte(b1,b1.length,b2,b2.length);
+        System.out.println("a="+hasha+" b="+hashb);
+
+    }
+
+    public static int hashTwoString(String str1, String str2) {
+        int len1=str1.length();
+        int len2=str2.length();
+        return (((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<5)+(str1.charAt(len1-3)<<10)+(str1.charAt(len1-2)<<15 )+(str1.charAt(len1-1)<<20))% 90) << 4) + (str1.charAt(0) % 29))
+                + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997;
+    }
+    public static int hashTwoByte(byte[] b1, int len1, byte[] b2, int len2) {
+        return (((((b1[len1-5]+(b1[len1-4]<<5)+(b1[len1-3]<<10)+(b1[len1-2]<<15 )+(b1[len1-1]<<20))% 90) << 4) + (b1[0] % 29))
+                + ((((b2[len2-5]+(b2[len2-4]<<5)+(b2[len2-3]<<10)+(b2[len2-2]<<15 )+(b2[len2-1]<<20))% 90) << 12) + ((b2[0] % 29)<<8))) % 4997;
+    }
+
+
+
+    public static int hashTwoStringb(String str1, String str2) {
+        return ((hash6(str1)) + (hash6(str2)<<8)) % 4997;
+    }
+    public static int hashTwoByteb(byte[] b1, int len1, byte[] b2, int len2) {
+        return ((hash6byte(b1, len1)) + (hash6byte(b2, len2)<<8)) % 4997;
+    }
+    public static int hash6(String str) {
+        int len = str.length();
+        return (((str.charAt(len-5)+(str.charAt(len-4)<<5)+(str.charAt(len-3)<<10)+(str.charAt(len-2)<<15 )+(str.charAt(len-1)<<20))% 90) << 4) + (str.charAt(0) % 29);
+    }
+    public static int hash6byte(byte[] b1, int len) {
+        return (((b1[len-5]+(b1[len-4]<<5)+(b1[len-3]<<10)+(b1[len-2]<<15 )+(b1[len-1]<<20))% 90) << 4) + (b1[0] % 29);
+    }
+
+
+
     public static int hashByte(byte[] b1, int len) {
         int numberIndex = 0;
         int hashcode1 = 0;
@@ -87,7 +132,7 @@ public class HashCode {
         return ((hash4(str1) << 11) + (hash4(str2))) % 5000;
     }
 
-    public static int hashTwoString(String str1, String str2) {
+    public static int hashTwoString4(String str1, String str2) {
         return ((hash5(str1) << 4) + (hash5(str2))) % 4999;
     }
 
@@ -95,7 +140,7 @@ public class HashCode {
     public static int hashTwoByte3(byte[] b1, int len1, byte[] b2, int len2) {
         return ((hash4byte(b1, len1) << 11) + (hash4byte(b2, len2))) % 5000;
     }
-    public static int hashTwoByte(byte[] b1, int len1, byte[] b2, int len2) {
+    public static int hashTwoByte4(byte[] b1, int len1, byte[] b2, int len2) {
         return ((hash5byte(b1, len1) << 4) + (hash5byte(b2, len2))) % 4999;
     }
     public static int hash5byte(byte[] b1, int len) {

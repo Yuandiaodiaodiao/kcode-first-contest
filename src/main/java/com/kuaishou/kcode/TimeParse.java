@@ -7,6 +7,9 @@ import java.util.Date;
 public class TimeParse {
     public static void main(String[] args){
         try {
+            String str="zzzzz";
+            int len=str.length();
+            System.out.println((str.charAt(len-5)+(str.charAt(len-4)<<5)+(str.charAt(len-3)<<10)+(str.charAt(len-2)<<15 )+(str.charAt(len-1)<<20)));
             long x=1592299980131L;
             System.out.println((long)(format.parse("2020-06-15 11:07").getTime()));
             System.out.println(format.format(new Date(x)));
