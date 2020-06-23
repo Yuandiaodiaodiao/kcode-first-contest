@@ -56,7 +56,7 @@ public class SplitMinuteThread extends Thread {
                     ByteBuffer b = canread.take();
                     long t2=System.currentTimeMillis();
                     SplitMinute_waitBuffer+=(t2-t1);
-                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
+//                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
                     if (b.limit() == 0) {
                         //扔出最后一minute
 
