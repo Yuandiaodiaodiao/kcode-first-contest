@@ -11,11 +11,13 @@ public class PrepareMultiThreadManager {
     ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
-    public static int DIRECT_CHUNCK_SIZE = 490 * 1024 * 1024;
-    public static int RAM_CHUNCK_SIZE = 2000 * 1024 * 1024;
-    public static int Time_CHUNCK_SIZE = 490 * 1024 * 1024;
+    public static int MAXBUFFERLEN=476824273;
+
+    public static int DIRECT_CHUNCK_SIZE = MAXBUFFERLEN;
+    public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
+    public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=6;
+    public static int THREAD_NUMBER=8;
     PrepareMultiThreadManager(){
         for(int a=0;a<THREAD_NUMBER+1;++a){
             solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
