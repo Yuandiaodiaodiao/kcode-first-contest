@@ -51,8 +51,7 @@ public class SolveMinuteByteBufferThread extends Thread{
                 int numBuff = 0;
                 for (b = f.get(); b != ','; b = f.get()) {
                     if (b != '.') {
-                        numBuff *= 10;
-                        numBuff += (b - '0');
+                        numBuff = (b - '0')+numBuff*10;
                     } else {
                         ip1 <<= 8;
                         ip1 += numBuff;
@@ -71,8 +70,7 @@ public class SolveMinuteByteBufferThread extends Thread{
 
                 for (b = f.get(); b != ','; b = f.get()) {
                     if (b != '.') {
-                        numBuff *= 10;
-                        numBuff += (b - '0');
+                        numBuff = (b - '0') + numBuff*10;
                     } else {
                         ip2 <<= 8;
                         ip2 += numBuff;
@@ -84,12 +82,11 @@ public class SolveMinuteByteBufferThread extends Thread{
 
                 b = f.get();
                 int success = 0;
-                int failed = 0;
                 if (b == 't') {
                     success = 1;
                     f.position(f.position()+ 4);
                 } else {
-                    failed = 1;
+                    //failed
                     f.position(f.position()+ 5);
                 }
 
@@ -97,8 +94,7 @@ public class SolveMinuteByteBufferThread extends Thread{
 
                 int useTime = 0;
                 for (b = f.get(); b != ','; b = f.get()) {
-                    useTime *= 10;
-                    useTime += (b - '0');
+                    useTime = (b - '0')+useTime*10;
                 }
                 b = f.get();
 
@@ -106,8 +102,7 @@ public class SolveMinuteByteBufferThread extends Thread{
                     int minTime = 0;
 
                     for (int timepos = 1; timepos <= 10; ++timepos, b = f.get()) {
-                        minTime *= 10;
-                        minTime += (b - '0');
+                        minTime = (b - '0')+minTime*10;
                     }
                     f.position(f.position()+ 3);
                     minTime /= 60;
