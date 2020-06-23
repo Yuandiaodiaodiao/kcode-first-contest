@@ -161,11 +161,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         int t = 26427312 + time.charAt(9)* 1440+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15) - SplitMinuteThread.firstTime;
 
 //        int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
-//        if(t==1){
-////            throw new ArrayIndexOutOfBoundsException("DiskRead wait "+DiskReadThread.DiskRead_waitBuffer + "SplitWait="+SplitMinuteThread.SplitMinute_waitBuffer + " SplitWaitba="+SplitMinuteThread.SplitMinute_waitBa);
-////            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
+        if(t==1){
+            throw new ArrayIndexOutOfBoundsException("prepareTime="+prepareTime);
+//            throw new ArrayIndexOutOfBoundsException("DiskRead wait "+DiskReadThread.DiskRead_waitBuffer + "SplitWait="+SplitMinuteThread.SplitMinute_waitBuffer + " SplitWaitba="+SplitMinuteThread.SplitMinute_waitBa);
+//            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
 //            throw new ArrayIndexOutOfBoundsException("MINSIZE="+SplitMinuteThread.MINBUFFERLEN);
-//        }
+        }
         int len1=str1.length();
         int len2=str2.length();
 
