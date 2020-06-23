@@ -18,7 +18,8 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
-    public static int MINBUFFERLEN=500*1024*1024;
+
+    public static int MINBUFFERLEN=436773150;
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
         TIME_SIZE = size2;
@@ -102,10 +103,10 @@ public class SplitMinuteThread extends Thread {
                         }
                     }
                 }
-                if(ba.position()<431000000){
+                if(ba.position()<MINBUFFERLEN){
                     //新的分钟
                     //那直接读就完事了
-                    int safeArea=431000000-ba.position();
+                    int safeArea=MINBUFFERLEN-ba.position();
                     bufferIndex+=Math.min(safeArea,endIndex-bufferIndex);
                     bufferIndex-=300;
                     bufferIndex=Math.max(startIndex,bufferIndex);
