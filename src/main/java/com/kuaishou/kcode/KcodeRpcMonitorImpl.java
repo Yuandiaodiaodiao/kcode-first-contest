@@ -23,12 +23,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
-    public long fileLength = 0;
     public double prepareTime = 0;
-    public ArrayList<MappedByteBuffer> mbArray = new ArrayList<MappedByteBuffer>();
-    public File f;
-    public FileChannel channel;
-    public RawBufferSolve rbs;
     public  PrepareMultiThreadManager manager;
 
     //    public PrepareMultiThreadManager manager;
