@@ -46,7 +46,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //    public PrepareMultiThreadManager manager;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-
+        System.out.println("构造函数启动");
         prepareTimes += 1;
 
     }
