@@ -25,12 +25,12 @@ public class PrepareMultiThreadManager {
 
 
 
-
             smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
             smt.LinkBlockingQueue(canuse,canread);
             smt.start();
+            System.out.println("smt启动");
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
-
+            System.out.println("第二个directbuffer加载完成");
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
