@@ -19,8 +19,8 @@ public class SplitMinuteThread extends Thread {
     int lastBuffLength = 0;
     ByteBuffer ba;
 
-//    public static int MINBUFFERLEN=436773150;
-    public static int MINBUFFERLEN=431141347;
+    public static int MINBUFFERLEN=436773150;
+//    public static int MINBUFFERLEN=431141347;
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
         TIME_SIZE = size2;
