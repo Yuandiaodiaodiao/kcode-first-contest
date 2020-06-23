@@ -126,6 +126,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
         prepareTimes += 1;
+        try {
+            Thread.sleep(1000*100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void hackTime(String path, long chunck) {
