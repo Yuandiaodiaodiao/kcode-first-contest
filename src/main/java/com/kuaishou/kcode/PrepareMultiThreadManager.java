@@ -17,31 +17,34 @@ public class PrepareMultiThreadManager {
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
     public static int THREAD_NUMBER=8;
-    static {
-        for(int a=0;a<THREAD_NUMBER+1;++a){
-            solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
-        }
-        canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
-        canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
-        drt=new DiskReadThread(DIRECT_CHUNCK_SIZE);
-        drt.LinkBlockingQueue(canuse,canread);
-        smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
-        smt.LinkBlockingQueue(canuse,canread);
-        smt.start();
-        for(int i=0;i<THREAD_NUMBER;++i){
-            smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
-            smbbt[i].start();
-        }
-        System.out.println("Prepre Static加载结束");
-    }
+
     PrepareMultiThreadManager(){
+        Thread prepareThread=new Thread(()->{
+            canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
 
 
 
+            solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
 
 
+            smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
+            smt.LinkBlockingQueue(canuse,canread);
+            smt.start();
+            canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
+            for(int a=1;a<THREAD_NUMBER+1;++a){
+                solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
+            }
+            for(int i=0;i<THREAD_NUMBER;++i){
+                smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
+                smbbt[i].start();
+            }
+            System.out.println("异步加载结束");
+        });
+        prepareThread.start();
     }
     public void setPath(String s){
+        drt=new DiskReadThread(DIRECT_CHUNCK_SIZE);
+        drt.LinkBlockingQueue(canuse,canread);
         path=s;
         drt.setPath(path);
     }

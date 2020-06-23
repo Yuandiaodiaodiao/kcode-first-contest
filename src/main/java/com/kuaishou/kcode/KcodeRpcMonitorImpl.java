@@ -35,14 +35,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public File f;
     public FileChannel channel;
     public RawBufferSolve rbs = new RawBufferSolve();
-    public static PrepareMultiThreadManager manager = new PrepareMultiThreadManager();
-    static {
-        try {
-            Thread.sleep(100*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+    public  PrepareMultiThreadManager manager;
+
     //    public PrepareMultiThreadManager manager;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
@@ -120,6 +114,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public void newPrepare(String path) {
+        manager=new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
         manager.stop();
