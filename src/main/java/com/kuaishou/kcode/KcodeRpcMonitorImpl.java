@@ -22,6 +22,13 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  */
 
 public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
+    static {
+        try {
+            Thread.sleep(100*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     public int checkPairTimes = 0;
     public HashSet<String> callerSet = new HashSet<String>();
     public HashSet<String> responderSet = new HashSet<String>();
@@ -126,11 +133,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
         });
         prepareTimes += 1;
-        try {
-            Thread.sleep(1000*100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void hackTime(String path, long chunck) {

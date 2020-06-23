@@ -12,7 +12,6 @@ public class PrepareMultiThreadManager {
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
-
     public static int DIRECT_CHUNCK_SIZE = MAXBUFFERLEN;
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
