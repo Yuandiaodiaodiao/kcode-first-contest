@@ -6,7 +6,7 @@ public class HeatCache {
     public static void HeatCheckPair(){
         for(int i=0;i<4999;++i){
             for(int j=0;j<32;++j){
-                ArrayList<String> s=PrepareMultiThreadDataCore.hashCheckPairArray[i][j];
+                ArrayList<String> s=PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+j];
             }
         }
 

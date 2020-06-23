@@ -254,8 +254,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         int len1=str1.length();
         int len2=str2.length();
 
-        return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArray[((((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<5)+(str1.charAt(len1-3)<<10)+(str1.charAt(len1-2)<<15 )+(str1.charAt(len1-1)<<20))% 90) << 4) + (str1.charAt(0) % 29))
-                + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997)][t];
+        return (t > 29 || t < 0)?NOANSWERARRAY:PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(((((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<5)+(str1.charAt(len1-3)<<10)+(str1.charAt(len1-2)<<15 )+(str1.charAt(len1-1)<<20))% 90) << 4) + (str1.charAt(0) % 29))
+                + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997)<<5  )+t];
 
 
 //        if(t > 29 || t < 0){
@@ -322,9 +322,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
         int hashcode=HashCode.hash(responder);
         if(t1<=0){
-            return db[t2][hashcode];
+            return PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(t2<<10)+hashcode];
         }else{
-            return PrepareMultiThreadDataCore.CheckResponderFastArray[t1][t2][hashcode];
+            return PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(t1<<15)+(t2<<10)+hashcode];
         }
 
     }

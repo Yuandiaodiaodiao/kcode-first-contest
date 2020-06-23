@@ -24,12 +24,12 @@ public class SolveMinuteArrayListAnswerThread extends Thread {
 
             HashMap<Long, CheckPairPayLoad> serviceMap = hArray[i];
             if (serviceMap == null) {
-                PrepareMultiThreadDataCore.hashCheckPairArray[i][m4index] = NOANSWERARRAY;
+                PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = NOANSWERARRAY;
                 continue;
             }
 
             ArrayList<String> as = new ArrayList<>(32);
-            PrepareMultiThreadDataCore.hashCheckPairArray[i][m4index] = as;
+            PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = as;
 
             for (Map.Entry entry2 : serviceMap.entrySet()) {
                 long ipTwo = (long) entry2.getKey();

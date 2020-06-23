@@ -15,7 +15,7 @@ public class SolveRespondThread extends Thread {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public static void solve() {
-        for (int i = 0; i <= 1199; ++i) {
+        for (int i = 0; i <= 1024; ++i) {
 
             ArrayList<CheckResponderTimePayLoad> al = new ArrayList<>(35);
             CheckResponderTimePayLoad lastct = new CheckResponderTimePayLoad();
@@ -61,10 +61,10 @@ public class SolveRespondThread extends Thread {
                     CheckResponderTimePayLoad jj = db[b];
                     int calleeTimes = jj.calledTimes - ii.calledTimes;
                     if (calleeTimes > 0) {
-                        PrepareMultiThreadDataCore.CheckResponderFastArray[a][b][i]=DFORMAT.format((jj.rate - ii.rate) / calleeTimes);
+                        PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(a<<15)+(b<<10)+i]=DFORMAT.format((jj.rate - ii.rate) / calleeTimes);
 //                        c[a][b] = DFORMAT.format((jj.rate - ii.rate) / calleeTimes);
                     } else {
-                        PrepareMultiThreadDataCore.CheckResponderFastArray[a][b][i]=NOANSWER;
+                        PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(a<<15)+(b<<10)+i]=NOANSWER;
 
 //                        c[a][b] = NOANSWER;
                     }
@@ -73,7 +73,6 @@ public class SolveRespondThread extends Thread {
 //            PrepareMultiThreadDataCore.CheckResponderPayLoadArray[i] = c;
 
         }
-        KcodeRpcMonitorImpl.db=PrepareMultiThreadDataCore.CheckResponderFastArray[0];
 
 //        for (int i = 0; i <= 4999; ++i) {
 //
