@@ -31,12 +31,12 @@ public class PrepareMultiThreadManager {
             smt.LinkBlockingQueue(canuse,canread);
             smt.start();
             canuse.add(ByteBuffer.allocateDirect(DIRECT_CHUNCK_SIZE));
-            for(int a=1;a<THREAD_NUMBER+1;++a){
-                solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
-            }
+
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
+                solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
+
             }
             System.out.println("异步加载结束");
         });
