@@ -21,7 +21,7 @@ def git_push():
 # schedule.every(1).minutes.do(flush_score)
 # schedule.every(10).minutes.do(git_push)
 git_push()
-schedule.every(10).minutes.do(git_push)
+schedule.every(20).minutes.do(git_push)
 while True:
     schedule.run_pending()
     time.sleep(1)
