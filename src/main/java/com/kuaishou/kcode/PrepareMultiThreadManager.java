@@ -5,10 +5,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class PrepareMultiThreadManager {
     String path;
-    DiskReadThread drt;
-    SplitMinuteThread smt;
-    ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
-    ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
+    public static DiskReadThread drt;
+    public static SplitMinuteThread smt;
+    public static ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
+    public static ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
@@ -17,7 +17,7 @@ public class PrepareMultiThreadManager {
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
     public static int THREAD_NUMBER=8;
-    PrepareMultiThreadManager(){
+    static {
         for(int a=0;a<THREAD_NUMBER+1;++a){
             solvedMinutes.add(ByteBuffer.allocate(Time_CHUNCK_SIZE));
         }
@@ -32,6 +32,14 @@ public class PrepareMultiThreadManager {
             smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
             smbbt[i].start();
         }
+        System.out.println("Prepre Static加载结束");
+    }
+    PrepareMultiThreadManager(){
+
+
+
+
+
     }
     public void setPath(String s){
         path=s;

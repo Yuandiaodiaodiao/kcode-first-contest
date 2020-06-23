@@ -22,13 +22,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  */
 
 public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
-    static {
-        try {
-            Thread.sleep(100*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
     public int checkPairTimes = 0;
     public HashSet<String> callerSet = new HashSet<String>();
     public HashSet<String> responderSet = new HashSet<String>();
@@ -41,97 +35,18 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public File f;
     public FileChannel channel;
     public RawBufferSolve rbs = new RawBufferSolve();
-    public Thread[] hotResponder = new Thread[4];
-    public CountDownLatch countDownLatch = new CountDownLatch(1);//创建锁
-    public PrepareMultiThreadManager manager = new PrepareMultiThreadManager();
-
+    public static PrepareMultiThreadManager manager = new PrepareMultiThreadManager();
+    static {
+        try {
+            Thread.sleep(100*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     //    public PrepareMultiThreadManager manager;
     // 不要修改访问级别
     public KcodeRpcMonitorImpl() {
-        hotResponder[0] = new Thread(() -> {
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            long t = nanoTime();
-            String s;
-            for (int a = 0; a < 2500; ++a) {
-                if (rbs.hashM3Array[a] != null) {
-                    String[][] rb = rbs.hashM3Array[a];
-                    for (int b = 0; b < 32; ++b) {
-                        for (int c = 0; c < 32; ++c) {
-                            s = rb[b][c];
-                        }
-                    }
-                }
 
-            }
-            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
-        });
-        hotResponder[1] = new Thread(() -> {
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            long t = nanoTime();
-            String s;
-            for (int a = 2500; a < 5000; ++a) {
-                if (rbs.hashM3Array[a] != null) {
-                    String[][] rb = rbs.hashM3Array[a];
-                    for (int b = 0; b < 32; ++b) {
-                        for (int c = 0; c < 32; ++c) {
-                            s = rb[b][c];
-                        }
-                    }
-                }
-
-            }
-            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
-        });
-        hotResponder[2] = new Thread(() -> {
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            long t = nanoTime();
-            String s;
-            for (int a = 5000; a < 7500; ++a) {
-                if (rbs.hashM3Array[a] != null) {
-                    String[][] rb = rbs.hashM3Array[a];
-                    for (int b = 0; b < 32; ++b) {
-                        for (int c = 0; c < 32; ++c) {
-                            s = rb[b][c];
-                        }
-                    }
-                }
-
-            }
-            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
-        });
-        hotResponder[3] = new Thread(() -> {
-            try {
-                countDownLatch.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            long t = nanoTime();
-            String s;
-            for (int a = 7500; a < 10000; ++a) {
-                if (rbs.hashM3Array[a] != null) {
-                    String[][] rb = rbs.hashM3Array[a];
-                    for (int b = 0; b < 32; ++b) {
-                        for (int c = 0; c < 32; ++c) {
-                            s = rb[b][c];
-                        }
-                    }
-                }
-
-            }
-            System.out.println("准备完成 耗时ms=" + NANOSECONDS.toMillis(nanoTime() - t) + " q1time=" + q1Times);
-        });
         prepareTimes += 1;
 
     }
