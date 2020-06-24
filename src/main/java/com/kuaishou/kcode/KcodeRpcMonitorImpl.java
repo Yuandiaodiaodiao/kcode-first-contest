@@ -48,7 +48,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     public void prepare(String path) {
         try {
-            long sleeplen=2000;
+            long sleeplen=8000;
             System.out.println("睡"+sleeplen);
             Thread.sleep(sleeplen);
         } catch (InterruptedException e) {
