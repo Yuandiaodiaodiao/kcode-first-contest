@@ -54,7 +54,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
         try {
-            long sleeplen=3200-(endTime - startTime);
+            long sleeplen=3300-(endTime - startTime);
 //            System.out.println("睡"+sleeplen);
             Thread.sleep(sleeplen);
         } catch (InterruptedException e) {
@@ -65,7 +65,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
 
-//        throw new ArrayIndexOutOfBoundsException("");
+        throw new ArrayIndexOutOfBoundsException(SytemBash.getAllInfo());
     }
     //读入
 

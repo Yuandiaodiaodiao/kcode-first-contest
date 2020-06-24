@@ -11,7 +11,11 @@ public class SytemBash {
 
     public static void main(String[] args) {
     }
-
+    public static String getAllInfo(){
+        String s="";
+        s+=getInfo(" cat /etc/issue");
+        return s;
+    }
     public static String getInfo(String cmd) {
         try {
 
