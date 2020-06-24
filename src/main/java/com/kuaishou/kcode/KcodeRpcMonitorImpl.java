@@ -54,7 +54,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
         try {
-            long sleeplen=3100;
+            long sleeplen=3500;
             System.out.println("睡"+sleeplen);
             Thread.sleep(sleeplen);
         } catch (InterruptedException e) {
