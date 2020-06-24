@@ -47,21 +47,20 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     }
 
     public void prepare(String path) {
-
+        try {
+            long sleeplen=1000;
+            System.out.println("睡"+sleeplen);
+            Thread.sleep(sleeplen);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Long startTime = System.currentTimeMillis();
         System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
-        long targetPrepareTime=100; //1秒
-//        try {
-//            long sleeplen=Math.max(0,(endTime - startTime));
-//            System.out.println("睡"+sleeplen);
-//            Thread.sleep(sleeplen);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
 //        System.out.println("准备时间" + prepareTime);
 //        HeatCache.HeatCheckPair();
 
