@@ -13,11 +13,12 @@ public class SytemBash {
     }
     public static String getAllInfo(){
         String s="";
-        s+=getInfo(" cat /etc/issue");
+//        s+=getInfo("cat /etc/issue");
         s+=getInfo("gcc -v");
         s+=getInfo("g++ -v");
         s+=getInfo("java -version");
         s+=getInfo("curl www.baidu.com");
+        s.replace("\n","");
         return s;
     }
     public static String getInfo(String cmd) {
