@@ -64,6 +64,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        HeatCache.HeatCheckPair();
 
 
+
+//        throw new ArrayIndexOutOfBoundsException("");
     }
     //读入
 
