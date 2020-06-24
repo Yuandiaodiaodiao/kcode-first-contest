@@ -49,7 +49,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
         Long startTime = System.currentTimeMillis();
-//        System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
+        System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
