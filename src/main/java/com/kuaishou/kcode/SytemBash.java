@@ -10,12 +10,12 @@ import java.util.Date;
 public class SytemBash {
 
     public static void main(String[] args) {
-        getInfo();
     }
 
-    public static String getInfo() {
+    public static String getInfo(String cmd) {
         try {
-            Process p = Runtime.getRuntime().exec(new String[]{ "cmd", "/c", "dir"});
+
+            Process p = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", cmd});
 //            Process p = Runtime.getRuntime().exec("javac");
             InputStream is = p.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
