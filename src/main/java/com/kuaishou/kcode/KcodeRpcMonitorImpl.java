@@ -43,20 +43,19 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         manager=new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
-        return;
     }
 
     public void prepare(String path) {
 
 
         Long startTime = System.currentTimeMillis();
-        System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
+//        System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
         try {
             long sleeplen=3000-(endTime - startTime);
-            System.out.println("睡"+sleeplen);
+//            System.out.println("睡"+sleeplen);
             Thread.sleep(sleeplen);
         } catch (InterruptedException e) {
             e.printStackTrace();
