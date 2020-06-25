@@ -15,7 +15,7 @@ public class SolveRespondThread extends Thread {
     private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
 
     public static void solve() {
-        for (int i = 0; i <= 1024; ++i) {
+        for (int i = 0; i < 1024; ++i) {
 
             ArrayList<CheckResponderTimePayLoad> al = new ArrayList<>(35);
             CheckResponderTimePayLoad lastct = new CheckResponderTimePayLoad();
