@@ -41,7 +41,8 @@ public class SolveMinuteByteBufferThread extends Thread{
             int remaining = f.remaining();
             //从directbuffer中抽出来
             int startMinute = -1;
-
+                HashMap[] cacheCheckPair = new HashMap[0];
+                CheckResponderPayLoad[] cacheCheckResponder = new CheckResponderPayLoad[0];
             while(f.hasRemaining()){
                 byte b=f.get();
                 if(b=='\n')continue;
@@ -129,9 +130,11 @@ public class SolveMinuteByteBufferThread extends Thread{
                     for(int i=0;i<610;++i){
                         PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i]=new CheckResponderPayLoad();
                     }
+                    cacheCheckResponder=PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
                     for(int i=0;i<4999;++i){
                         PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(256);
                     }
+                    cacheCheckPair=PrepareMultiThreadDataCore.hashCheckPair[startMinute];
 //                    Thread t = Thread.currentThread();
 //                    String name = t.getName();
 //                    System.out.println( "time= "+startMinute+" "+name+"接单 size="+f.remaining()+" pos="+f.position()+ " limit="+f.limit());
@@ -144,11 +147,8 @@ public class SolveMinuteByteBufferThread extends Thread{
 
 
                 long twoIPs = ( ip1 << 32) +  ip2;
-                HashMap<Long, CheckPairPayLoad>ipset= PrepareMultiThreadDataCore.hashCheckPair[startMinute][stringHash];
-                if(ipset==null){
-                    ipset=new HashMap<>(256);
-                    PrepareMultiThreadDataCore.hashCheckPair[startMinute][stringHash]=ipset;
-                }
+                HashMap<Long, CheckPairPayLoad>ipset= cacheCheckPair[stringHash];
+
                 CheckPairPayLoad payload = ipset.get(twoIPs);
                 if (payload == null) {
                     payload = new CheckPairPayLoad();
@@ -161,7 +161,7 @@ public class SolveMinuteByteBufferThread extends Thread{
                 payload.bucket[useTime] += 1;
 
 
-                CheckResponderPayLoad payload2=PrepareMultiThreadDataCore.hashCheckResponder[startMinute][secondServicesHash];
+                CheckResponderPayLoad payload2=cacheCheckResponder[secondServicesHash];
 
                 payload2.success += success;
                 payload2.failed += success ^ 1;
