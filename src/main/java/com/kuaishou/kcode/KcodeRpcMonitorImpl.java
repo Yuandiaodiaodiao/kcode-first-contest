@@ -43,6 +43,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         manager=new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
+        manager.stop();
     }
 
     public void prepare(String path) {
@@ -53,19 +54,19 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
-        try {
-            long sleeplen=3400;
-            System.out.println("睡"+sleeplen);
-            Thread.sleep(sleeplen);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            long sleeplen=3400;
+//            System.out.println("睡"+sleeplen);
+//            Thread.sleep(sleeplen);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println("准备时间" + prepareTime);
 //        HeatCache.HeatCheckPair();
 
 
 
-        throw new ArrayIndexOutOfBoundsException(SytemBash.getAllInfo());
+//        throw new ArrayIndexOutOfBoundsException(SytemBash.getAllInfo());
     }
     //读入
 
@@ -74,10 +75,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询1
     int tt=-1;
     public List<String> checkPair(String str1, String str2, String time) {
-        if(tt==-1){
-            manager.stop();
-            tt=1;
-        }
+//        if(tt==-1){
+//            manager.stop();
+//            tt=1;
+//        }
 
         int t = 26427312 + time.charAt(9)* 1440+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15) - SplitMinuteThread.firstTime;
 
@@ -103,7 +104,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     private static final String NOANSWER = "-1.00%";
     //查询2
 
-    public String checkResponder(String responder, String start, String end) {
+    public final String checkResponder(String str, String start, String end) {
 
 
 
@@ -122,8 +123,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             return NOANSWER;
         }
         t2=(t2>31)?31:t2;
-
-        int hashcode=HashCode.hash(responder);
+        int len=str.length();
+        int hashcode=((((str.charAt(len-6)+(str.charAt(len-5)<<1)+(str.charAt(len-4)<<6)
+                +(str.charAt(len-3)<<9)+(str.charAt(len-2)<<16 )
+                +(str.charAt(len-1)<<21))% 73) << 3) + ((str.charAt(0)-97) ));
         if(t1<=0){
             return PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(t2<<10)+hashcode];
         }else{

@@ -45,8 +45,21 @@ public class HashCode {
     }
 
 
-
     public static int hashByte(byte[] b1, int len) {
+       return ((b1[0]-97)%36)+
+               ((((b1[len-6])+(b1[len-5]<<1)+
+                       (b1[len-4]<<6)+(b1[len-3]<<9)+
+                       (b1[len-2]<<16)+(b1[len-1]<<21))%73)<<3);
+    }
+    public static int hash(String str) {
+      int len=str.length();
+      return (((str.charAt(len-6)+(str.charAt(len-5)<<1)+(str.charAt(len-4)<<6)
+              +(str.charAt(len-3)<<9)+(str.charAt(len-2)<<16 )
+              +(str.charAt(len-1)<<21))% 73) << 3) + ((str.charAt(0)-97) % 36);
+
+    }
+
+    public static int hashByteback1(byte[] b1, int len) {
         int numberIndex = 0;
         int hashcode1 = 0;
         int hashcode2 = 0;
@@ -71,7 +84,7 @@ public class HashCode {
         return ((hashcode1 % 30) << 5) + (hashcode2 % 75);
     }
 
-    public static int hash(String str) {
+    public static int hashback(String str) {
         int len = str.length();
         int numberIndex = 0;
         int hashcode2 = 0;
