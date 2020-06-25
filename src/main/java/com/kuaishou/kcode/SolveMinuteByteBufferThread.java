@@ -27,6 +27,7 @@ public class SolveMinuteByteBufferThread extends Thread{
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
 
             while (true){
+                long timestart=System.currentTimeMillis();
             ByteBuffer f = unsolvedMinutes.take();
             if (f.limit() == 0) {
 //                Thread t = Thread.currentThread();
@@ -150,9 +151,15 @@ public class SolveMinuteByteBufferThread extends Thread{
 
 
             }
+
             solvedMinutes.put(f);
-            SolveMinuteArrayListAnswerThread.solve(startMinute);
-        }
+                long timestart2=System.currentTimeMillis();
+
+                SolveMinuteArrayListAnswerThread.solve(startMinute);
+                long timestart3=System.currentTimeMillis();
+                System.out.println("处理分钟"+(timestart2-timestart)+"桶排序"+(timestart3-timestart2));
+
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
