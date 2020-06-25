@@ -54,9 +54,9 @@ public class SolveMinuteByteBufferThread extends Thread{
                 for (; b != ','; b =f.get()) {
                 }
                 int len1=f.position()-1;
-                int hashService1=((((f.get(len1-5)+(f.get(len1-4)<<5)+
-                        (f.get(len1-3)<<10)+(f.get(len1-2)<<15 )+(f.get(len1-1)<<20))% 90) << 4) +
-                        (hashService1hash1 % 29));
+                int hashService1=((((f.get(len1-5)+(f.get(len1-4)<<2)+
+                        (f.get(len1-3)<<6)+(f.get(len1-2)<<13 )+(f.get(len1-1)<<17))% 69) << 12) +
+                        ((hashService1hash1-97)<<8));
 
 
                 int numBuff = 0;
@@ -80,13 +80,11 @@ public class SolveMinuteByteBufferThread extends Thread{
 
                 }
                 int len2=f.position()-1;
-                int hashService2=((((f.get(len2-5)+(f.get(len2-4)<<5)+(f.get(len2-3)<<10)+
-                        (f.get(len2-2)<<15 )+(f.get(len2-1)<<20))% 90) << 12) +
-                        ((hashService2hash1 % 29)<<8));
-                int hashService2Only=(((hashService2hash1-97)%36)+
-                        ((((f.get(len2-6))+(f.get(len2-5)<<1)+
-                                (f.get(len2-4)<<6)+(f.get(len2-3)<<9)+
-                                (f.get(len2-2)<<16)+(f.get(len2-1)<<21))%73)<<3));
+
+                int hashService2=((hashService2hash1-97)+
+                        ((((f.get(len2-6))+(f.get(len2-5)<<5)+
+                                (f.get(len2-4)<<10)+(f.get(len2-3)<<14)+
+                                (f.get(len2-2)<<15)+(f.get(len2-1)<<24))%89)<<3));
                 for (b = f.get(); b != ','; b = f.get()) {
                     if (b != '.') {
                         numBuff = (b - '0') + numBuff*10;
@@ -127,11 +125,11 @@ public class SolveMinuteByteBufferThread extends Thread{
                     minTime /= 60;
                     startMinute=minTime-SplitMinuteThread.firstTime;
 
-                    for(int i=0;i<610;++i){
+                    for(int i=0;i<999;++i){
                         PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i]=new CheckResponderPayLoad();
                     }
                     cacheCheckResponder=PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
-                    for(int i=0;i<4999;++i){
+                    for(int i=0;i<=4999;++i){
                         PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(256);
                     }
                     cacheCheckPair=PrepareMultiThreadDataCore.hashCheckPair[startMinute];
@@ -142,8 +140,8 @@ public class SolveMinuteByteBufferThread extends Thread{
                 }else{
                     f.position(f.position()+ 13);
                 }
-                int stringHash=(hashService1+hashService2)%4997;
-                int secondServicesHash= hashService2Only;
+                int stringHash=(hashService1+hashService2)%4999;
+                int secondServicesHash= hashService2;
 
 
                 long twoIPs = ( ip1 << 32) +  ip2;

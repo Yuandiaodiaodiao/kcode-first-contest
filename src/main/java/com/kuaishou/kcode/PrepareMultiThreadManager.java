@@ -69,6 +69,8 @@ public class PrepareMultiThreadManager {
                 solvedMinutes.poll();
             }
             SolveRespondThread.solve();
+//            Analyse.findIpPair();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

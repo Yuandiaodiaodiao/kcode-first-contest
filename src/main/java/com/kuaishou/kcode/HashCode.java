@@ -20,22 +20,36 @@ public class HashCode {
     public static int hashTwoString(String str1, String str2) {
         int len1=str1.length();
         int len2=str2.length();
-        return (((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<5)+(str1.charAt(len1-3)<<10)+(str1.charAt(len1-2)<<15 )+(str1.charAt(len1-1)<<20))% 90) << 4) + (str1.charAt(0) % 29))
-                + (((((str2.charAt(len2-5)+(str2.charAt(len2-4)<<5)+(str2.charAt(len2-3)<<10)+(str2.charAt(len2-2)<<15 )+(str2.charAt(len2-1)<<20))% 90) << 4) + (str2.charAt(0) % 29))<<8)) % 4997;
+//        System.out.println("hash1="+(((((long)((str1.charAt(len1-5)+(str1.charAt(len1-4)<<2)+(str1.charAt(len1-3)<<6)
+//                +(str1.charAt(len1-2)<<13 )+(str1.charAt(len1-1)<<17))% 69) << 12)
+//                + ((str1.charAt(0)-97)<<8))))+" hash2="+(( (((str2.charAt(len2-6)+(str2.charAt(len2-5)<<5)+(str2.charAt(len2-4)<<10)
+//                +(str2.charAt(len2-3)<<14)+(str2.charAt(len2-2)<<15)
+//                +(str2.charAt(len2-1)<<24))% 89) << 3) + (str2.charAt(0)-97))));
+        return (
+                (((((str1.charAt(len1-5)+(str1.charAt(len1-4)<<2)+(str1.charAt(len1-3)<<6)
+                +(str1.charAt(len1-2)<<13 )+(str1.charAt(len1-1)<<17))% 69) << 12)
+                + ((str1.charAt(0)-97)<<8)))
+
+                + ( (((str2.charAt(len2-6)+(str2.charAt(len2-5)<<5)+(str2.charAt(len2-4)<<10)
+                +(str2.charAt(len2-3)<<14)+(str2.charAt(len2-2)<<15)
+                +(str2.charAt(len2-1)<<24))% 89) << 3) + (str2.charAt(0)-97))
+        )% 4999;
     }
     public static int hashTwoByte(byte[] b1, int len1, byte[] b2, int len2) {
-        return (((((b1[len1-5]+(b1[len1-4]<<5)+(b1[len1-3]<<10)+(b1[len1-2]<<15 )+(b1[len1-1]<<20))% 90) << 4) + (b1[0] % 29))
-                + ((((b2[len2-5]+(b2[len2-4]<<5)+(b2[len2-3]<<10)+(b2[len2-2]<<15 )+(b2[len2-1]<<20))% 90) << 12) + ((b2[0] % 29)<<8))) % 4997;
+        return ((
+                ((((b1[len1-5]+(b1[len1-4]<<2)+(b1[len1-3]<<6)
+                +(b1[len1-2]<<13 )+(b1[len1-1]<<17))% 69) << 12)
+                + ((b1[0]-97)<<8)))
+
+                + ( (((b2[len2-6]+(b2[len2-5]<<5)+(b2[len2-4]<<10)
+                +(b2[len2-3]<<14)+(b2[len2-2]<<15)
+                +(b2[len2-1]<<24))% 89) << 3) + (b2[0]-97))
+        )% 4999;
     }
 
 
 
-    public static int hashTwoStringb(String str1, String str2) {
-        return ((hash6(str1)) + (hash6(str2)<<8)) % 4997;
-    }
-    public static int hashTwoByteb(byte[] b1, int len1, byte[] b2, int len2) {
-        return ((hash6byte(b1, len1)) + (hash6byte(b2, len2)<<8)) % 4997;
-    }
+
     public static int hash6(String str) {
         int len = str.length();
         return (((str.charAt(len-5)+(str.charAt(len-4)<<5)+(str.charAt(len-3)<<10)+(str.charAt(len-2)<<15 )+(str.charAt(len-1)<<20))% 90) << 4) + (str.charAt(0) % 29);
@@ -46,17 +60,28 @@ public class HashCode {
 
 
     public static int hashByte(byte[] b1, int len) {
-       return ((b1[0]-97)%36)+
-               ((((b1[len-6])+(b1[len-5]<<1)+
-                       (b1[len-4]<<6)+(b1[len-3]<<9)+
-                       (b1[len-2]<<16)+(b1[len-1]<<21))%73)<<3);
+        //被调服务
+       return (b1[0]-97)+
+               ((((b1[len-6])+(b1[len-5]<<5)+
+                       (b1[len-4]<<10)+(b1[len-3]<<14)+
+                       (b1[len-2]<<15)+(b1[len-1]<<24))%89)<<3);
     }
-    public static int hash(String str) {
-      int len=str.length();
-      return (((str.charAt(len-6)+(str.charAt(len-5)<<1)+(str.charAt(len-4)<<6)
-              +(str.charAt(len-3)<<9)+(str.charAt(len-2)<<16 )
-              +(str.charAt(len-1)<<21))% 73) << 3) + ((str.charAt(0)-97) % 36);
+    public static int hash(String str2) {
+        //被调服务
+      int len2=str2.length();
+      return (((str2.charAt(len2-6)+(str2.charAt(len2-5)<<5)+(str2.charAt(len2-4)<<10)
+              +(str2.charAt(len2-3)<<14)+(str2.charAt(len2-2)<<15)
+              +(str2.charAt(len2-1)<<24))% 89) << 3) + (str2.charAt(0)-97);
 
+    }
+
+
+
+    public static int hashTwoStringb(String str1, String str2) {
+        return ((hash6(str1)) + (hash6(str2)<<8)) % 4997;
+    }
+    public static int hashTwoByteb(byte[] b1, int len1, byte[] b2, int len2) {
+        return ((hash6byte(b1, len1)) + (hash6byte(b2, len2)<<8)) % 4997;
     }
 
     public static int hashByteback1(byte[] b1, int len) {
