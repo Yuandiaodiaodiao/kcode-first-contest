@@ -14,7 +14,7 @@ public class SytemBash {
     public static String getAllInfo(){
         String s="";
 //        s+=getInfo("cat /etc/issue");
-        s+=getInfo("cat /proc/cpuinfo |grep \"processor\"|wc -l");
+        s+=getInfo("cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c");
 //        s+=getInfo("gcc -v");
 //        s+=getInfo("g++ -v");
 //        s+=getInfo("java -version");
