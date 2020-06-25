@@ -129,6 +129,9 @@ public class SolveMinuteByteBufferThread extends Thread{
                     for(int i=0;i<610;++i){
                         PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i]=new CheckResponderPayLoad();
                     }
+                    for(int i=0;i<4999;++i){
+                        PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(256);
+                    }
 //                    Thread t = Thread.currentThread();
 //                    String name = t.getName();
 //                    System.out.println( "time= "+startMinute+" "+name+"接单 size="+f.remaining()+" pos="+f.position()+ " limit="+f.limit());
@@ -159,7 +162,7 @@ public class SolveMinuteByteBufferThread extends Thread{
 
 
                 CheckResponderPayLoad payload2=PrepareMultiThreadDataCore.hashCheckResponder[startMinute][secondServicesHash];
-            
+
                 payload2.success += success;
                 payload2.failed += success ^ 1;
 
