@@ -23,7 +23,7 @@ public class SolveRespondThread extends Thread {
 
             for (int t = 0; t <= 31; ++t) {
                 CheckResponderPayLoad payload = PrepareMultiThreadDataCore.hashCheckResponder[t][i];
-                if (payload == null) {
+                if (payload==null||(payload.failed+payload.success==0)) {
                     continue;
                 }
                 ct = new CheckResponderTimePayLoad();

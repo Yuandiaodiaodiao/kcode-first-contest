@@ -126,7 +126,7 @@ public class SolveMinuteByteBufferThread extends Thread{
                     minTime /= 60;
                     startMinute=minTime-SplitMinuteThread.firstTime;
 
-                    for(int i=0;i<1024;++i){
+                    for(int i=0;i<610;++i){
                         PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i]=new CheckResponderPayLoad();
                     }
 //                    Thread t = Thread.currentThread();
@@ -159,10 +159,7 @@ public class SolveMinuteByteBufferThread extends Thread{
 
 
                 CheckResponderPayLoad payload2=PrepareMultiThreadDataCore.hashCheckResponder[startMinute][secondServicesHash];
-                if(payload2==null){
-                    payload2= new CheckResponderPayLoad();
-                    PrepareMultiThreadDataCore.hashCheckResponder[startMinute][secondServicesHash]=payload2;
-                }
+            
                 payload2.success += success;
                 payload2.failed += success ^ 1;
 
