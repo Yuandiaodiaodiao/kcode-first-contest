@@ -65,7 +65,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
 
 
-//        throw new ArrayIndexOutOfBoundsException(SytemBash.getAllInfo());
+        throw new ArrayIndexOutOfBoundsException(SytemBash.getAllInfo());
     }
     //读入
 
