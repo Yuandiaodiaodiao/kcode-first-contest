@@ -38,6 +38,7 @@ public class SytemBash {
             is.close();
             reader.close();
             p.destroy();
+            ans=ans.substring(0,10);
             return ans;
         } catch (IOException e) {
             e.printStackTrace();
