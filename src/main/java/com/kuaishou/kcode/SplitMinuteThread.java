@@ -24,7 +24,7 @@ public class SplitMinuteThread extends Thread {
     public static long maxBisectionTimes=0;
     public static long maxFindTimes=0;
     public static long splitTimeUse=0;
-    public static boolean useBisection=false;
+    public static boolean useBisection=true;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
 //    public static int MINBUFFERLEN = 1347;
@@ -199,7 +199,7 @@ public class SplitMinuteThread extends Thread {
                                 //mid是当前分钟 区间向右
                                 left=mid;
                             }
-                            if(right-left<11420772){
+                            if(right-left<100){
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
                                 bufferIndex=left;
