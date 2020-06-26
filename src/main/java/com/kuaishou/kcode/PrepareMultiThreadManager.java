@@ -28,8 +28,8 @@ public class PrepareMultiThreadManager {
             smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
             smt.LinkBlockingQueue(canuse,canread);
             smt.start();
-            System.out.println("smt启动");
-            System.out.println("第二个directbuffer加载完成");
+//            System.out.println("smt启动");
+//            System.out.println("第二个directbuffer加载完成");
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
@@ -70,7 +70,7 @@ public class PrepareMultiThreadManager {
             }
             SolveRespondThread.solve();
 //            Analyse.findIpPair();
-
+            System.out.println("splite耗时"+SplitMinuteThread.splitTimeUse);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

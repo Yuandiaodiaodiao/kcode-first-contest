@@ -184,7 +184,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 clearCheckPair(cacheCheckPair);
                 long timestart4 = System.currentTimeMillis();
 
-                System.out.println("处理分钟" + (timestart4 - timestart) + "桶排序" + (timestart3 - timestart2));
+//                System.out.println("处理分钟" + (timestart4 - timestart) + "桶排序" + (timestart3 - timestart2));
 
             }
 

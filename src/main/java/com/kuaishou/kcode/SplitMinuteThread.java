@@ -23,7 +23,8 @@ public class SplitMinuteThread extends Thread {
     ByteBuffer ba;
     public static long maxBisectionTimes=0;
     public static long maxFindTimes=0;
-    public static boolean useBisection=true;
+    public static long splitTimeUse=0;
+    public static boolean useBisection=false;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
 //    public static int MINBUFFERLEN = 1347;
@@ -58,8 +59,10 @@ public class SplitMinuteThread extends Thread {
             ba.clear();
             while (true) {
                 int remaining = 0;
-                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 8) {
+                long timestart=0;
+                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 2) {
 //                    System.out.println("单走一个6");
+                    timestart=System.currentTimeMillis();
                 } else {
                     long t1 = System.currentTimeMillis();
                     ByteBuffer b = canread.take();
@@ -78,12 +81,13 @@ public class SplitMinuteThread extends Thread {
                         canread.put(b);
                         return;
                     }
+                    timestart=System.currentTimeMillis();
+
                     //直接拉满
                     remaining = b.remaining();
                     //从directbuffer中抽出来
                     b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
                     canuse.put(b);
-
                 }
 
 
@@ -134,6 +138,7 @@ public class SplitMinuteThread extends Thread {
                             break;
                         }
                     }
+//                    System.out.println("jump"+bufferIndex+" start="+startIndex);
                     //这样保证移动后到一个整行
                 }
                 //这个位置 开始二分 从bufferIndex 到endIndex 找出是否有time时间戳变化
@@ -186,7 +191,7 @@ public class SplitMinuteThread extends Thread {
                                 //查找mid后的\n
                                 //查看\n是否属于下一分钟
                             }
-//                        System.out.println("("+left+","+right+")");
+//                        System.out.println("size="+(right-left)+"("+left+","+right+")");
                             if(isNextMinute){
                                 //mid是下一分钟 区间向左
                                 right=mid;
@@ -194,13 +199,14 @@ public class SplitMinuteThread extends Thread {
                                 //mid是当前分钟 区间向右
                                 left=mid;
                             }
-                            if(right-left<70){
+                            if(right-left<11420772){
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
-                                for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
-                                }
-                                //enterIndex=上一个\n位置
-                                bufferIndex=enterIndex;
+                                bufferIndex=left;
+//                                for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
+//                                }
+//                                //enterIndex=上一个\n位置
+//                                bufferIndex=enterIndex;
                                 break;
                             }
                         }
@@ -297,13 +303,17 @@ public class SplitMinuteThread extends Thread {
 
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.put(ba);
+                    splitTimeUse+=System.currentTimeMillis()-timestart;
+
                     long ta = System.currentTimeMillis();
                     ba = PrepareMultiThreadManager.solvedMinutes.take();
                     long tb = System.currentTimeMillis();
                     SplitMinute_waitBa += (tb - ta);
                     ba.clear();
-                }
+                }else{
+                    splitTimeUse+=System.currentTimeMillis()-timestart;
 
+                }
 
             }
         } catch (InterruptedException e) {
