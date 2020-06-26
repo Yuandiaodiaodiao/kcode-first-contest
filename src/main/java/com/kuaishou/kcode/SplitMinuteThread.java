@@ -53,6 +53,7 @@ public class SplitMinuteThread extends Thread {
         super.run();
         try {
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
 
             buff = new byte[BUFF_SIZE];
             ba = ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE);
