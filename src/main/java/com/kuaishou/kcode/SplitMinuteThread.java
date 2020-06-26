@@ -160,6 +160,7 @@ public class SplitMinuteThread extends Thread {
                             //下一分钟
                             hasTwoMinute = true;
                         }
+                        break;
                     }
                 }
                 timearray[2]=System.currentTimeMillis();
@@ -207,14 +208,14 @@ public class SplitMinuteThread extends Thread {
                                 //mid是当前分钟 区间向右
                                 left=mid;
                             }
-                            if(right-left<100){
+                            if(right-left<200){
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
-                                bufferIndex=left;
-//                                for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
-//                                }
-//                                //enterIndex=上一个\n位置
-//                                bufferIndex=enterIndex;
+//                                bufferIndex=left;
+                                for (enterIndex =left; buff[enterIndex] != 10; --enterIndex) {
+                                }
+                                //enterIndex=上一个\n位置
+                                bufferIndex=enterIndex;
                                 break;
                             }
                         }
@@ -308,7 +309,7 @@ public class SplitMinuteThread extends Thread {
                 for(int i=1;i<=5;++i){
                     timearray[i]-=timearray[0];
                 }
-                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
+//                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 //                if(lastBuffLength==1539469608){
 //                    System.out.println("难顶");
 //                }
