@@ -6,18 +6,22 @@ import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-public class SolveMinuteByteBufferThread extends Thread{
-    ArrayBlockingQueue<ByteBuffer> unsolvedMinutes ;
-    ArrayBlockingQueue<ByteBuffer> solvedMinutes ;
+public class SolveMinuteByteBufferThread extends Thread {
+    ArrayBlockingQueue<ByteBuffer> unsolvedMinutes;
+    ArrayBlockingQueue<ByteBuffer> solvedMinutes;
 
 
+    SolveMinuteByteBufferThread(ArrayBlockingQueue<ByteBuffer> unsolvedMinutes, ArrayBlockingQueue<ByteBuffer> solvedMinutes) {
+        this.solvedMinutes = solvedMinutes;
+        this.unsolvedMinutes = unsolvedMinutes;
+    }
 
-    public byte[] service1 = new byte[40];
-    public byte[] service2 = new byte[40];
-
-    SolveMinuteByteBufferThread(ArrayBlockingQueue<ByteBuffer> unsolvedMinutes,ArrayBlockingQueue<ByteBuffer> solvedMinutes){
-        this.solvedMinutes=solvedMinutes;
-        this.unsolvedMinutes=unsolvedMinutes;
+    public void clearCheckPair(CheckPairPayLoad[][] c) {
+        for (int i = 0; i <= 4999; ++i) {
+            for (int j = 0; j <= 3369; ++j) {
+                c[i][j] = null;
+            }
+        }
     }
 
     @Override
@@ -25,157 +29,158 @@ public class SolveMinuteByteBufferThread extends Thread{
         super.run();
         try {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
-
-            while (true){
-                long timestart=System.currentTimeMillis();
-            ByteBuffer f = unsolvedMinutes.take();
-            if (f.limit() == 0) {
+            CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
+            while (true) {
+                long timestart = System.currentTimeMillis();
+                ByteBuffer f = unsolvedMinutes.take();
+                if (f.limit() == 0) {
 //                Thread t = Thread.currentThread();
 //                String name = t.getName();
 //                System.out.println( name+"结束");
-                unsolvedMinutes.put(f);
-                return;
-            }
+                    unsolvedMinutes.put(f);
+                    return;
+                }
 
-            //直接拉满
-            int remaining = f.remaining();
-            //从directbuffer中抽出来
-            int startMinute = -1;
-                HashMap[] cacheCheckPair = new HashMap[0];
+                //直接拉满
+                int remaining = f.remaining();
+                //从directbuffer中抽出来
+                int startMinute = -1;
+
                 CheckResponderPayLoad[] cacheCheckResponder = new CheckResponderPayLoad[0];
-            while(f.hasRemaining()){
-                byte b=f.get();
-                if(b=='\n')continue;
-                long ip1 = 0;
-                long ip2 = 0;
+                while (f.hasRemaining()) {
+                    byte b = f.get();
+                    if (b == '\n') continue;
+                    long ip1 = 0;
+                    long ip2 = 0;
 
-                int hashService1hash1=b;
-                f.position(f.position()+5);
-                for (; b != ','; b =f.get()) {
-                }
-                int len1=f.position()-1;
-                int hashService1=((((f.get(len1-5)+(f.get(len1-4)<<2)+
-                        (f.get(len1-3)<<6)+(f.get(len1-2)<<13 )+(f.get(len1-1)<<17))% 69) << 12) +
-                        ((hashService1hash1-97)<<8));
+                    int hashService1hash1 = b;
+                    f.position(f.position() + 5);
+                    for (; b != ','; b = f.get()) {
+                    }
+                    int len1 = f.position() - 1;
+                    int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
+                            (f.get(len1 - 3) << 6) + (f.get(len1 - 2) << 13) + (f.get(len1 - 1) << 17)) % 69) << 12) +
+                            ((hashService1hash1 - 97) << 8));
 
 
-                int numBuff = 0;
-                for (b = f.get(); b != ','; b = f.get()) {
-                    if (b != '.') {
-                        numBuff = (b - '0')+numBuff*10;
+                    int numBuff = 0;
+                    for (b = f.get(); b != ','; b = f.get()) {
+                        if (b != '.') {
+                            numBuff = (b - '0') + numBuff * 10;
+                        } else {
+                            ip1 <<= 8;
+                            ip1 += numBuff;
+                            numBuff = 0;
+                        }
+                    }
+                    ip1 <<= 8;
+                    ip1 += numBuff;
+                    numBuff = 0;
+
+                    b = f.get();
+                    int hashService2hash1 = b;
+                    f.position(f.position() + 9);
+                    for (; b != ','; b = f.get()) {
+
+                    }
+                    int len2 = f.position() - 1;
+
+                    int hashService2 = ((hashService2hash1 - 97) +
+                            ((((f.get(len2 - 6)) + (f.get(len2 - 5) << 5) +
+                                    (f.get(len2 - 4) << 10) + (f.get(len2 - 3) << 14) +
+                                    (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
+                    for (b = f.get(); b != ','; b = f.get()) {
+                        if (b != '.') {
+                            numBuff = (b - '0') + numBuff * 10;
+                        } else {
+                            ip2 <<= 8;
+                            ip2 += numBuff;
+                            numBuff = 0;
+                        }
+                    }
+                    ip2 <<= 8;
+                    ip2 += numBuff;
+
+                    b = f.get();
+                    int success = 0;
+                    if (b == 't') {
+                        success = 1;
+                        f.position(f.position() + 4);
                     } else {
-                        ip1 <<= 8;
-                        ip1 += numBuff;
-                        numBuff = 0;
+                        //failed
+                        f.position(f.position() + 5);
                     }
-                }
-                ip1 <<= 8;
-                ip1 += numBuff;
-                numBuff = 0;
 
-                b =f.get();
-                int hashService2hash1=b;
-                f.position(f.position()+9);
-                for (; b != ','; b = f.get()) {
 
-                }
-                int len2=f.position()-1;
-
-                int hashService2=((hashService2hash1-97)+
-                        ((((f.get(len2-6))+(f.get(len2-5)<<5)+
-                                (f.get(len2-4)<<10)+(f.get(len2-3)<<14)+
-                                (f.get(len2-2)<<15)+(f.get(len2-1)<<24))%89)<<3));
-                for (b = f.get(); b != ','; b = f.get()) {
-                    if (b != '.') {
-                        numBuff = (b - '0') + numBuff*10;
-                    } else {
-                        ip2 <<= 8;
-                        ip2 += numBuff;
-                        numBuff = 0;
+                    int useTime = 0;
+                    for (b = f.get(); b != ','; b = f.get()) {
+                        useTime = (b - '0') + useTime * 10;
                     }
-                }
-                ip2 <<= 8;
-                ip2 += numBuff;
+                    b = f.get();
 
-                b = f.get();
-                int success = 0;
-                if (b == 't') {
-                    success = 1;
-                    f.position(f.position()+ 4);
-                } else {
-                    //failed
-                    f.position(f.position()+ 5);
-                }
+                    if (startMinute == -1) {
+                        int minTime = 0;
 
+                        for (int timepos = 1; timepos <= 10; ++timepos, b = f.get()) {
+                            minTime = (b - '0') + minTime * 10;
+                        }
+                        f.position(f.position() + 3);
+                        minTime /= 60;
+                        startMinute = minTime - SplitMinuteThread.firstTime;
 
-
-                int useTime = 0;
-                for (b = f.get(); b != ','; b = f.get()) {
-                    useTime = (b - '0')+useTime*10;
-                }
-                b = f.get();
-
-                if (startMinute == -1) {
-                    int minTime = 0;
-
-                    for (int timepos = 1; timepos <= 10; ++timepos, b = f.get()) {
-                        minTime = (b - '0')+minTime*10;
-                    }
-                    f.position(f.position()+ 3);
-                    minTime /= 60;
-                    startMinute=minTime-SplitMinuteThread.firstTime;
-
-                    for(int i=0;i<999;++i){
-                        PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i]=new CheckResponderPayLoad();
-                    }
-                    cacheCheckResponder=PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
-                    for(int i=0;i<=4999;++i){
-                        PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(256);
-                    }
-                    cacheCheckPair=PrepareMultiThreadDataCore.hashCheckPair[startMinute];
+                        for (int i = 0; i < 999; ++i) {
+                            PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i] = new CheckResponderPayLoad();
+                        }
+                        cacheCheckResponder = PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
+//                    for(int i=0;i<=4999;++i){
+//                        PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(64);
+//                    }
+//                        cacheCheckPair = PrepareMultiThreadDataCore.hashCheckPair[startMinute];
 //                    Thread t = Thread.currentThread();
 //                    String name = t.getName();
 //                    System.out.println( "time= "+startMinute+" "+name+"接单 size="+f.remaining()+" pos="+f.position()+ " limit="+f.limit());
 
-                }else{
-                    f.position(f.position()+ 13);
+                    } else {
+                        f.position(f.position() + 13);
+                    }
+                    int stringHash = (hashService1 + hashService2) % 4999;
+                    int secondServicesHash = hashService2;
+
+
+                    long twoIPs = (ip1 << 32) + ip2;
+                    int ipHash = HashCode.hashIp(ip1, ip2);
+
+                    CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
+                    if (payload == null) {
+                        payload = new CheckPairPayLoad();
+                        cacheCheckPair[stringHash][ipHash] = payload;
+                        payload.ip = twoIPs;
+                    }
+                    //change payload
+
+                    payload.successTimes += success;
+                    //1^1 =0 0^1 =1
+                    payload.failedTimes += success ^ 1;
+                    payload.bucket[useTime] += 1;
+
+
+                    CheckResponderPayLoad payload2 = cacheCheckResponder[secondServicesHash];
+
+                    payload2.success += success;
+                    payload2.failed += success ^ 1;
+
+
                 }
-                int stringHash=(hashService1+hashService2)%4999;
-                int secondServicesHash= hashService2;
 
+                solvedMinutes.put(f);
+                long timestart2 = System.currentTimeMillis();
 
-                long twoIPs = ( ip1 << 32) +  ip2;
-                HashMap<Long, CheckPairPayLoad>ipset= cacheCheckPair[stringHash];
-
-                CheckPairPayLoad payload = ipset.get(twoIPs);
-                if (payload == null) {
-                    payload = new CheckPairPayLoad();
-                    ipset.put(twoIPs, payload);
-                }
-                //change payload
-                payload.successTimes += success;
-                //1^1 =0 0^1 =1
-                payload.failedTimes += success ^ 1;
-                payload.bucket[useTime] += 1;
-
-
-                CheckResponderPayLoad payload2=cacheCheckResponder[secondServicesHash];
-
-                payload2.success += success;
-                payload2.failed += success ^ 1;
-
-
-
-            }
-
-            solvedMinutes.put(f);
-                long timestart2=System.currentTimeMillis();
-
-                SolveMinuteArrayListAnswerThread.solve(startMinute);
-                long timestart3=System.currentTimeMillis();
+                SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
+                long timestart3 = System.currentTimeMillis();
 //                System.out.println("处理分钟"+(timestart2-timestart)+"桶排序"+(timestart3-timestart2));
-
+                clearCheckPair(cacheCheckPair);
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

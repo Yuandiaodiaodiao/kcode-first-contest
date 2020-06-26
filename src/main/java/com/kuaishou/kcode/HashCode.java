@@ -17,6 +17,10 @@ public class HashCode {
 
     }
 
+    public static int hashIp(long ip1,long ip2){
+        return (int)((((ip1-167772160)%4985)<<4)+((ip2-167772160)%4910))%3369;
+    }
+
     public static int hashTwoString(String str1, String str2) {
         int len1=str1.length();
         int len2=str2.length();

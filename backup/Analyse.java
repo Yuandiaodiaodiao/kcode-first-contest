@@ -21,12 +21,17 @@ public class Analyse {
 
         for(int time=0;time<32;++time){
             HashMap<Long, CheckPairPayLoad>[] hArray = PrepareMultiThreadDataCore.hashCheckPair[time];
+
             for (int i = 0; i <= 4999; ++i) {
                 HashMap<Long, CheckPairPayLoad> serviceMap = hArray[i];
                 if (serviceMap == null) {
                     continue;
                 }
-
+                try {
+                    out.write("\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 for (Map.Entry entry2 : serviceMap.entrySet()) {
                     long ipTwo = (long) entry2.getKey();
                     CheckPairPayLoad payLoad = (CheckPairPayLoad) entry2.getValue();
@@ -56,12 +61,9 @@ public class Analyse {
                         e.printStackTrace();
                     }
                 }
-                try {
-                    out.write("\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
+
             
         }
         try {

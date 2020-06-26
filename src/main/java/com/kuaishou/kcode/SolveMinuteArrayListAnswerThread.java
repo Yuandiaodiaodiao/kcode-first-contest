@@ -8,7 +8,6 @@ import java.util.Map;
 import static java.lang.System.nanoTime;
 
 public class SolveMinuteArrayListAnswerThread extends Thread {
-    private static final DecimalFormat DFORMAT = new DecimalFormat("#.00%");
     public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     @Override
@@ -16,24 +15,27 @@ public class SolveMinuteArrayListAnswerThread extends Thread {
         super.run();
 
     }
-
-    public static void solve(int m4index) {
+    public static void solve(int m4index,CheckPairPayLoad[][] hArray) {
+        DecimalFormat DFORMAT = new DecimalFormat("#.00%");
         if (m4index == -1) return;
-        HashMap<Long, CheckPairPayLoad>[] hArray = PrepareMultiThreadDataCore.hashCheckPair[m4index];
+//        CheckPairPayLoad[][] hArray = PrepareMultiThreadDataCore.hashCheckPair[m4index];
         for (int i = 0; i <= 4999; ++i) {
 
-            HashMap<Long, CheckPairPayLoad> serviceMap = hArray[i];
-            if (serviceMap == null) {
-                PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = NOANSWERARRAY;
-                continue;
-            }
+//            HashMap<Long, CheckPairPayLoad> serviceMap = hArray[i];
+//            if (serviceMap == null) {
+//                PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = NOANSWERARRAY;
+//                continue;
+//            }
 
             ArrayList<String> as = new ArrayList<>(32);
             PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = as;
+            CheckPairPayLoad[] hArray2=hArray[i];
+            for (int j=0;j<3369;++j) {
 
-            for (Map.Entry entry2 : serviceMap.entrySet()) {
-                long ipTwo = (long) entry2.getKey();
-                CheckPairPayLoad payLoad = (CheckPairPayLoad) entry2.getValue();
+
+                CheckPairPayLoad payLoad =hArray2[j];
+                if(payLoad==null)continue;
+                long ipTwo = payLoad.ip;
                 int allTimes = payLoad.successTimes + payLoad.failedTimes;
                 double rate = ((double) payLoad.successTimes) / allTimes;
                 int p99 = P99Solve.solve(payLoad.bucket, allTimes);
