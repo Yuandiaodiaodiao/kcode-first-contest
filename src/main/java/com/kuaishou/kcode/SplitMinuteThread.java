@@ -21,6 +21,7 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
+    public static long maxBisectionTimes=999999;
     public static boolean useBisection=false;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
