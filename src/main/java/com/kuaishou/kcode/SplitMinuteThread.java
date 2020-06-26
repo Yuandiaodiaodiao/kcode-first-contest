@@ -21,9 +21,10 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
-
+    public static boolean useBisection=false;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
+//    public static int MINBUFFERLEN = 1347;
 
     SplitMinuteThread(int size, int size2) {
         BUFF_SIZE = size;
@@ -155,49 +156,54 @@ public class SplitMinuteThread extends Thread {
 
                 }else{
                     //有分界线 说明需要找到分界
+                    if(useBisection){
 
-
-                    //二分区间 bufferIndex~endIndex
-                    int left = bufferIndex;
-                    int right = endIndex;
-                    //[left,right)
-                    while (left < right) {
-                        int mid=(left+right)/2;
-                        boolean isNextMinute=false;
-                        int enterIndex=-1;
-                        {
-                            for (enterIndex = mid; buff[enterIndex] != 10; ++enterIndex) {
+                        //二分区间 bufferIndex~endIndex
+                        int left = bufferIndex;
+                        int right = endIndex;
+                        int searchTime=0;
+                        //[left,right)
+                        while (true) {
+                            int mid=(left+right)/2;
+                            boolean isNextMinute=false;
+                            int enterIndex=-1;
+                            searchTime++;
+                            {
+                                for (enterIndex = mid; buff[enterIndex] != 10; ++enterIndex) {
+                                }
+                                //enterIndex在\n的位置
+                                int secondTime = 0;
+                                for (int i = nowSecondByteNum + 3; i > 3; --i) {
+                                    secondTime = buff[enterIndex - i] - 48 + secondTime * 10;
+                                }
+                                if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
+                                    //下一分钟
+                                    isNextMinute = true;
+                                }
+                                //查找mid后的\n
+                                //查看\n是否属于下一分钟
                             }
-                            //enterIndex在\n的位置
-                            int secondTime = 0;
-                            for (int i = nowSecondByteNum + 3; i > 3; --i) {
-                                secondTime = buff[enterIndex - i] - 48 + secondTime * 10;
-                            }
-                            if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
-                                //下一分钟
-                                isNextMinute = true;
-                            }
-                            //查找mid后的\n
-                            //查看\n是否属于下一分钟
-                        }
 //                        System.out.println("("+left+","+right+")");
-                        if(isNextMinute){
-                            //mid是下一分钟 区间向左
-                            right=mid;
-                        }else{
-                            //mid是当前分钟 区间向右
-                            left=mid;
-                        }
-                        if(right-left<70){
-                            //说明左右都在一行里了
-                            //这时候取上一个\n就是上一minute的结尾
-                            for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
+                            if(isNextMinute){
+                                //mid是下一分钟 区间向左
+                                right=mid;
+                            }else{
+                                //mid是当前分钟 区间向右
+                                left=mid;
                             }
-                            //enterIndex=上一个\n位置
-                            bufferIndex=enterIndex;
-                            break;
+                            if(right-left<70){
+                                //说明左右都在一行里了
+                                //这时候取上一个\n就是上一minute的结尾
+                                for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
+                                }
+                                //enterIndex=上一个\n位置
+                                bufferIndex=enterIndex;
+                                break;
+                            }
                         }
+//                        System.out.println("二分次数"+searchTime);
                     }
+
 
                     for (; bufferIndex < endIndex; ++bufferIndex) {
                         if (buff[bufferIndex] == 10) { //find \n
