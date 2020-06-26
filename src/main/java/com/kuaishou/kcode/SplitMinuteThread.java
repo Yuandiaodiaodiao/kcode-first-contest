@@ -90,7 +90,8 @@ public class SplitMinuteThread extends Thread {
                     canuse.put(b);
                 }
 
-
+                long[] timearray=new long[16];
+                timearray[0]=System.currentTimeMillis();
                 int startIndex = lastBuffIndex;
                 int bufferIndex = startIndex;
                 int endIndex = remaining + startIndex + lastBuffLength;
@@ -124,6 +125,8 @@ public class SplitMinuteThread extends Thread {
                         }
                     }
                 }
+
+
                 if (ba.position() < MINBUFFERLEN) {
                     //新的分钟
                     //那直接读就完事了
@@ -141,6 +144,8 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("jump"+bufferIndex+" start="+startIndex);
                     //这样保证移动后到一个整行
                 }
+                timearray[1]=System.currentTimeMillis();
+
                 //这个位置 开始二分 从bufferIndex 到endIndex 找出是否有time时间戳变化
                 //bufferIndex可能在一个句子的任何位置需要先向前推进一个\n
                 //倒着找
@@ -157,9 +162,12 @@ public class SplitMinuteThread extends Thread {
                         }
                     }
                 }
+                timearray[2]=System.currentTimeMillis();
+
                 if(!hasTwoMinute){
                     //当前buff内都是同一分钟的 可以直接结算了
                     bufferIndex=endIndex;
+                    timearray[3]=System.currentTimeMillis();
 
                 }else{
                     //有分界线 说明需要找到分界
@@ -213,6 +221,7 @@ public class SplitMinuteThread extends Thread {
                         maxBisectionTimes=Math.max(maxBisectionTimes,(long)searchTime);
 //                        System.out.println("二分次数"+searchTime);
                     }
+                    timearray[3]=System.currentTimeMillis();
 
                     int findTimes=0;
                     for (; bufferIndex < endIndex; ++bufferIndex) {
@@ -264,6 +273,7 @@ public class SplitMinuteThread extends Thread {
 
 
                 }
+                timearray[4]=System.currentTimeMillis();
 
 //                if(nowTime==26538355){
 //                    System.out.println("我摊牌了");
@@ -294,6 +304,11 @@ public class SplitMinuteThread extends Thread {
 
                     }
                 }
+                timearray[5]=System.currentTimeMillis();
+                for(int i=1;i<=5;++i){
+                    timearray[i]-=timearray[0];
+                }
+                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 //                if(lastBuffLength==1539469608){
 //                    System.out.println("难顶");
 //                }
