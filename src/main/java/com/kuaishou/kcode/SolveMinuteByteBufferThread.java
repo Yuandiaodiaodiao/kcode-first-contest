@@ -17,11 +17,14 @@ public class SolveMinuteByteBufferThread extends Thread {
     }
 
     public void clearCheckPair(CheckPairPayLoad[][] c) {
+        long t1=System.currentTimeMillis();
         for (int i = 0; i <= 4999; ++i) {
             for (int j = 0; j <= 3369; ++j) {
                 c[i][j] = null;
             }
         }
+        long t2=System.currentTimeMillis();
+        System.out.println("清空耗时="+(t2-t1));
     }
 
     @Override
@@ -177,7 +180,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
                 long timestart3 = System.currentTimeMillis();
-//                System.out.println("处理分钟"+(timestart2-timestart)+"桶排序"+(timestart3-timestart2));
+                System.out.println("处理分钟"+(timestart2-timestart)+"桶排序"+(timestart3-timestart2));
                 clearCheckPair(cacheCheckPair);
             }
 
