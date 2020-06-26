@@ -1,6 +1,7 @@
 package com.kuaishou.kcode;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
@@ -109,7 +110,7 @@ public class SplitMinuteThread extends Thread {
                                     break;
                                 }
                             }
-                            System.out.println("byteNum=" + nowSecondByteNum);
+//                            System.out.println("byteNum=" + nowSecondByteNum);
                             //nowSecond是一个0~999的值  对于一个时间n 如果n+60+60<=999那么不会出现意外 那么基准n<879 就有效 否则要计算完整time
                             // 那么 当另一个(time>=nowSecond&&time<nowSecond+60)时 认为是在一个分钟内
                             break;
@@ -123,6 +124,14 @@ public class SplitMinuteThread extends Thread {
                     bufferIndex += Math.min(safeArea, endIndex - bufferIndex);
                     bufferIndex -= 300;
                     bufferIndex = Math.max(startIndex, bufferIndex);
+                    for (; bufferIndex < endIndex; ++bufferIndex) {
+                        if (buff[bufferIndex] == 10) {
+                            //推掉这个\n 向后找
+                            bufferIndex++;
+                            break;
+                        }
+                    }
+                    //这样保证移动后到一个整行
                 }
                 //这个位置 开始二分 从bufferIndex 到endIndex 找出是否有time时间戳变化
                 //bufferIndex可能在一个句子的任何位置需要先向前推进一个\n
@@ -145,22 +154,50 @@ public class SplitMinuteThread extends Thread {
                     bufferIndex=endIndex;
 
                 }else{
-                    for (; bufferIndex < endIndex; ++bufferIndex) {
-                        if (buff[bufferIndex] == 10) {
-                            //推掉这个\n 向后找
+                    //有分界线 说明需要找到分界
 
-                            bufferIndex++;
-                            break;
-                        }
-                    }
 
                     //二分区间 bufferIndex~endIndex
                     int left = bufferIndex;
                     int right = endIndex;
                     //[left,right)
-//                    while (left < right) {
-//
-//                    }
+                    while (left < right) {
+                        int mid=(left+right)/2;
+                        boolean isNextMinute=false;
+                        int enterIndex=-1;
+                        {
+                            for (enterIndex = mid; buff[enterIndex] != 10; ++enterIndex) {
+                            }
+                            //enterIndex在\n的位置
+                            int secondTime = 0;
+                            for (int i = nowSecondByteNum + 3; i > 3; --i) {
+                                secondTime = buff[enterIndex - i] - 48 + secondTime * 10;
+                            }
+                            if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
+                                //下一分钟
+                                isNextMinute = true;
+                            }
+                            //查找mid后的\n
+                            //查看\n是否属于下一分钟
+                        }
+//                        System.out.println("("+left+","+right+")");
+                        if(isNextMinute){
+                            //mid是下一分钟 区间向左
+                            right=mid;
+                        }else{
+                            //mid是当前分钟 区间向右
+                            left=mid;
+                        }
+                        if(right-left<70){
+                            //说明左右都在一行里了
+                            //这时候取上一个\n就是上一minute的结尾
+                            for (enterIndex = enterIndex-1; buff[enterIndex] != 10; --enterIndex) {
+                            }
+                            //enterIndex=上一个\n位置
+                            bufferIndex=enterIndex;
+                            break;
+                        }
+                    }
 
                     for (; bufferIndex < endIndex; ++bufferIndex) {
                         if (buff[bufferIndex] == 10) { //find \n
@@ -190,7 +227,7 @@ public class SplitMinuteThread extends Thread {
                                         break;
                                     }
                                 }
-                                System.out.println("byteNum=" + nowSecondByteNum);
+//                                System.out.println("byteNum=" + nowSecondByteNum);
 
                                 getEnter = true;
                                 //分钟刷新了
