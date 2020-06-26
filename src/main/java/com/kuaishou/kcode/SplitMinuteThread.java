@@ -60,7 +60,7 @@ public class SplitMinuteThread extends Thread {
             while (true) {
                 int remaining = 0;
                 long timestart=0;
-                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 2) {
+                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 4) {
 //                    System.out.println("单走一个6");
                     timestart=System.currentTimeMillis();
                 } else {
