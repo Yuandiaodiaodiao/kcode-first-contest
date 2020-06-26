@@ -16,7 +16,7 @@ public class PrepareMultiThreadManager {
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=7;
+    public static int THREAD_NUMBER=1;
 
     PrepareMultiThreadManager(){
         Thread prepareThread=new Thread(()->{
