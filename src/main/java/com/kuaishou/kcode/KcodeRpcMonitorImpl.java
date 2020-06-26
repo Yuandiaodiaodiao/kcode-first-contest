@@ -79,7 +79,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //        int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
         if(t==1){
 //            throw new ArrayIndexOutOfBoundsException("prepareTime="+prepareTime);
-            throw new ArrayIndexOutOfBoundsException("prepareTime="+prepareTime+"DWS "+DiskReadThread.DiskRead_waitBuffer + "SWD"+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
+            throw new ArrayIndexOutOfBoundsException("T="+PrepareMultiThreadManager.THREAD_NUMBER+ " prepare="+prepareTime+" DWS="+DiskReadThread.DiskRead_waitBuffer + " SWD="+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
 //            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
 //            throw new ArrayIndexOutOfBoundsException("MINSIZE="+SplitMinuteThread.MINBUFFERLEN);
         }
