@@ -204,10 +204,12 @@ public class SplitMinuteThread extends Thread {
 //                        System.out.println("二分次数"+searchTime);
                     }
 
-
+                    int findTimes=0;
                     for (; bufferIndex < endIndex; ++bufferIndex) {
                         if (buff[bufferIndex] == 10) { //find \n
                             int secondTime = 0;
+                             findTimes++;
+
                             for (int i = nowSecondByteNum + 3; i > 3; --i) {
                                 secondTime = buff[bufferIndex - i] - 48 + secondTime * 10;
                             }
@@ -246,7 +248,7 @@ public class SplitMinuteThread extends Thread {
                             bufferIndex += 70;
                         }
                     }
-
+//                    System.out.println("查找次数"+findTimes);
 
 
                 }
