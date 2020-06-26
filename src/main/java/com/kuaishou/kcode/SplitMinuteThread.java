@@ -58,6 +58,7 @@ public class SplitMinuteThread extends Thread {
             buff = new byte[BUFF_SIZE];
             ba = ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE);
             ba.clear();
+            System.out.println("起跑");
             while (true) {
                 int remaining = 0;
                 long timestart=0;

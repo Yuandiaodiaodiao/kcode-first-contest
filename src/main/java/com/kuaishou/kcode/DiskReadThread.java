@@ -53,6 +53,7 @@ public class DiskReadThread extends Thread {
                 channel.read(buf);
                 buf.flip();
                 canread.put(buf);
+                System.out.println("读完");
 
             }
             buf= ByteBuffer.allocate(1);
