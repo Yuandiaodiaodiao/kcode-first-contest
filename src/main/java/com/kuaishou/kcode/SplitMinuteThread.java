@@ -23,7 +23,7 @@ public class SplitMinuteThread extends Thread {
     ByteBuffer ba;
     public static long maxBisectionTimes=0;
     public static long maxFindTimes=0;
-    public static boolean useBisection=false;
+    public static boolean useBisection=true;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
 //    public static int MINBUFFERLEN = 1347;
