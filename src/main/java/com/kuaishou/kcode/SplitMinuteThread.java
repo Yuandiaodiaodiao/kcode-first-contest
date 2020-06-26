@@ -21,7 +21,8 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
-    public static long maxBisectionTimes=999999;
+    public static long maxBisectionTimes=0;
+    public static long maxFindTimes=0;
     public static boolean useBisection=false;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
@@ -169,6 +170,7 @@ public class SplitMinuteThread extends Thread {
                             boolean isNextMinute=false;
                             int enterIndex=-1;
                             searchTime++;
+
                             {
                                 for (enterIndex = mid; buff[enterIndex] != 10; ++enterIndex) {
                                 }
@@ -202,6 +204,7 @@ public class SplitMinuteThread extends Thread {
                                 break;
                             }
                         }
+                        maxBisectionTimes=Math.max(maxBisectionTimes,(long)searchTime);
 //                        System.out.println("二分次数"+searchTime);
                     }
 
@@ -249,6 +252,8 @@ public class SplitMinuteThread extends Thread {
                             bufferIndex += 70;
                         }
                     }
+                    maxFindTimes=Math.max(maxFindTimes,(long)findTimes);
+
 //                    System.out.println("查找次数"+findTimes);
 
 
