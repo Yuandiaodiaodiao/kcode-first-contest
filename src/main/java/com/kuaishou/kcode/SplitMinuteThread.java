@@ -52,13 +52,11 @@ public class SplitMinuteThread extends Thread {
     public void run() {
         super.run();
         try {
-            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
-            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+
 
             buff = new byte[BUFF_SIZE];
-            ba = ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE);
+            ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
-            System.out.println("起跑");
             while (true) {
                 int remaining = 0;
                 long timestart=0;
@@ -320,7 +318,7 @@ public class SplitMinuteThread extends Thread {
 //                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
 
                     ba.flip();
-                    PrepareMultiThreadManager.unsolvedMinutes.put(ba);
+                    PrepareMultiThreadManager.unsolvedMinutes.add(ba);
                     splitTimeUse+=System.currentTimeMillis()-timestart;
 
                     long ta = System.currentTimeMillis();

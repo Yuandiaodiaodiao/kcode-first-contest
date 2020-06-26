@@ -40,7 +40,6 @@ public class DiskReadThread extends Thread {
     public void run() {
         super.run();
         try {
-            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
 
             ByteBuffer buf = ByteBuffer.allocate(1);
             for (long i = 0; i <= fileLength; i += CHUNCK_SIZE) {
@@ -53,7 +52,6 @@ public class DiskReadThread extends Thread {
                 channel.read(buf);
                 buf.flip();
                 canread.put(buf);
-                System.out.println("读完");
 
             }
             buf= ByteBuffer.allocate(1);

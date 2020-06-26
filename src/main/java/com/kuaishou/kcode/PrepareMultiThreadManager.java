@@ -38,7 +38,16 @@ public class PrepareMultiThreadManager {
 
             System.out.println("异步加载结束");
         });
+        Thread prepareMemory=new Thread(()->{
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+            PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+        });
+        prepareMemory.start();
         prepareThread.start();
+
+
     }
     public void setPath(String s){
         drt=new DiskReadThread(DIRECT_CHUNCK_SIZE);
