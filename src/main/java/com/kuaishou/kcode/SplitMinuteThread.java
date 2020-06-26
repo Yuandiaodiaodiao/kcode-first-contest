@@ -208,7 +208,7 @@ public class SplitMinuteThread extends Thread {
                                 //mid是当前分钟 区间向右
                                 left=mid;
                             }
-                            if(right-left<200){
+                            if(right-left<70){
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
 //                                bufferIndex=left;

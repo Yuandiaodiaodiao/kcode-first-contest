@@ -71,6 +71,8 @@ public class PrepareMultiThreadManager {
             SolveRespondThread.solve();
 //            Analyse.findIpPair();
             System.out.println("splite耗时"+SplitMinuteThread.splitTimeUse);
+            System.out.println(SplitMinuteThread.maxBisectionTimes+" "+SplitMinuteThread.maxFindTimes+" T="+PrepareMultiThreadManager.THREAD_NUMBER+" DWS="+DiskReadThread.DiskRead_waitBuffer + " SWD="+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
