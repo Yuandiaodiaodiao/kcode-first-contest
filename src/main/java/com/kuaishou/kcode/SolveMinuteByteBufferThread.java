@@ -17,14 +17,14 @@ public class SolveMinuteByteBufferThread extends Thread {
     }
 
     public void clearCheckPair(CheckPairPayLoad[][] c) {
-        long t1=System.currentTimeMillis();
+        long t1 = System.currentTimeMillis();
         for (int i = 0; i <= 4999; ++i) {
             for (int j = 0; j <= 3369; ++j) {
                 c[i][j] = null;
             }
         }
-        long t2=System.currentTimeMillis();
-        System.out.println("清空耗时="+(t2-t1));
+        long t2 = System.currentTimeMillis();
+//        System.out.println("清空耗时="+(t2-t1));
     }
 
     @Override
@@ -34,7 +34,6 @@ public class SolveMinuteByteBufferThread extends Thread {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
             while (true) {
-                long timestart = System.currentTimeMillis();
                 ByteBuffer f = unsolvedMinutes.take();
                 if (f.limit() == 0) {
 //                Thread t = Thread.currentThread();
@@ -43,6 +42,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     unsolvedMinutes.put(f);
                     return;
                 }
+                long timestart = System.currentTimeMillis();
 
                 //直接拉满
                 int remaining = f.remaining();
@@ -159,6 +159,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                         cacheCheckPair[stringHash][ipHash] = payload;
                         payload.ip = twoIPs;
                     }
+
                     //change payload
 
                     payload.successTimes += success;
@@ -180,8 +181,11 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
                 long timestart3 = System.currentTimeMillis();
-                System.out.println("处理分钟"+(timestart2-timestart)+"桶排序"+(timestart3-timestart2));
                 clearCheckPair(cacheCheckPair);
+                long timestart4 = System.currentTimeMillis();
+
+                System.out.println("处理分钟" + (timestart4 - timestart) + "桶排序" + (timestart3 - timestart2));
+
             }
 
         } catch (InterruptedException e) {
