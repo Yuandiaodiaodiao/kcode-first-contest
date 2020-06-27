@@ -37,7 +37,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         manager = new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
-//        manager.stop();
+        manager.stop();
     }
 
     public void prepare(String path) {
@@ -48,13 +48,13 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
-        try {
-            long sleeplen=3600;
-            System.out.println("睡"+sleeplen);
-            Thread.sleep(sleeplen);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            long sleeplen=3600;
+//            System.out.println("睡"+sleeplen);
+//            Thread.sleep(sleeplen);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println("准备时间" + prepareTime);
 //        HeatCache.HeatCheckPair();
 
@@ -69,10 +69,10 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     int tt = -1;
 
     public List<String> checkPair(String str1, String str2, String time) {
-        if(tt==-1){
-            manager.stop();
-            tt=1;
-        }
+//        if(tt==-1){
+//            manager.stop();
+//            tt=1;
+//        }
 
         int t = 26427312 + time.charAt(9) * 1440 + time.charAt(11) * 600 + time.charAt(12) * 60 + time.charAt(14) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
 
