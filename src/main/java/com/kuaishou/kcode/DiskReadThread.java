@@ -42,14 +42,15 @@ public class DiskReadThread extends Thread {
         try {
 
             ByteBuffer buf = ByteBuffer.allocate(1);
-            for (long i = 0; i <= fileLength; i += CHUNCK_SIZE) {
+            for (long i = 0; i < fileLength; i += CHUNCK_SIZE) {
                 long t1=System.currentTimeMillis();
                 buf = canuse.take();
                 long t2=System.currentTimeMillis();
                 DiskRead_waitBuffer+=(t2-t1);
 //                System.out.println("DiskRead waitBuffer="+(t2-t1) +"ms");
                 buf.clear();
-                channel.read(buf);
+//                channel.read(buf);
+                channel.read(buf,i);
                 buf.flip();
                 canread.put(buf);
 

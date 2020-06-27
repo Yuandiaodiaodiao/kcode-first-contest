@@ -1,11 +1,12 @@
 package com.kuaishou.kcode;
 
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
-
+import sun.misc.Unsafe;
 public class SplitMinuteThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> canuse;
     ArrayBlockingQueue<ByteBuffer> canread;
@@ -54,7 +55,15 @@ public class SplitMinuteThread extends Thread {
         try {
 
 
-            buff = new byte[BUFF_SIZE];
+            buff = new byte[1500*1024*1024];
+//            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+//            f.setAccessible(true);
+//            Unsafe unsafe = (Unsafe) f.get(null);
+//            long address=unsafe.allocateMemory((long)2*4096*1024*1024);
+//            for(long a=0;a<2L*4096*1024*1024;++a){
+//                unsafe.putByte(address + a, (byte) a);
+////                unsafe.
+//            }
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
             while (true) {

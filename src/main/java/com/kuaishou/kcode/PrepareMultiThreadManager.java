@@ -16,7 +16,7 @@ public class PrepareMultiThreadManager {
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=7;
+    public static int THREAD_NUMBER=3;
 
     PrepareMultiThreadManager(){
         Thread prepareThread=new Thread(()->{
@@ -43,6 +43,7 @@ public class PrepareMultiThreadManager {
             PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+
         });
         prepareMemory.start();
         prepareThread.start();
