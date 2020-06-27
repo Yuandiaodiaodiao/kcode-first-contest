@@ -10,8 +10,8 @@ import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
 import sun.misc.Unsafe;
 
 public class SplitMinuteThread extends Thread {
-    ArrayBlockingQueue<ByteBuffer> canuse;
-    ArrayBlockingQueue<ByteBuffer> canread;
+    public  ArrayBlockingQueue<Long> remain;
+
 
     int BUFF_SIZE = 1024 * 1024 * 1024;
     int TIME_SIZE = 1024 * 1024 * 1024;
@@ -39,9 +39,8 @@ public class SplitMinuteThread extends Thread {
 
     }
 
-    public void LinkBlockingQueue(ArrayBlockingQueue<ByteBuffer> canuse, ArrayBlockingQueue<ByteBuffer> canread) {
-        this.canuse = canuse;
-        this.canread = canread;
+    public void LinkBlockingQueue(ArrayBlockingQueue<Long> remain) {
+       this.remain=remain;
     }
 
     public void freeMemory() {
@@ -50,26 +49,18 @@ public class SplitMinuteThread extends Thread {
 
     public static long SplitMinute_waitBuffer = 0;
     public static long SplitMinute_waitBa = 0;
-
+    public static long copyCost = 0;
+    public  SuperByteBuffer buffer;
     @Override
     public void run() {
         super.run();
         try {
 
 
-//            buff = new byte[1500 * 1024 * 1024];
-//            Field f = Unsafe.class.getDeclaredField("theUnsafe");
-//            f.setAccessible(true);
-//            Unsafe unsafe = (Unsafe) f.get(null);
-//            long address=unsafe.allocateMemory((long)2*4096*1024*1024);
-//            for(long a=0;a<2L*4096*1024*1024;++a){
-//                unsafe.putByte(address + a, (byte) a);
-////                unsafe.
-//            }
+
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
             long tax = System.currentTimeMillis();
-            SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
             long tbx = System.currentTimeMillis();
             System.out.println("分配内存花费" + (tbx - tax));
             while (true) {
@@ -79,31 +70,18 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("单走一个6");
                     timestart = System.currentTimeMillis();
                 } else {
-                    long t1 = System.currentTimeMillis();
-                    ByteBuffer b = canread.take();
-                    long t2 = System.currentTimeMillis();
-                    SplitMinute_waitBuffer += (t2 - t1);
-//                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
-                    if (b.limit() == 0) {
-                        //扔出最后一minute
+                    long canreadPos= remain.take();
 
-//                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
-//                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
-//                        MAXBUFFERLEN=Math.max(MAXBUFFERLEN,ba.position());
+//                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
+                    if (canreadPos == -1) {
 
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
-                        canread.put(b);
                         return;
                     }
                     timestart = System.currentTimeMillis();
+                    remaining= (int) canreadPos;
 
-                    //直接拉满
-                    remaining = b.remaining();
-                    //从directbuffer中抽出来
-                    buffer.eatByteBuffer(b,lastBuffIndex + lastBuffLength,remaining);
-//                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
-                    canuse.put(b);
                 }
 
                 long[] timearray = new long[16];
@@ -301,7 +279,7 @@ public class SplitMinuteThread extends Thread {
 //                        System.out.println("aaaa");
 //                    }
 //                    long t = System.currentTimeMillis();
-                System.out.println("bufferIndex="+bufferIndex+" startIndex="+startIndex+" endIndex="+endIndex);
+//                System.out.println("bufferIndex="+bufferIndex+" startIndex="+startIndex+" endIndex="+endIndex);
                 if(bufferIndex>=endIndex){
                     buffer.putByteBuffer(ba, startIndex, endIndex-startIndex);
                     lastBuffLength=0;

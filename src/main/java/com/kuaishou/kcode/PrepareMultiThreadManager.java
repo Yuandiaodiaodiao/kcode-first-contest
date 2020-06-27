@@ -1,5 +1,6 @@
 package com.kuaishou.kcode;
 
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -7,8 +8,11 @@ public class PrepareMultiThreadManager {
     String path;
     public static DiskReadThread drt;
     public static SplitMinuteThread smt;
+    public static BufferCopyThread bct;
     public static ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
+
+    public static ArrayBlockingQueue<Long> remaining =new ArrayBlockingQueue<>(32);
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
@@ -23,17 +27,20 @@ public class PrepareMultiThreadManager {
 
 
 
-
-
+            SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
+            bct=new BufferCopyThread();
+            bct.LinkBlockingQueue(canuse,canread,remaining);
+            bct.buffer=buffer;
+            bct.start();
             smt=new SplitMinuteThread(RAM_CHUNCK_SIZE,Time_CHUNCK_SIZE);
-            smt.LinkBlockingQueue(canuse,canread);
+            smt.buffer=buffer;
+            smt.LinkBlockingQueue(remaining);
             smt.start();
 //            System.out.println("smt启动");
 //            System.out.println("第二个directbuffer加载完成");
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
-
             }
 
             System.out.println("异步加载结束");
@@ -62,6 +69,7 @@ public class PrepareMultiThreadManager {
     public void stop(){
         try {
             drt.join();
+            System.out.println("读完");
             long[] timeArray=new long[5];
             timeArray[0]=System.currentTimeMillis();
             System.out.println();

@@ -33,7 +33,7 @@ public class SuperByteBuffer {
     }
 
     long address;
-
+    public long position=0;
     SuperByteBuffer(long cap) {
         boolean pa = VM.isDirectMemoryPageAligned();
         int ps = unsafe.pageSize();
@@ -62,6 +62,12 @@ public class SuperByteBuffer {
 
     public final void put(long i, byte b) {
         unsafe.putByte(address + i, b);
+    }
+    public final void eatByteBuffer(ByteBuffer buf,long length) {
+        long end = position + length;
+        for (long i = position; i < end; i++)
+            unsafe.putByte(address + i, buf.get());
+        position=end;
     }
     public final void eatByteBuffer(ByteBuffer buf,long offset,long length) {
         long end = offset + length;
