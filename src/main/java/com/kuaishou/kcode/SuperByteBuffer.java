@@ -1,12 +1,10 @@
 package com.kuaishou.kcode;
 
-import sun.misc.Cleaner;
 import sun.misc.Unsafe;
-import sun.misc.VM;
-import sun.nio.ch.DirectBuffer;
 
 import java.lang.reflect.Field;
 import java.nio.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class SuperByteBuffer {
@@ -15,7 +13,7 @@ public class SuperByteBuffer {
     static {
         Field f = null;
         try {
-            f = Unsafe.class.getDeclaredField("theUnsafe");
+            f = ConcurrentHashMap.class.getDeclaredField("U");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -37,9 +35,8 @@ public class SuperByteBuffer {
     public long capacity;
     SuperByteBuffer(long cap) {
         this.capacity=cap;
-        boolean pa = VM.isDirectMemoryPageAligned();
         int ps = unsafe.pageSize();
-        long size = Math.max(1L, cap + (pa ? ps : 0));
+        long size = Math.max(1L, cap + ps);
 
 
         long base = 0;
@@ -49,7 +46,7 @@ public class SuperByteBuffer {
             throw x;
         }
 //        unsafe.setMemory(base, size, (byte) 0);
-        if (pa && (base % ps != 0)) {
+        if ((base % ps != 0)) {
             // Round up to page boundary
             address = base + ps - (base & (ps - 1));
         } else {
