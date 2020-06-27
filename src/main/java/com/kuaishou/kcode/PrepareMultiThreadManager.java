@@ -12,7 +12,7 @@ public class PrepareMultiThreadManager {
     public static ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
 
-    public static ArrayBlockingQueue<Long> remaining =new ArrayBlockingQueue<>(32);
+    public static ArrayBlockingQueue<Long> remaining =new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
@@ -24,6 +24,8 @@ public class PrepareMultiThreadManager {
 
     PrepareMultiThreadManager(){
         SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
+//        buffer.prepareMemory();
+//        System.out.println("准备完成");
         Thread prepareThread=new Thread(()->{
 
 

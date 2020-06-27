@@ -58,7 +58,7 @@ public class SuperByteBuffer {
     }
 
     public final void prepareMemory(){
-        unsafe.setMemory(address+512L*1024*1024,capacity-1, (byte) 0);
+        unsafe.setMemory(address,capacity-1, (byte) 0);
     }
     public final byte get(long i) {
         return unsafe.getByte(address + i);
