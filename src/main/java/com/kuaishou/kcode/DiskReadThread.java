@@ -51,6 +51,7 @@ public class DiskReadThread extends Thread {
                 buf.clear();
 //                channel.read(buf);
                 channel.read(buf,i);
+
                 buf.flip();
                 canread.put(buf);
 
