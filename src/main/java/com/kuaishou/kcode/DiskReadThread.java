@@ -50,10 +50,10 @@ public class DiskReadThread extends Thread {
 //                System.out.println("DiskRead waitBuffer="+(t2-t1) +"ms");
                 buf.clear();
 //                channel.read(buf);
-                channel.read(buf,i);
+                channel.read(buf);
 
                 buf.flip();
-                canread.put(buf);
+                canread.offer(buf);
 
             }
             buf= ByteBuffer.allocate(1);

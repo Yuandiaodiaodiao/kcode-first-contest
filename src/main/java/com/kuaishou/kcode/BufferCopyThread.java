@@ -8,7 +8,7 @@ public class BufferCopyThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> canread;
     ArrayBlockingQueue<Long> remaning;
 
-    public  SuperByteBuffer buffer;
+    public  MultiByteBuffer buffer;
 
     BufferCopyThread() {
     }
@@ -32,7 +32,7 @@ public class BufferCopyThread extends Thread {
                 //直接拉满
                 int remaining = b.remaining();
                 //从directbuffer中抽出来
-                buffer.eatByteBuffer(b,remaining);
+                buffer.eatByteBuffer(b);
                 remaning.offer((long) remaining);
                 canuse.offer(b);
 

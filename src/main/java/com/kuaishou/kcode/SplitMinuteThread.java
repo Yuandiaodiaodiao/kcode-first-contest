@@ -1,13 +1,9 @@
 package com.kuaishou.kcode;
 
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
 
-import sun.misc.Unsafe;
 
 public class SplitMinuteThread extends Thread {
     public  ArrayBlockingQueue<Long> remain;
@@ -50,7 +46,7 @@ public class SplitMinuteThread extends Thread {
     public static long SplitMinute_waitBuffer = 0;
     public static long SplitMinute_waitBa = 0;
     public static long copyCost = 0;
-    public  SuperByteBuffer buffer;
+    public  MultiByteBuffer buffer;
     @Override
     public void run() {
         super.run();
@@ -60,14 +56,11 @@ public class SplitMinuteThread extends Thread {
 
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
-            long tax = System.currentTimeMillis();
-            long tbx = System.currentTimeMillis();
-            System.out.println("分配内存花费" + (tbx - tax));
+
             while (true) {
                 int remaining = 0;
                 long timestart = 0;
                 if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 4) {
-//                    System.out.println("单走一个6");
                     timestart = System.currentTimeMillis();
                 } else {
                     long canreadPos= remain.take();

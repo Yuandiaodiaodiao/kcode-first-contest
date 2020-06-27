@@ -1,6 +1,5 @@
 package com.kuaishou.kcode;
 
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -21,9 +20,8 @@ public class PrepareMultiThreadManager {
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
     public static int THREAD_NUMBER=7;
-
+    public static  MultiByteBuffer buffer = new MultiByteBuffer();
     PrepareMultiThreadManager(){
-        SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
 //        buffer.prepareMemory();
 //        System.out.println("准备完成");
         Thread prepareThread=new Thread(()->{
@@ -50,6 +48,7 @@ public class PrepareMultiThreadManager {
         });
         Thread prepareMemory=new Thread(()->{
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+            buffer.allocate();
             PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
 //            buffer.prepareMemory();
