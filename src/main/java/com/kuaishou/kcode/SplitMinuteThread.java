@@ -74,14 +74,12 @@ public class SplitMinuteThread extends Thread {
 
 //                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
                     if (canreadPos == -1) {
-
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                         return;
                     }
                     timestart = System.currentTimeMillis();
                     remaining= (int) canreadPos;
-
                 }
 
                 long[] timearray = new long[16];
@@ -291,9 +289,7 @@ public class SplitMinuteThread extends Thread {
                 }
 
                 timearray[5] = System.currentTimeMillis();
-                for (int i = 1; i <= 5; ++i) {
-                    timearray[i] -= timearray[0];
-                }
+
 //                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 //                if(lastBuffLength==1539469608){
 //                    System.out.println("难顶");
@@ -315,6 +311,12 @@ public class SplitMinuteThread extends Thread {
                     splitTimeUse += System.currentTimeMillis() - timestart;
 
                 }
+                timearray[6] = System.currentTimeMillis();
+
+                for (int i = 1; i <= 6; ++i) {
+                    System.out.print(" "+(timearray[i]-timearray[i-1]));
+                }
+                System.out.println();
 
             }
         } catch (InterruptedException e) {

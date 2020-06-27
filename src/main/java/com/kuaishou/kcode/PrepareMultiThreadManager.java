@@ -49,6 +49,7 @@ public class PrepareMultiThreadManager {
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
             PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+            
 
         });
         prepareMemory.start();
