@@ -34,7 +34,9 @@ public class SuperByteBuffer {
 
     long address;
     public long position=0;
+    public long capacity;
     SuperByteBuffer(long cap) {
+        this.capacity=cap;
         boolean pa = VM.isDirectMemoryPageAligned();
         int ps = unsafe.pageSize();
         long size = Math.max(1L, cap + (pa ? ps : 0));
@@ -55,7 +57,9 @@ public class SuperByteBuffer {
         }
     }
 
-
+    public final void prepareMemory(){
+        unsafe.setMemory(address+512L*1024*1024,capacity-1, (byte) 0);
+    }
     public final byte get(long i) {
         return unsafe.getByte(address + i);
     }

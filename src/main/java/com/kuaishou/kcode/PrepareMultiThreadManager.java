@@ -23,11 +23,12 @@ public class PrepareMultiThreadManager {
     public static int THREAD_NUMBER=7;
 
     PrepareMultiThreadManager(){
+        SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
         Thread prepareThread=new Thread(()->{
 
 
 
-            SuperByteBuffer buffer = new SuperByteBuffer(15000000000L);
+
             bct=new BufferCopyThread();
             bct.LinkBlockingQueue(canuse,canread,remaining);
             bct.buffer=buffer;
@@ -49,7 +50,7 @@ public class PrepareMultiThreadManager {
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
             PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
-            
+//            buffer.prepareMemory();
 
         });
         prepareMemory.start();
