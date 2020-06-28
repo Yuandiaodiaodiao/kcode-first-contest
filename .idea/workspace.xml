@@ -131,26 +131,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="102" key="#git_push/0.0.1920.1040@0.0.1920.1040" timestamp="1593357980673" />
-    <state width="1878" height="246" key="GridCell.Tab.0.bottom" timestamp="1593358949768">
+    <state width="1878" height="246" key="GridCell.Tab.0.bottom" timestamp="1593359309820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593358949768" />
-    <state width="1878" height="246" key="GridCell.Tab.0.center" timestamp="1593358949768">
+    <state width="1878" height="246" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593359309820" />
+    <state width="1878" height="246" key="GridCell.Tab.0.center" timestamp="1593359309820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593358949768" />
-    <state width="1878" height="246" key="GridCell.Tab.0.left" timestamp="1593358949767">
+    <state width="1878" height="246" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593359309820" />
+    <state width="1878" height="246" key="GridCell.Tab.0.left" timestamp="1593359309820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593358949767" />
-    <state width="1878" height="246" key="GridCell.Tab.0.right" timestamp="1593358949768">
+    <state width="1878" height="246" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593359309820" />
+    <state width="1878" height="246" key="GridCell.Tab.0.right" timestamp="1593359309820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593358949768" />
+    <state width="1878" height="246" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593359309820" />
     <state x="441" y="94" key="SettingsEditor" timestamp="1593357972524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="441" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1593357972524" />
+    <state x="691" y="276" key="extract.method.dialog" timestamp="1593359097986">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="691" y="276" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593359097986" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593358106349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -242,21 +242,20 @@ public class SolveMinuteByteBufferThread extends Thread {
                     for (b = f.get(); b != ','; b = f.get()) {
                         useTime = (b - 48) + useTime * 10;
                     }
-                    b = f.get();
 
 
-                    f.position(f.position() + 13);
+
+                    f.position(f.position() + 14);
                     int stringHash = (hashService1 + hashService2) % 4999;
 
 
-                    long twoIPs = (ip1 << 32) + ip2;
                     int ipHash = HashCode.hashIp(ip1, ip2);
 
                     CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
                     if (payload == null) {
                         payload = new CheckPairPayLoad();
                         cacheCheckPair[stringHash][ipHash] = payload;
-                        payload.ip = twoIPs;
+                        payload.ip = (ip1 << 32) + ip2;;
                     }
 
                     //change payload
