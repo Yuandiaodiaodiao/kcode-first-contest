@@ -20,7 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d934383a-2fd5-4f8d-a13c-e192fac4544d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +52,7 @@
     <configuration name="KcodeRpcMonitorTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kuaishou.kcode.KcodeRpcMonitorTest" />
       <module name="kcodeRpcMonitor" />
+      <option name="VM_PARAMETERS" value=" -XX:+UseG1GC -XX:MaxGCPauseMillis=500 -Xss256k -Xms6G -Xmx6G -XX:MaxDirectMemorySize=1G" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.kuaishou.kcode.*" />
@@ -83,6 +85,10 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.KcodeRpcMonitorTest" />
+      <item itemvalue="Python.git_push" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.KcodeRpcMonitorTest" />
@@ -119,10 +125,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593357976245">
+    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593359923224">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593357976245" />
+    <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593359923224" />
     <state x="738" y="387" width="442" height="272" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1593357154443">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -131,22 +137,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="102" key="#git_push/0.0.1920.1040@0.0.1920.1040" timestamp="1593357980673" />
-    <state width="1878" height="246" key="GridCell.Tab.0.bottom" timestamp="1593359660743">
+    <state width="1878" height="282" key="GridCell.Tab.0.bottom" timestamp="1593359889455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593359660743" />
-    <state width="1878" height="246" key="GridCell.Tab.0.center" timestamp="1593359660743">
+    <state width="1878" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593359889455" />
+    <state width="1878" height="282" key="GridCell.Tab.0.center" timestamp="1593359889455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593359660743" />
-    <state width="1878" height="246" key="GridCell.Tab.0.left" timestamp="1593359660743">
+    <state width="1878" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593359889455" />
+    <state width="1878" height="282" key="GridCell.Tab.0.left" timestamp="1593359889455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593359660743" />
-    <state width="1878" height="246" key="GridCell.Tab.0.right" timestamp="1593359660743">
+    <state width="1878" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593359889455" />
+    <state width="1878" height="282" key="GridCell.Tab.0.right" timestamp="1593359889455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="246" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593359660743" />
+    <state width="1878" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593359889455" />
+    <state width="1878" height="282" key="GridCell.Tab.1.bottom" timestamp="1593359817750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1878" height="282" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
+    <state width="1878" height="282" key="GridCell.Tab.1.center" timestamp="1593359817750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1878" height="282" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
+    <state width="1878" height="282" key="GridCell.Tab.1.left" timestamp="1593359817750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1878" height="282" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
+    <state width="1878" height="282" key="GridCell.Tab.1.right" timestamp="1593359817750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1878" height="282" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
     <state x="441" y="94" key="SettingsEditor" timestamp="1593357972524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -157,6 +179,6 @@
     <state x="691" y="276" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593359097986" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593358106349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593359786517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

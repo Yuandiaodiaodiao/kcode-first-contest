@@ -12,11 +12,11 @@ public class PrepareMultiThreadManager {
     public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
-    public static int DIRECT_CHUNCK_SIZE = 357913920;
+    public static int DIRECT_CHUNCK_SIZE = MAXBUFFERLEN;
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = MAXBUFFERLEN;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=7;
+    public static int THREAD_NUMBER=8;
 
     PrepareMultiThreadManager(){
         Thread prepareThread=new Thread(()->{
@@ -33,7 +33,6 @@ public class PrepareMultiThreadManager {
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
-
             }
 
             System.out.println("异步加载结束");
@@ -42,7 +41,7 @@ public class PrepareMultiThreadManager {
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
             PrepareMultiThreadManager.solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
-            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+//            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
         });
         prepareMemory.start();
         prepareThread.start();
