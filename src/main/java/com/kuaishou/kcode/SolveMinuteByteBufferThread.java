@@ -57,7 +57,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     long ip2 = 0;
 
                     int hashService1hash1 = b;
-                    f.position(f.position() + 5);
+                    f.position(f.position() + 9);
                     for (; b != ','; b = f.get()) {
                     }
                     int len1 = f.position() - 1;
