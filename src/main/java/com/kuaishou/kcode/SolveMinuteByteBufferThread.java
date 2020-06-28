@@ -57,7 +57,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     long ip2 = 0;
 
                     int hashService1hash1 = b;
-                    f.position(f.position() + 9);
+                    f.position(f.position() + 10);
                     for (; b != ','; b = f.get()) {
                     }
                     int len1 = f.position() - 1;
@@ -69,7 +69,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     int numBuff = 0;
                     for (b = f.get(); b != ','; b = f.get()) {
                         if (b != '.') {
-                            numBuff = (b - '0') + numBuff * 10;
+                            numBuff = (b - 48) + numBuff * 10;
                         } else {
                             ip1 <<= 8;
                             ip1 += numBuff;
@@ -82,7 +82,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                     b = f.get();
                     int hashService2hash1 = b;
-                    f.position(f.position() + 9);
+                    f.position(f.position() + 10);
                     for (; b != ','; b = f.get()) {
 
                     }
@@ -94,7 +94,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
                     for (b = f.get(); b != ','; b = f.get()) {
                         if (b != '.') {
-                            numBuff = (b - '0') + numBuff * 10;
+                            numBuff = (b - 48) + numBuff * 10;
                         } else {
                             ip2 <<= 8;
                             ip2 += numBuff;
