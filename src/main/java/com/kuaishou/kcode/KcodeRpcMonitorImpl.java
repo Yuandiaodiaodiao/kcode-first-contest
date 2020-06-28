@@ -41,7 +41,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     }
 
     public void prepare(String path) {
-
+        for(int i=0;i<1024;++i){
+            ansCache[i]=NOANSWER;
+        }
 
         Long startTime = System.currentTimeMillis();
         System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
@@ -94,7 +96,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                         + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
                         + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
                         + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))
-        ) % 4999)<<5) + t];
+        ) % 4999) << 5) + t];
 
 
     }
@@ -102,36 +104,73 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     private static final String NOANSWER = "-1.00%";
     //查询2
-
+    int statusQuery = 0;
+    long hashQuery;
+    static String[] ansCache = new String[1024];
+    int queryIndex=0;
+    int queryLong=-1;
     public final String checkResponder(String str2, String start, String end) {
+        if (statusQuery == 2) {
+            queryIndex=(queryIndex+1)%queryLong;
+            return ansCache[queryIndex];
+        } else if (statusQuery == 1) {
+            long t1 = 26427312 + start.charAt(9) * 1440 + start.charAt(11) * 600 + start.charAt(12) * 60 + start.charAt(14) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+            long t2 = 26427313 + end.charAt(9) * 1440 + end.charAt(11) * 600 + end.charAt(12) * 60 + end.charAt(14) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+            int len2 = str2.length();
 
-
-//        int t1 = 25721712 + (((start.charAt(9) + start.charAt(8) * 10) * 24 + start.charAt(11) * 10 + start.charAt(12)) * 6 + start.charAt(14)) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
-//        int t2 = 25721713 + (((end.charAt(9) + end.charAt(8) * 10) * 24 + end.charAt(11) * 10 + end.charAt(12)) * 6 + end.charAt(14)) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
-
-//        int t1 = 25721712 + start.charAt(9)* 1440+ start.charAt(8) *14400+ start.charAt(11) * 600 + start.charAt(12)* 60+ start.charAt(14)* 10  + start.charAt(15) - SplitMinuteThread.firstTime;
-//        int t2 = 25721713 + end.charAt(9)* 1440+ end.charAt(8) *14400+ end.charAt(11) * 600 + end.charAt(12)* 60+ end.charAt(14)* 10  + end.charAt(15) - SplitMinuteThread.firstTime;
-
-        int t1 = 26427312 + start.charAt(9) * 1440 + start.charAt(11) * 600 + start.charAt(12) * 60 + start.charAt(14) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
-        int t2 = 26427313 + end.charAt(9) * 1440 + end.charAt(11) * 600 + end.charAt(12) * 60 + end.charAt(14) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
-//        if(t2<t1+1){
-//            System.out.println("翻车");
-//        }
-        if (t1 > 31 || t2 < 0) {
-            return NOANSWER;
-        }
-        t2 = (t2 > 31) ? 31 : t2;
-        int len2 = str2.length();
-
-        if (t1 <= 0) {
-            return PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(t2 << 10) + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
+            long strHash = ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
                     + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
-                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))];
+                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97));
+            long thisHashQuery = (t1 << 12) + (t2 << 37) + strHash;
+            if(thisHashQuery==hashQuery){
+                statusQuery=2;
+                ++queryLong;
+                return ansCache[queryIndex];
+            }
+            if (t1 > 31 || t2 < 0) {
+                ++queryLong;
+                return NOANSWER;
+            }
+            t2 = (t2 > 31) ? 31 : t2;
+
+            if (t1 <= 0) {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) +strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            } else {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            }
+
         } else {
-            return PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(t1 << 15) + (t2 << 10) + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
+            long t1 = 26427312 + start.charAt(9) * 1440 + start.charAt(11) * 600 + start.charAt(12) * 60 + start.charAt(14) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+            long t2 = 26427313 + end.charAt(9) * 1440 + end.charAt(11) * 600 + end.charAt(12) * 60 + end.charAt(14) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+            int len2 = str2.length();
+
+            long strHash = ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
                     + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
-                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))];
+                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97));
+            hashQuery = (t1 << 12) + (t2 << 37) + strHash;
+            statusQuery = 1;
+            if (t1 > 31 || t2 < 0) {
+                ++queryLong;
+                return NOANSWER;
+            }
+            t2 = (t2 > 31) ? 31 : t2;
+
+            if (t1 <= 0) {
+
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) + (int) strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            } else {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + (int) strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            }
         }
+
 
     }
 
