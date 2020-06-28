@@ -43,6 +43,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public void prepare(String path) {
         for(int i=0;i<1024;++i){
             ansCache[i]=NOANSWER;
+            checkPairCache[i]=NOANSWERARRAY;
         }
 
         Long startTime = System.currentTimeMillis();
@@ -69,12 +70,85 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     int tt = -1;
-
+    ArrayList<String>[] checkPairCache=new ArrayList[1024];
+    int statusQuery1=0;
+    long hashQuery;
+    int queryIndex1=0;
+    int queryLong1=-1;
     public List<String> checkPair(String str1, String str2, String time) {
 //        if(tt==-1){
 //            manager.stop();
 //            tt=1;
 //        }
+
+        if (statusQuery1 == 2) {
+            queryIndex1=(queryIndex1+1)%queryLong1;
+            return checkPairCache[queryIndex1];
+        } else if (statusQuery1 == 1) {
+            int t = 26427312 + time.charAt(9) * 1440 + time.charAt(11) * 600 + time.charAt(12) * 60 + time.charAt(14) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
+            int len1 = str1.length();
+            int len2 = str2.length();
+
+            long strHash =((
+                    (((((str1.charAt(len1 - 5) + (str1.charAt(len1 - 4) << 2) + (str1.charAt(len1 - 3) << 6)
+                            + (str1.charAt(len1 - 2) << 13) + (str1.charAt(len1 - 1) << 17)) % 69) << 12)
+                            + ((str1.charAt(0) - 97) << 8)))
+
+                            + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
+                            + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
+                            + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))
+            ) % 4999);
+            long thisHashQuery = ((long)t1 << 12) + (t2 << 37) + strHash;
+            if(thisHashQuery==hashQuery){
+                statusQuery=2;
+                ++queryLong;
+                return ansCache[queryIndex];
+            }
+            if (t1 > 31 || t2 < 0) {
+                ++queryLong;
+                return NOANSWER;
+            }
+            t2 = (t2 > 31) ? 31 : t2;
+
+            if (t1 <= 0) {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) +strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            } else {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            }
+
+        } else {
+            long t1 = 26427312 + start.charAt(9) * 1440 + start.charAt(11) * 600 + start.charAt(12) * 60 + start.charAt(14) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
+            long t2 = 26427313 + end.charAt(9) * 1440 + end.charAt(11) * 600 + end.charAt(12) * 60 + end.charAt(14) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+            int len2 = str2.length();
+
+            long strHash = ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
+                    + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
+                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97));
+            hashQuery = (t1 << 12) + (t2 << 37) + strHash;
+            statusQuery = 1;
+            if (t1 > 31 || t2 < 0) {
+                ++queryLong;
+                return NOANSWER;
+            }
+            t2 = (t2 > 31) ? 31 : t2;
+
+            if (t1 <= 0) {
+
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) + (int) strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            } else {
+                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + (int) strHash)];
+                ansCache[++queryLong]=ans;
+                return ans;
+            }
+        }
+
+
 
         int t = 26427312 + time.charAt(9) * 1440 + time.charAt(11) * 600 + time.charAt(12) * 60 + time.charAt(14) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
 
@@ -106,7 +180,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     //查询2
     int statusQuery = 0;
     long hashQuery;
-    static String[] ansCache = new String[1024];
+     String[] ansCache = new String[1024];
     int queryIndex=0;
     int queryLong=-1;
     public final String checkResponder(String str2, String start, String end) {
