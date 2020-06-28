@@ -72,7 +72,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     int tt = -1;
     ArrayList<String>[] checkPairCache=new ArrayList[1024];
     int statusQuery1=0;
-    long hashQuery;
+    long hashQuery1;
     int queryIndex1=0;
     int queryLong1=-1;
     public List<String> checkPair(String str1, String str2, String time) {
@@ -98,59 +98,51 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                             + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
                             + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))
             ) % 4999);
-            long thisHashQuery = ((long)t1 << 12) + (t2 << 37) + strHash;
-            if(thisHashQuery==hashQuery){
-                statusQuery=2;
-                ++queryLong;
-                return ansCache[queryIndex];
+            long thisHashQuery = ((long)t << 12)+ strHash;
+            if(thisHashQuery==hashQuery1){
+                statusQuery1=2;
+                ++queryLong1;
+                return checkPairCache[0];
             }
-            if (t1 > 31 || t2 < 0) {
-                ++queryLong;
-                return NOANSWER;
-            }
-            t2 = (t2 > 31) ? 31 : t2;
+            ++queryLong1;
 
-            if (t1 <= 0) {
-                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) +strHash)];
-                ansCache[++queryLong]=ans;
-                return ans;
-            } else {
-                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + strHash)];
-                ansCache[++queryLong]=ans;
+            if((t > 29 || t < 0)){
+                return NOANSWERARRAY;
+            }else{
+                ArrayList<String> ans=PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(int) ((strHash << 5) + t)];
+                checkPairCache[queryLong1]=ans;
                 return ans;
             }
+
 
         } else {
-            long t1 = 26427312 + start.charAt(9) * 1440 + start.charAt(11) * 600 + start.charAt(12) * 60 + start.charAt(14) * 10 + start.charAt(15) - SplitMinuteThread.firstTime;
-            long t2 = 26427313 + end.charAt(9) * 1440 + end.charAt(11) * 600 + end.charAt(12) * 60 + end.charAt(14) * 10 + end.charAt(15) - SplitMinuteThread.firstTime;
+            int t = 26427312 + time.charAt(9) * 1440 + time.charAt(11) * 600 + time.charAt(12) * 60 + time.charAt(14) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
+            int len1 = str1.length();
             int len2 = str2.length();
 
-            long strHash = ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
-                    + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
-                    + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97));
-            hashQuery = (t1 << 12) + (t2 << 37) + strHash;
-            statusQuery = 1;
-            if (t1 > 31 || t2 < 0) {
-                ++queryLong;
-                return NOANSWER;
-            }
-            t2 = (t2 > 31) ? 31 : t2;
+            long strHash =((
+                    (((((str1.charAt(len1 - 5) + (str1.charAt(len1 - 4) << 2) + (str1.charAt(len1 - 3) << 6)
+                            + (str1.charAt(len1 - 2) << 13) + (str1.charAt(len1 - 1) << 17)) % 69) << 12)
+                            + ((str1.charAt(0) - 97) << 8)))
 
-            if (t1 <= 0) {
-
-                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) + (int) strHash)];
-                ansCache[++queryLong]=ans;
-                return ans;
-            } else {
-                String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + (int) strHash)];
-                ansCache[++queryLong]=ans;
+                            + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
+                            + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
+                            + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))
+            ) % 4999);
+            hashQuery1= ((long)t << 12)+ strHash;
+            statusQuery1=1;
+            ++queryLong1;
+            if((t > 29 || t < 0)){
+                return NOANSWERARRAY;
+            }else{
+                ArrayList<String> ans=PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(int) ((strHash << 5) + t)];
+                checkPairCache[queryLong1]=ans;
                 return ans;
             }
         }
 
 
 
-        int t = 26427312 + time.charAt(9) * 1440 + time.charAt(11) * 600 + time.charAt(12) * 60 + time.charAt(14) * 10 + time.charAt(15) - SplitMinuteThread.firstTime;
 
 //        int t = 25721712 +  time.charAt(9)* 1440+ time.charAt(8) *14400+ time.charAt(11) * 600 + time.charAt(12)* 60+ time.charAt(14)* 10  + time.charAt(15)- SplitMinuteThread.firstTime;
 //        if(t!=2222){
@@ -159,19 +151,6 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 ////            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
 ////            throw new ArrayIndexOutOfBoundsException("MINSIZE="+SplitMinuteThread.MINBUFFERLEN);
 //        }
-        int len1 = str1.length();
-        int len2 = str2.length();
-
-        return (t > 29 || t < 0) ? NOANSWERARRAY : PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(((
-                (((((str1.charAt(len1 - 5) + (str1.charAt(len1 - 4) << 2) + (str1.charAt(len1 - 3) << 6)
-                        + (str1.charAt(len1 - 2) << 13) + (str1.charAt(len1 - 1) << 17)) % 69) << 12)
-                        + ((str1.charAt(0) - 97) << 8)))
-
-                        + ((((str2.charAt(len2 - 6) + (str2.charAt(len2 - 5) << 5) + (str2.charAt(len2 - 4) << 10)
-                        + (str2.charAt(len2 - 3) << 14) + (str2.charAt(len2 - 2) << 15)
-                        + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97))
-        ) % 4999) << 5) + t];
-
 
     }
 
@@ -199,21 +178,22 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             if(thisHashQuery==hashQuery){
                 statusQuery=2;
                 ++queryLong;
-                return ansCache[queryIndex];
+                return ansCache[0];
             }
+            ++queryLong;
+
             if (t1 > 31 || t2 < 0) {
-                ++queryLong;
                 return NOANSWER;
             }
             t2 = (t2 > 31) ? 31 : t2;
 
             if (t1 <= 0) {
                 String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) +strHash)];
-                ansCache[++queryLong]=ans;
+                ansCache[queryLong]=ans;
                 return ans;
             } else {
                 String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + strHash)];
-                ansCache[++queryLong]=ans;
+                ansCache[queryLong]=ans;
                 return ans;
             }
 
@@ -227,8 +207,9 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
                     + (str2.charAt(len2 - 1) << 24)) % 89) << 3) + (str2.charAt(0) - 97));
             hashQuery = (t1 << 12) + (t2 << 37) + strHash;
             statusQuery = 1;
+            ++queryLong;
+
             if (t1 > 31 || t2 < 0) {
-                ++queryLong;
                 return NOANSWER;
             }
             t2 = (t2 > 31) ? 31 : t2;
@@ -236,11 +217,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
             if (t1 <= 0) {
 
                 String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t2 << 10) + (int) strHash)];
-                ansCache[++queryLong]=ans;
+                ansCache[queryLong]=ans;
                 return ans;
             } else {
                 String ans=PrepareMultiThreadDataCore.CheckResponderFastArrayFlat[(int) ((t1 << 15) + (t2 << 10) + (int) strHash)];
-                ansCache[++queryLong]=ans;
+                ansCache[queryLong]=ans;
                 return ans;
             }
         }
