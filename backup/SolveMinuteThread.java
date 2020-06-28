@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static java.lang.System.nanoTime;
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
-import com.kuaishou.kcode.ArrayPayLoad;
+
 public class SolveMinuteThread extends Thread {
     private RawBufferSolve rbs;
     private ArrayBlockingQueue abq;

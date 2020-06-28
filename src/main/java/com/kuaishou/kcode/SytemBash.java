@@ -4,12 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.util.Date;
 
 public class SytemBash {
 
     public static void main(String[] args) {
+        ByteBuffer b=ByteBuffer.allocate(10);
+        b.put((byte)1);
+        b.put((byte)1);
+        b.put((byte)1);
+        b.flip();
+        System.out.println(b.limit());
     }
     public static String getAllInfo(){
         String s="";

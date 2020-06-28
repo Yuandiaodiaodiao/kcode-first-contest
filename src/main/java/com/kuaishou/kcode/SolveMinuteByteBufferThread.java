@@ -1,17 +1,18 @@
 package com.kuaishou.kcode;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class SolveMinuteByteBufferThread extends Thread {
-    ArrayBlockingQueue<ByteBuffer> unsolvedMinutes;
+    ArrayBlockingQueue<ArrayList<ByteBuffer>> unsolvedMinutes;
     ArrayBlockingQueue<ByteBuffer> solvedMinutes;
 
 
-    SolveMinuteByteBufferThread(ArrayBlockingQueue<ByteBuffer> unsolvedMinutes, ArrayBlockingQueue<ByteBuffer> solvedMinutes) {
+    SolveMinuteByteBufferThread(ArrayBlockingQueue<ArrayList<ByteBuffer>> unsolvedMinutes, ArrayBlockingQueue<ByteBuffer> solvedMinutes) {
         this.solvedMinutes = solvedMinutes;
         this.unsolvedMinutes = unsolvedMinutes;
     }
@@ -27,114 +28,92 @@ public class SolveMinuteByteBufferThread extends Thread {
 //        System.out.println("清空耗时="+(t2-t1));
     }
 
-    @Override
-    public void run() {
-        super.run();
-        try {
-            solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
-            CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
-            while (true) {
-                ByteBuffer f = unsolvedMinutes.take();
-                if (f.limit() == 0) {
-//                Thread t = Thread.currentThread();
-//                String name = t.getName();
-//                System.out.println( name+"结束");
-                    unsolvedMinutes.put(f);
-                    return;
-                }
-                long timestart = System.currentTimeMillis();
+    public void solveByteByffer(ByteBuffer f){
+        while (f.hasRemaining()) {
+            byte b = f.get();
+            if (b == '\n') continue;
+            long ip1 = 0;
+            long ip2 = 0;
 
-                //直接拉满
-                int remaining = f.remaining();
-                //从directbuffer中抽出来
-                int startMinute = -1;
-
-                CheckResponderPayLoad[] cacheCheckResponder = new CheckResponderPayLoad[0];
-                while (f.hasRemaining()) {
-                    byte b = f.get();
-                    if (b == '\n') continue;
-                    long ip1 = 0;
-                    long ip2 = 0;
-
-                    int hashService1hash1 = b;
-                    f.position(f.position() + 5);
-                    for (; b != ','; b = f.get()) {
-                    }
-                    int len1 = f.position() - 1;
-                    int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
-                            (f.get(len1 - 3) << 6) + (f.get(len1 - 2) << 13) + (f.get(len1 - 1) << 17)) % 69) << 12) +
-                            ((hashService1hash1 - 97) << 8));
+            int hashService1hash1 = b;
+            f.position(f.position() + 5);
+            for (; b != ','; b = f.get()) {
+            }
+            int len1 = f.position() - 1;
+            int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
+                    (f.get(len1 - 3) << 6) + (f.get(len1 - 2) << 13) + (f.get(len1 - 1) << 17)) % 69) << 12) +
+                    ((hashService1hash1 - 97) << 8));
 
 
-                    int numBuff = 0;
-                    for (b = f.get(); b != ','; b = f.get()) {
-                        if (b != '.') {
-                            numBuff = (b - '0') + numBuff * 10;
-                        } else {
-                            ip1 <<= 8;
-                            ip1 += numBuff;
-                            numBuff = 0;
-                        }
-                    }
+            int numBuff = 0;
+            for (b = f.get(); b != ','; b = f.get()) {
+                if (b != '.') {
+                    numBuff = (b - '0') + numBuff * 10;
+                } else {
                     ip1 <<= 8;
                     ip1 += numBuff;
                     numBuff = 0;
+                }
+            }
+            ip1 <<= 8;
+            ip1 += numBuff;
+            numBuff = 0;
 
-                    b = f.get();
-                    int hashService2hash1 = b;
-                    f.position(f.position() + 9);
-                    for (; b != ','; b = f.get()) {
+            b = f.get();
+            int hashService2hash1 = b;
+            f.position(f.position() + 9);
+            for (; b != ','; b = f.get()) {
 
-                    }
-                    int len2 = f.position() - 1;
+            }
+            int len2 = f.position() - 1;
 
-                    int hashService2 = ((hashService2hash1 - 97) +
-                            ((((f.get(len2 - 6)) + (f.get(len2 - 5) << 5) +
-                                    (f.get(len2 - 4) << 10) + (f.get(len2 - 3) << 14) +
-                                    (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
-                    for (b = f.get(); b != ','; b = f.get()) {
-                        if (b != '.') {
-                            numBuff = (b - '0') + numBuff * 10;
-                        } else {
-                            ip2 <<= 8;
-                            ip2 += numBuff;
-                            numBuff = 0;
-                        }
-                    }
+            int hashService2 = ((hashService2hash1 - 97) +
+                    ((((f.get(len2 - 6)) + (f.get(len2 - 5) << 5) +
+                            (f.get(len2 - 4) << 10) + (f.get(len2 - 3) << 14) +
+                            (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
+            for (b = f.get(); b != ','; b = f.get()) {
+                if (b != '.') {
+                    numBuff = (b - '0') + numBuff * 10;
+                } else {
                     ip2 <<= 8;
                     ip2 += numBuff;
+                    numBuff = 0;
+                }
+            }
+            ip2 <<= 8;
+            ip2 += numBuff;
 
-                    b = f.get();
-                    int success = 0;
-                    if (b == 't') {
-                        success = 1;
-                        f.position(f.position() + 4);
-                    } else {
-                        //failed
-                        f.position(f.position() + 5);
-                    }
+            b = f.get();
+            int success = 0;
+            if (b == 't') {
+                success = 1;
+                f.position(f.position() + 4);
+            } else {
+                //failed
+                f.position(f.position() + 5);
+            }
 
 
-                    int useTime = 0;
-                    for (b = f.get(); b != ','; b = f.get()) {
-                        useTime = (b - '0') + useTime * 10;
-                    }
-                    b = f.get();
+            int useTime = 0;
+            for (b = f.get(); b != ','; b = f.get()) {
+                useTime = (b - '0') + useTime * 10;
+            }
+            b = f.get();
 
-                    if (startMinute == -1) {
-                        int minTime = 0;
+            if (startMinute == -1) {
+                int minTime = 0;
 
-                        for (int timepos = 1; timepos <= 10; ++timepos, b = f.get()) {
-                            minTime = (b - '0') + minTime * 10;
-                        }
-                        f.position(f.position() + 3);
-                        minTime /= 60;
-                        startMinute = minTime - SplitMinuteThread.firstTime;
+                for (int timepos = 1; timepos <= 10; ++timepos, b = f.get()) {
+                    minTime = (b - '0') + minTime * 10;
+                }
+                f.position(f.position() + 3);
+                minTime /= 60;
+                startMinute = minTime - SplitMinuteThread.firstTime;
 
-                        for (int i = 0; i < 999; ++i) {
-                            PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i] = new CheckResponderPayLoad();
-                        }
-                        cacheCheckResponder = PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
+                for (int i = 0; i < 999; ++i) {
+                    PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i] = new CheckResponderPayLoad();
+                }
+                cacheCheckResponder = PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
 //                    for(int i=0;i<=4999;++i){
 //                        PrepareMultiThreadDataCore.hashCheckPair[startMinute][i]=new HashMap<>(64);
 //                    }
@@ -143,40 +122,100 @@ public class SolveMinuteByteBufferThread extends Thread {
 //                    String name = t.getName();
 //                    System.out.println( "time= "+startMinute+" "+name+"接单 size="+f.remaining()+" pos="+f.position()+ " limit="+f.limit());
 
-                    } else {
-                        f.position(f.position() + 13);
-                    }
-                    int stringHash = (hashService1 + hashService2) % 4999;
-                    int secondServicesHash = hashService2;
+            } else {
+                f.position(f.position() + 13);
+            }
+            int stringHash = (hashService1 + hashService2) % 4999;
+            int secondServicesHash = hashService2;
 
 
-                    long twoIPs = (ip1 << 32) + ip2;
-                    int ipHash = HashCode.hashIp(ip1, ip2);
+            long twoIPs = (ip1 << 32) + ip2;
+            int ipHash = HashCode.hashIp(ip1, ip2);
 
-                    CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
-                    if (payload == null) {
-                        payload = new CheckPairPayLoad();
-                        cacheCheckPair[stringHash][ipHash] = payload;
-                        payload.ip = twoIPs;
-                    }
+            CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
+            if (payload == null) {
+                payload = new CheckPairPayLoad();
+                cacheCheckPair[stringHash][ipHash] = payload;
+                payload.ip = twoIPs;
+            }
 
-                    //change payload
+            //change payload
 
-                    payload.successTimes += success;
-                    //1^1 =0 0^1 =1
-                    payload.failedTimes += success ^ 1;
-                    payload.bucket[useTime] += 1;
-
-
-                    CheckResponderPayLoad payload2 = cacheCheckResponder[secondServicesHash];
-
-                    payload2.success += success;
-                    payload2.failed += success ^ 1;
+            payload.successTimes += success;
+            //1^1 =0 0^1 =1
+            payload.failedTimes += success ^ 1;
+            payload.bucket[useTime] += 1;
 
 
+            CheckResponderPayLoad payload2 = cacheCheckResponder[secondServicesHash];
+
+            payload2.success += success;
+            payload2.failed += success ^ 1;
+
+
+        }
+    }
+    int startMinute = -1;
+    CheckPairPayLoad[][] cacheCheckPair;
+    CheckResponderPayLoad[] cacheCheckResponder;
+    @Override
+    public void run() {
+        super.run();
+        try {
+            solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
+           cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
+            ByteBuffer bcentense=ByteBuffer.allocate(1024);
+            bcentense.clear();
+            while (true) {
+                //n个ByteBuffer组成一个完整的一分钟
+                startMinute=-1;
+                cacheCheckResponder = new CheckResponderPayLoad[0];
+                ArrayList<ByteBuffer> farray=unsolvedMinutes.take();
+
+                if (farray.size() == 0) {
+                    //退出
+                    return;
                 }
 
-                solvedMinutes.put(f);
+                for(int i=0;i<farray.size()-1;++i){
+                    //找第i个ByteBuffer后面\n的位置
+                    ByteBuffer b1=farray.get(i);
+                    int limit1=b1.limit()-1;
+                    int enterPos1=limit1-1;
+
+                    for(;b1.get(enterPos1)!='\n';--enterPos1){
+
+                    }
+                    if(enterPos1==b1.limit()-1){
+                        //最后一位就是\n
+                        continue;
+                    }else{
+                        //最后一位不是\n 做句子拼接
+                        for(int j=enterPos1;j<=limit1;++j){
+                            bcentense.put(b1.get(j));
+                        }
+                        ByteBuffer b2=farray.get(i+1);
+                        byte bb=b2.get();
+                        while(true){
+                            bcentense.put(bb);
+                            if(bb=='\n')break;
+                        }
+                        //中间的一句被抽走了
+                    }
+                }
+                if(bcentense.position()>0){
+                    bcentense.flip();
+                    farray.add(bcentense);
+                }
+                //处理bytebuffer 后期可以线程池二分优化
+                for(ByteBuffer b :farray){
+                    solveByteByffer(b);
+                    //每处理完一个byteBuffer 解锁对应占用的内存位置
+                }
+                long timestart = System.currentTimeMillis();
+
+
+
                 long timestart2 = System.currentTimeMillis();
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);

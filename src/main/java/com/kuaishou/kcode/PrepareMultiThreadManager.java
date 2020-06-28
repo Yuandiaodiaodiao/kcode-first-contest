@@ -1,6 +1,7 @@
 package com.kuaishou.kcode;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class PrepareMultiThreadManager {
@@ -11,8 +12,8 @@ public class PrepareMultiThreadManager {
     public static ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
 
-    public static ArrayBlockingQueue<Long> remaining =new ArrayBlockingQueue<>(64);
-    public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
+    public static ArrayBlockingQueue<BufferPayload> remaining =new ArrayBlockingQueue<>(64);
+    public static ArrayBlockingQueue<ArrayList<ByteBuffer>> unsolvedMinutes = new ArrayBlockingQueue<>(64);
     public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
     public static int MAXBUFFERLEN=476824288;
     public static int DIRECT_CHUNCK_SIZE = MAXBUFFERLEN;
@@ -80,12 +81,8 @@ public class PrepareMultiThreadManager {
             smt.freeMemory();
             timeArray[1]=System.currentTimeMillis();
 
-            ByteBuffer b=ByteBuffer.allocate(1);
-            b.limit(0);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
+
+
             for(int i=0;i<THREAD_NUMBER;++i){
                 smbbt[i].join();
             }
