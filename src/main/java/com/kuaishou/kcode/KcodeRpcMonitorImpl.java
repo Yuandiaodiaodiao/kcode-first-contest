@@ -43,6 +43,8 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     public void prepare(String path) {
         for(int i=0;i<1024;++i){
             ansCache[i]=NOANSWER;
+        }
+        for(int i=0;i<5000;++i){
             checkPairCache[i]=NOANSWERARRAY;
         }
 
@@ -70,7 +72,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     int tt = -1;
-    ArrayList<String>[] checkPairCache=new ArrayList[1024];
+    ArrayList<String>[] checkPairCache=new ArrayList[5000];
     int statusQuery1=0;
     long hashQuery1;
     int queryIndex1=0;
