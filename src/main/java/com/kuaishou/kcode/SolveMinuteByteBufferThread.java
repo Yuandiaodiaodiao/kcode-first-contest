@@ -228,14 +228,9 @@ public class SolveMinuteByteBufferThread extends Thread {
                     ip2 += numBuff;
 
                     b = f.get();
-                    int success = 0;
-                    if (b == 116) {
-                        success = 1;
-                        f.position(f.position() + 4);
-                    } else {
-                        //failed
-                        f.position(f.position() + 5);
-                    }
+                    int success = (b==116?0:1);
+                    f.position(f.position() + 4+success);
+
 
 
                     int useTime = 0;
@@ -255,21 +250,21 @@ public class SolveMinuteByteBufferThread extends Thread {
                     if (payload == null) {
                         payload = new CheckPairPayLoad();
                         cacheCheckPair[stringHash][ipHash] = payload;
-                        payload.ip = (ip1 << 32) + ip2;;
+                        payload.ip = (ip1 << 32) + ip2;
                     }
 
                     //change payload
 
-                    payload.successTimes += success;
+                    payload.successTimes += success ^1;
                     //1^1 =0 0^1 =1
-                    payload.failedTimes += success ^ 1;
+                    payload.failedTimes += success ;
                     payload.bucket[useTime] += 1;
 
 
                     CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
 
-                    payload2.success += success;
-                    payload2.failed += success ^ 1;
+                    payload2.success += success ^1;
+                    payload2.failed += success;
 
 
                 }
