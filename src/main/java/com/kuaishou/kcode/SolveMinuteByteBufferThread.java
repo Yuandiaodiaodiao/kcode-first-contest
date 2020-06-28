@@ -19,7 +19,7 @@ public class SolveMinuteByteBufferThread extends Thread {
     public void clearCheckPair(CheckPairPayLoad[][] c) {
         long t1 = System.currentTimeMillis();
         for (int i = 0; i <= 4999; ++i) {
-            for (int j = 0; j <= 3369; ++j) {
+            for (int j = 0; j <= 2552; ++j) {
                 c[i][j] = null;
             }
         }

@@ -12,6 +12,6 @@ public class PrepareMultiThreadDataCore {
     public static String[] CheckResponderFastArrayFlat =new String[1048576+1];
 
     public static CheckPairPayLoad[][] newhashCheckPair(){
-        return new CheckPairPayLoad[5001][3370];
+        return new CheckPairPayLoad[5001][2554];
     }
 }
