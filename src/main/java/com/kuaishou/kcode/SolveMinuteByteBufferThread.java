@@ -52,13 +52,13 @@ public class SolveMinuteByteBufferThread extends Thread {
                 CheckResponderPayLoad[] cacheCheckResponder = new CheckResponderPayLoad[0];
                 while (f.hasRemaining()) {
                     byte b = f.get();
-                    if (b == '\n') continue;
+//                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
 
                     int hashService1hash1 = b;
                     f.position(f.position() + 10);
-                    for (; b != ','; b = f.get()) {
+                    for (; b != 44; b = f.get()) {
                     }
                     int len1 = f.position() - 1;
                     int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
@@ -67,8 +67,8 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                     int numBuff = 0;
-                    for (b = f.get(); b != ','; b = f.get()) {
-                        if (b != '.') {
+                    for (b = f.get(); b != 44; b = f.get()) {
+                        if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
                             ip1 <<= 8;
@@ -83,7 +83,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     b = f.get();
                     int hashService2hash1 = b;
                     f.position(f.position() + 10);
-                    for (; b != ','; b = f.get()) {
+                    for (; b != 44; b = f.get()) {
 
                     }
                     int len2 = f.position() - 1;
@@ -92,8 +92,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                             ((((f.get(len2 - 6)) + (f.get(len2 - 5) << 5) +
                                     (f.get(len2 - 4) << 10) + (f.get(len2 - 3) << 14) +
                                     (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
-                    for (b = f.get(); b != ','; b = f.get()) {
-                        if (b != '.') {
+                    for (b = f.get(); b != 44; b = f.get()) {
+                        if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
                             ip2 <<= 8;
@@ -106,7 +106,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                     b = f.get();
                     int success = 0;
-                    if (b == 't') {
+                    if (b == 116) {
                         success = 1;
                         f.position(f.position() + 4);
                     } else {
