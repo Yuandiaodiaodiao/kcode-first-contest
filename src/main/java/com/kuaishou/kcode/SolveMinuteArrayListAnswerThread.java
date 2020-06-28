@@ -30,7 +30,7 @@ public class SolveMinuteArrayListAnswerThread extends Thread {
             ArrayList<String> as = new ArrayList<>(32);
             PrepareMultiThreadDataCore.hashCheckPairArrayFlat[(i<<5)+m4index] = as;
             CheckPairPayLoad[] hArray2=hArray[i];
-            for (int j=0;j<3369;++j) {
+            for (int j=0;j<2553;++j) {
 
 
                 CheckPairPayLoad payLoad =hArray2[j];
