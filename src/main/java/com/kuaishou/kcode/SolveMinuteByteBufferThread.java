@@ -193,6 +193,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 byte b;
                 int limit=f.limit();
                 long newCost=0;
+                long newCost2=0;
 //                System.out.println("找time"+(t1-t0));
                 while (position<limit) {
 //                    if (b == 10) continue;
@@ -211,6 +212,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                     int numBuff = 0;
+                    newCost-=System.currentTimeMillis();
 
                     while((b = byteArray[++position])!=44){
                         if (b != 46) {
@@ -220,6 +222,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                             numBuff = 0;
                         }
                     }
+                    newCost+=System.currentTimeMillis();
+
                     ip1 = (ip1<<8)+numBuff;
 
                     int hashService2hash1 =  byteArray[++position];
@@ -234,13 +238,13 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
 
                     numBuff = 0;
-                    newCost-=System.currentTimeMillis();
+                    newCost2-=System.currentTimeMillis();
 
                     while((b = byteArray[++position])!=44){
                         numBuff=(b!=46)?(b - 48) + numBuff * 10:numBuff;
                         ip2= (b!=46)?ip2:(ip2<<8)+numBuff;
                         numBuff=(b!=46)?numBuff:0;
-//
+
 //                        if (b != 46) {
 //                            numBuff = (b - 48) + numBuff * 10;
 //                        } else {
@@ -248,7 +252,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 //                            numBuff = 0;
 //                        }
                     }
-                    newCost+=System.currentTimeMillis();
+                    newCost2+=System.currentTimeMillis();
 
                     ip2 = (ip2<<8)+numBuff;
 
@@ -294,7 +298,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" newCost="+newCost);
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" 优化了="+(newCost2-newCost));
 
                 solvedMinutes.put(f);
 
