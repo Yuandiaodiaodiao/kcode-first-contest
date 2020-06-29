@@ -59,6 +59,7 @@ public class SplitMinuteThread extends Thread {
             buff = new byte[BUFF_SIZE];
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
+            byte[] baArray=(byte[])field.get(ba);
             while (true) {
                 int remaining = 0;
                 long timestart=0;
@@ -280,7 +281,6 @@ public class SplitMinuteThread extends Thread {
 
                 if (bufferIndex>=endIndex) {
                     //在最后刚好\n了 全部拷贝
-                    byte[] baArray=(byte[])field.get(ba);
 
                     System.arraycopy(buff, startIndex, baArray, ba.position(), endIndex - startIndex);
                     ba.position(ba.position()+(endIndex - startIndex));
@@ -294,7 +294,14 @@ public class SplitMinuteThread extends Thread {
 //                        System.out.println("aaaa");
 //                    }
                     long t = System.currentTimeMillis();
-                    ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
+
+
+
+                    System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
+                    ba.position(ba.position()+(lastEnterIndex - startIndex + 1));
+
+
+//                    ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
                     System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(System.currentTimeMillis() - t)*1000)+"MB/s");
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
@@ -310,15 +317,10 @@ public class SplitMinuteThread extends Thread {
                     }
                 }
                 timearray[5]=System.currentTimeMillis();
-                for(int i=1;i<=5;++i){
-                    System.out.print((timearray[i]-timearray[i-1])+" ");
-                }
-                System.out.println();
+
 //                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 
                 if (startMinute != nowTime) {
-
-
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.add(ba);
                     splitTimeUse+=System.currentTimeMillis()-timestart;
@@ -328,10 +330,17 @@ public class SplitMinuteThread extends Thread {
                     long tb = System.currentTimeMillis();
                     SplitMinute_waitBa += (tb - ta);
                     ba.clear();
+                    baArray=(byte[])field.get(ba);
                 }else{
                     splitTimeUse+=System.currentTimeMillis()-timestart;
 
                 }
+                timearray[6]=System.currentTimeMillis();
+
+                for(int i=1;i<=6;++i){
+                    System.out.print((timearray[i]-timearray[i-1])+" ");
+                }
+                System.out.println();
 
             }
         } catch (InterruptedException e) {
