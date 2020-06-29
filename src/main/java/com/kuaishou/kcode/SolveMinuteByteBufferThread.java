@@ -284,7 +284,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
+//                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
 
                 solvedMinutes.put(f);
 
