@@ -20,8 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d934383a-2fd5-4f8d-a13c-e192fac4544d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/DiskReadThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/DiskReadThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SplitMinuteThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SplitMinuteThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,6 +107,7 @@
       <option name="presentableId" value="Default" />
       <updated>1593356649941</updated>
       <workItem from="1593356656509" duration="758000" />
+      <workItem from="1593443437484" duration="1603000" />
     </task>
     <servers />
   </component>
@@ -124,6 +124,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="416" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593359923224">
@@ -138,38 +139,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="102" key="#git_push/0.0.1920.1040@0.0.1920.1040" timestamp="1593357980673" />
-    <state width="1878" height="252" key="GridCell.Tab.0.bottom" timestamp="1593442425520">
+    <state width="1878" height="347" key="GridCell.Tab.0.bottom" timestamp="1593444655121">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="252" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425520" />
-    <state width="1878" height="252" key="GridCell.Tab.0.center" timestamp="1593442425520">
+    <state width="1878" height="347" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593444655121" />
+    <state width="1878" height="347" key="GridCell.Tab.0.center" timestamp="1593444655121">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="252" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425520" />
-    <state width="1878" height="252" key="GridCell.Tab.0.left" timestamp="1593442425520">
+    <state width="1878" height="347" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593444655121" />
+    <state width="1878" height="347" key="GridCell.Tab.0.left" timestamp="1593444655121">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="252" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425520" />
-    <state width="1878" height="252" key="GridCell.Tab.0.right" timestamp="1593442425520">
+    <state width="1878" height="347" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593444655121" />
+    <state width="1878" height="347" key="GridCell.Tab.0.right" timestamp="1593444655121">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="252" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425520" />
-    <state width="1878" height="342" key="GridCell.Tab.1.bottom" timestamp="1593442425516">
+    <state width="1878" height="347" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593444655121" />
+    <state width="1878" height="347" key="GridCell.Tab.1.bottom" timestamp="1593444656068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="342" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425516" />
-    <state width="1878" height="342" key="GridCell.Tab.1.center" timestamp="1593442425516">
+    <state width="1878" height="347" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593444656068" />
+    <state width="1878" height="347" key="GridCell.Tab.1.center" timestamp="1593444656067">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="342" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425516" />
-    <state width="1878" height="342" key="GridCell.Tab.1.left" timestamp="1593442425516">
+    <state width="1878" height="347" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593444656067" />
+    <state width="1878" height="347" key="GridCell.Tab.1.left" timestamp="1593444656067">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="342" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425516" />
-    <state width="1878" height="342" key="GridCell.Tab.1.right" timestamp="1593442425516">
+    <state width="1878" height="347" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593444656067" />
+    <state width="1878" height="347" key="GridCell.Tab.1.right" timestamp="1593444656068">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="342" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593442425516" />
+    <state width="1878" height="347" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593444656068" />
     <state x="441" y="94" key="SettingsEditor" timestamp="1593424127129">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -178,10 +179,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="691" y="276" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593359097986" />
-    <state x="661" y="251" width="596" height="536" key="find.popup" timestamp="1593432432393">
+    <state x="661" y="251" width="596" height="536" key="find.popup" timestamp="1593444735588">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="661" y="251" width="596" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593432432393" />
+    <state x="661" y="251" width="596" height="536" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593444735588" />
     <state x="623" y="226" width="672" height="678" key="search.everywhere.popup" timestamp="1593432358979">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -196,6 +197,11 @@
           <line>199</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferThread.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -204,6 +210,9 @@
         <watch expression="(char)b" language="JAVA" />
         <watch expression="b" language="JAVA" />
         <watch expression="(char)byteArray[len1-1]" language="JAVA" />
+        <watch expression="f.get(0)" language="JAVA" />
+        <watch expression="f.get(1)" language="JAVA" />
+        <watch expression="f.get(2)" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

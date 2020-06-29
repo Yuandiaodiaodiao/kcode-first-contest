@@ -54,22 +54,21 @@ public class SplitMinuteThread extends Thread {
     public void run() {
         super.run();
         try {
-
+            ByteBuffer b=null;
             Field field = ByteBuffer.allocate(1).getClass().getSuperclass().getDeclaredField("hb");
             field.setAccessible(true);
-            buff = new byte[BUFF_SIZE];
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
             byte[] baArray = (byte[]) field.get(ba);
             while (true) {
                 int remaining = 0;
                 long timestart = 0;
-                if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 4) {
-//                    System.out.println("单走一个6");
+                if (lastBuffLength > 0) {
+//                    System.out.println("处理剩余长度="+lastBuffLength);
                     timestart = System.currentTimeMillis();
                 } else {
                     long t1 = System.currentTimeMillis();
-                    ByteBuffer b = canread.take();
+                    b = canread.take();
                     long t2 = System.currentTimeMillis();
                     SplitMinute_waitBuffer += (t2 - t1);
 //                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
@@ -85,12 +84,13 @@ public class SplitMinuteThread extends Thread {
                     //从directbuffer中抽出来
                     timestart = System.currentTimeMillis();
 
-                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
+//                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
 //                    System.out.println("b.get cost="+(System.currentTimeMillis()-timestart));
                     bgetTime += (System.currentTimeMillis() - timestart);
 //                    System.out.println("b.get Allcost=" + bgetTime);
-
-                    canuse.put(b);
+                    lastBuffIndex=0;
+                    lastBuffLength=0;
+//                    canuse.put(b);
                 }
 
                 long[] timearray = new long[16];
@@ -103,11 +103,11 @@ public class SplitMinuteThread extends Thread {
                 int startMinute = nowTime;
                 if (firstTime == -1) {
                     for (; bufferIndex < endIndex; ++bufferIndex) {
-                        if (buff[bufferIndex] == 10) { //find \n
+                        if (b.get(bufferIndex) == 10) { //find \n
                             int minuteTime = 0;
                             for (int timepos = -13; timepos < -3; ++timepos) {
                                 //从时间戳的头取到倒数第四位
-                                minuteTime = buff[bufferIndex + timepos] - 48 + minuteTime * 10;
+                                minuteTime = b.get(bufferIndex + timepos) - 48 + minuteTime * 10;
                             }
                             firstTime = minuteTime / 60;
                             nowTime = firstTime;
@@ -138,7 +138,7 @@ public class SplitMinuteThread extends Thread {
                     bufferIndex -= 300;
                     bufferIndex = Math.max(startIndex, bufferIndex);
                     for (; bufferIndex < endIndex; ++bufferIndex) {
-                        if (buff[bufferIndex] == 10) {
+                        if (b.get(bufferIndex) == 10) {
                             //推掉这个\n 向后找
                             bufferIndex++;
                             break;
@@ -154,10 +154,10 @@ public class SplitMinuteThread extends Thread {
                 //倒着找
                 boolean hasTwoMinute = false;
                 for (int testEnd = endIndex - 1; testEnd >= bufferIndex; --testEnd) {
-                    if (buff[testEnd] == 10) {
+                    if (b.get(testEnd) == 10) {
                         int secondTime = 0;
                         for (int i = nowSecondByteNum + 3; i > 3; --i) {
-                            secondTime = buff[testEnd - i] - 48 + secondTime * 10;
+                            secondTime = b.get(testEnd - i) - 48 + secondTime * 10;
                         }
                         if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
                             //下一分钟
@@ -189,12 +189,12 @@ public class SplitMinuteThread extends Thread {
                             searchTime++;
 
                             {
-                                for (enterIndex = mid; buff[enterIndex] != 10; ++enterIndex) {
+                                for (enterIndex = mid; b.get(enterIndex) != 10; ++enterIndex) {
                                 }
                                 //enterIndex在\n的位置
                                 int secondTime = 0;
                                 for (int i = nowSecondByteNum + 3; i > 3; --i) {
-                                    secondTime = buff[enterIndex - i] - 48 + secondTime * 10;
+                                    secondTime = b.get(enterIndex - i) - 48 + secondTime * 10;
                                 }
                                 if (!(secondTime >= nowSecond && secondTime < nowSecond + 60)) {
                                     //下一分钟
@@ -215,7 +215,7 @@ public class SplitMinuteThread extends Thread {
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
 //                                bufferIndex=left;
-                                for (enterIndex = left; buff[enterIndex] != 10; --enterIndex) {
+                                for (enterIndex = left; b.get(enterIndex) != 10; --enterIndex) {
                                 }
                                 //enterIndex=上一个\n位置
                                 bufferIndex = enterIndex;
@@ -229,12 +229,12 @@ public class SplitMinuteThread extends Thread {
 
                     int findTimes = 0;
                     for (; bufferIndex < endIndex; ++bufferIndex) {
-                        if (buff[bufferIndex] == 10) { //find \n
+                        if (b.get(bufferIndex) == 10) { //find \n
                             int secondTime = 0;
                             findTimes++;
 
                             for (int i = nowSecondByteNum + 3; i > 3; --i) {
-                                secondTime = buff[bufferIndex - i] - 48 + secondTime * 10;
+                                secondTime = b.get(bufferIndex - i) - 48 + secondTime * 10;
                             }
 //                        int lastThreeNumber= (buff[bufferIndex - 6]-48)*100+(buff[bufferIndex-5]-48)*10+(buff[bufferIndex-4]-48);
 //                        secondTime = buff[bufferIndex - 6] * 100 + buff[bufferIndex - 5] * 10 + buff[bufferIndex - 4] - 5328;
@@ -245,7 +245,7 @@ public class SplitMinuteThread extends Thread {
                                 int minuteTime = 0;
                                 for (int timepos = -13; timepos < -3; ++timepos) {
                                     //从时间戳的头取到倒数第四位
-                                    minuteTime = buff[bufferIndex + timepos] - 48 + minuteTime * 10;
+                                    minuteTime =b.get(bufferIndex + timepos) - 48 + minuteTime * 10;
                                 }
                                 nowTime = minuteTime / 60;
                                 minuteTime = nowTime * 60;
@@ -281,36 +281,46 @@ public class SplitMinuteThread extends Thread {
 
                 if (bufferIndex >= endIndex) {
                     //在最后刚好\n了 全部拷贝
-                    System.arraycopy(buff, startIndex, baArray, ba.position(), endIndex - startIndex);
+                    b.get(baArray,ba.position(),endIndex - startIndex);
+//                    System.arraycopy(buff, startIndex, baArray, ba.position(), endIndex - startIndex);
                     ba.position(ba.position() + (endIndex - startIndex));
+//                    System.out.println(""+nowTime+"收集pos="+ba.position());
                     lastBuffIndex = 0;
                     lastBuffLength = 0;
+                    //换buffer
+                    canuse.put(b);
                 } else {
                     //断了或者退出了 反正是会有字符串剩余 0 1 2 3\n  lastEnterIndex=3 startIndex=0 复制长度0 1 2 3 =4
-                    System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
+                    b.get(baArray,ba.position(),lastEnterIndex - startIndex + 1);
+//                    System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
                     ba.position(ba.position() + (lastEnterIndex - startIndex + 1));
-
 
 //                    ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
 //                    System.out.println("ba.put耗时 ms" + (t2 - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(t2 - t)*1000)+"MB/s");
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
-                    if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
-                        //还能继续读
-                        lastBuffIndex = lastEnterIndex + 1;
-//                        System.out.println("我还可以");
-                    } else {
-                        //空间不够了 要把剩余的拷贝到数组首部(其实可以循环数组实现的 但是太乱了 这得自己封装一个数组了)
-                        System.arraycopy(buff, lastEnterIndex + 1, buff, 0, lastBuffLength);
-                        lastBuffIndex = 0;
 
-                    }
+                    lastBuffIndex = lastEnterIndex + 1;
+//                    System.out.println(""+nowTime+"收集pos="+ba.position()+"剩余"+lastBuffLength);
+
+//                    if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
+//                        //还能继续读
+//
+////                        System.out.println("我还可以");
+//                    } else {
+//                        //空间不够了 要把剩余的拷贝到数组首部(其实可以循环数组实现的 但是太乱了 这得自己封装一个数组了)
+//                        System.arraycopy(buff, lastEnterIndex + 1, buff, 0, lastBuffLength);
+//                        lastBuffIndex = 0;
+//
+//                    }
                 }
                 timearray[5] = System.currentTimeMillis();
 
 //                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 
                 if (startMinute != nowTime) {
+//                    System.out.println(""+nowTime+"分钟结算 "+ba.position());
+
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.add(ba);
                     splitTimeUse += System.currentTimeMillis() - timestart;
