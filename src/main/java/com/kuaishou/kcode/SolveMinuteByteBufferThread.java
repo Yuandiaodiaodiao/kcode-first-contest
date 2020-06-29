@@ -33,7 +33,7 @@ public class SolveMinuteByteBufferThread extends Thread {
         super.run();
         try {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
-            CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
+            CheckPairPayLoad[][] cacheCheckPair=null ;
             long allTime=0;
             long solvedTimes=0;
             while (true) {
@@ -44,6 +44,9 @@ public class SolveMinuteByteBufferThread extends Thread {
 //                System.out.println( name+"结束");
                     unsolvedMinutes.put(f);
                     return;
+                }
+                if(cacheCheckPair==null){
+                    cacheCheckPair= PrepareMultiThreadDataCore.newhashCheckPair();
                 }
 
                 //直接拉满
@@ -235,8 +238,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
-                            ip2 <<= 8;
-                            ip2 += numBuff;
+                            ip2 = (ip2<<8)+numBuff;
                             numBuff = 0;
                         }
                     }
@@ -285,7 +287,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-//                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
 
                 solvedMinutes.put(f);
 
