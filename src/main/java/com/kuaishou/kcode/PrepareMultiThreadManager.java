@@ -17,7 +17,7 @@ public class PrepareMultiThreadManager {
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = 476824288;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=11;
+    public static int THREAD_NUMBER=10;
     public static CountDownLatch endCountDown;
     PrepareMultiThreadManager(){
         endCountDown= new CountDownLatch(30);
