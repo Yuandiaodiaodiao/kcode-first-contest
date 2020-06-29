@@ -180,9 +180,9 @@ public class SolveMinuteByteBufferThread extends Thread {
                     long ip2 = 0;
 
                     int hashService1hash1 = b;
-                    f.position(f.position() + 9);
-                  
-                    while((b = f.get()) != 44){
+                    f.position(f.position() + 10);
+
+                    while((f.get()) != 44){
 
                     }
                     int len1 = f.position() - 1;
@@ -208,7 +208,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     b = f.get();
                     int hashService2hash1 = b;
                     f.position(f.position() + 10);
-                    for (; b != 44; b = f.get()) {
+                    while((f.get()) != 44){
 
                     }
                     int len2 = f.position() - 1;
@@ -229,8 +229,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     ip2 <<= 8;
                     ip2 += numBuff;
 
-                    b = f.get();
-                    int success = (b==116?0:1);
+                    int success = ((f.get())==116?0:1);
                     f.position(f.position() + 4+success);
 
 
