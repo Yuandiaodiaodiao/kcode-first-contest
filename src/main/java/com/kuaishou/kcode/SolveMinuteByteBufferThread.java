@@ -192,6 +192,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 int position=f.position();
                 byte b;
                 int limit=f.limit();
+                long newCost=0;
 //                System.out.println("找time"+(t1-t0));
                 while (position<limit) {
 //                    if (b == 10) continue;
@@ -210,6 +211,8 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                     int numBuff = 0;
+                    newCost-=System.currentTimeMillis();
+
                     while((b = byteArray[++position])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
@@ -219,6 +222,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                         }
                     }
                     ip1 = (ip1<<8)+numBuff;
+                    newCost+=System.currentTimeMillis();
 
                     int hashService2hash1 =  byteArray[++position];
                     position+=10;
@@ -266,7 +270,6 @@ public class SolveMinuteByteBufferThread extends Thread {
                         cacheCheckPair[stringHash][ipHash] = payload;
                         payload.ip = (ip1 << 32) + ip2;
                     }
-
                     //change payload
 
                     payload.successTimes += success ^1;
@@ -285,7 +288,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" newCost="+newCost);
 
                 solvedMinutes.put(f);
 
