@@ -33,7 +33,7 @@ public class SolveMinuteByteBufferThread extends Thread {
         super.run();
         try {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
-            CheckPairPayLoad[] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
+            CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
             long allTime=0;
             long solvedTimes=0;
             while (true) {
@@ -155,10 +155,10 @@ public class SolveMinuteByteBufferThread extends Thread {
                     long twoIPs = (ip1 << 32) + ip2;
                     int ipHash = HashCode.hashIp(ip1, ip2);
 
-                    CheckPairPayLoad payload = cacheCheckPair[stringHash*4999+ipHash];
+                    CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
                     if (payload == null) {
                         payload = new CheckPairPayLoad();
-                        cacheCheckPair[stringHash*4999+ipHash] = payload;
+                        cacheCheckPair[stringHash][ipHash] = payload;
                         payload.ip = twoIPs;
                     }
 
@@ -260,10 +260,10 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                     int ipHash = (int)((((ip1-167772160)%3457)<<9)+((ip2-167772160)%2833))%2551;
 
-                    CheckPairPayLoad payload = cacheCheckPair[stringHash*4999+ipHash];
+                    CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
                     if (payload == null) {
                         payload = new CheckPairPayLoad();
-                        cacheCheckPair[stringHash*4999+ipHash] = payload;
+                        cacheCheckPair[stringHash][ipHash] = payload;
                         payload.ip = (ip1 << 32) + ip2;
                     }
 
