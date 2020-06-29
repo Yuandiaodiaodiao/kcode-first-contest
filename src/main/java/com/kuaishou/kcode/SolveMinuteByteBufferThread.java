@@ -182,6 +182,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 Field field = f.getClass().getSuperclass().getDeclaredField("hb");
                 field.setAccessible(true);
                 byte[] byteArray=(byte[])field.get(f);
+                long t1=System.currentTimeMillis();
                 while (f.hasRemaining()) {
                     byte b = f.get();
 //                    if (b == 10) continue;
@@ -277,7 +278,8 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                 }
-
+                long t2=System.currentTimeMillis();
+                System.out.println("处理 cost="+(t2-t1));
                 solvedMinutes.put(f);
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
