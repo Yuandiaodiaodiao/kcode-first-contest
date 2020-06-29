@@ -34,6 +34,8 @@ public class SolveMinuteByteBufferThread extends Thread {
         try {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             CheckPairPayLoad[][] cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
+            long allTime=0;
+            long solvedTimes=0;
             while (true) {
                 ByteBuffer f = unsolvedMinutes.take();
                 if (f.limit() == 0) {
@@ -183,8 +185,11 @@ public class SolveMinuteByteBufferThread extends Thread {
                 field.setAccessible(true);
                 byte[] byteArray=(byte[])field.get(f);
                 long t1=System.currentTimeMillis();
+                int position=f.position();
                 while (f.hasRemaining()) {
-                    byte b = f.get();
+                    position=f.position();
+                    byte b = byteArray[position++];
+                    f.position(position);
 //                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
@@ -279,7 +284,10 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                 }
                 long t2=System.currentTimeMillis();
-                System.out.println("处理 cost="+(t2-t1));
+                allTime+=(t2-t1);
+                solvedTimes++;
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
+
                 solvedMinutes.put(f);
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);

@@ -46,9 +46,7 @@ public class DiskReadThread extends Thread {
 
             for (long i = 0; i <= fileLength; i += CHUNCK_SIZE) {
 
-                if(canuse.size()==0){
-                    System.out.println("DiskWait");
-                }
+
                 long t1=System.currentTimeMillis();
                 buf = canuse.take();
                 long t2=System.currentTimeMillis();
