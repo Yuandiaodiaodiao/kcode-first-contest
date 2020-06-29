@@ -48,6 +48,7 @@ public class SplitMinuteThread extends Thread {
 
     public static long SplitMinute_waitBuffer = 0;
     public static long SplitMinute_waitBa = 0;
+    public static long bgetTime = 0;
 
     @Override
     public void run() {
@@ -60,7 +61,6 @@ public class SplitMinuteThread extends Thread {
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
             byte[] baArray = (byte[]) field.get(ba);
-            long bgetTime = 0;
             while (true) {
                 int remaining = 0;
                 long timestart = 0;
@@ -90,11 +90,12 @@ public class SplitMinuteThread extends Thread {
                     remaining = b.remaining();
                     //从directbuffer中抽出来
                     timestart = System.currentTimeMillis();
-
-                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
+                    byte[] buffInside=(byte[])field.get(b);
+                    System.arraycopy(buffInside,0,buff,lastBuffIndex + lastBuffLength,remaining);
+//                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
 //                    System.out.println("b.get cost="+(System.currentTimeMillis()-timestart));
                     bgetTime += (System.currentTimeMillis() - timestart);
-                    System.out.println("b.get Allcost=" + bgetTime);
+//                    System.out.println("b.get Allcost=" + bgetTime);
 
                     canuse.put(b);
                 }
