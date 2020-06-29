@@ -1,5 +1,6 @@
 package com.kuaishou.kcode;
 
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -173,6 +174,9 @@ public class SolveMinuteByteBufferThread extends Thread {
                     payload2.failed += success ^ 1;
 
                 }
+                Field field = f.getClass().getDeclaredField("hb");
+                field.setAccessible(true);
+                byte[] byteArray=(byte[])field.get(f);
                 while (f.hasRemaining()) {
                     byte b = f.get();
 //                    if (b == 10) continue;
@@ -278,7 +282,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
             }
 
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
 
