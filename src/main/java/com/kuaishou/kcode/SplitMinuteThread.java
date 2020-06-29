@@ -295,14 +295,15 @@ public class SplitMinuteThread extends Thread {
 //                    }
                     long t = System.currentTimeMillis();
 
-
+                    
 
                     System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
+                    long t2=System.currentTimeMillis();
                     ba.position(ba.position()+(lastEnterIndex - startIndex + 1));
 
 
 //                    ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
-                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(System.currentTimeMillis() - t)*1000)+"MB/s");
+                    System.out.println("ba.put耗时 ms" + (t2 - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(t2 - t)*1000)+"MB/s");
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
                     if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
