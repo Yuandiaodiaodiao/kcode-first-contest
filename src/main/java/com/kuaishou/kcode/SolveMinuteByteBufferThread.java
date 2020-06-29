@@ -189,28 +189,29 @@ public class SolveMinuteByteBufferThread extends Thread {
                 field.setAccessible(true);
                 byte[] byteArray=(byte[])field.get(f);
                 long t1=System.currentTimeMillis();
-                int position=f.position()-1;
+                int position=f.position();
                 byte b;
-                int limit=f.limit()-1;
+                int limit=f.limit();
 //                System.out.println("找time"+(t1-t0));
                 while (position<limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
 
-                    int hashService1hash1 = byteArray[++position];
+                    int hashService1hash1 = byteArray[position];
 //                    f.position(f.position() + 10);
                     position+=10;
                     while( byteArray[++position] != 44){
                     }
-                    int len1 = position;
+                    position++;
+                    int len1 = position - 1;
                     int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
                             (byteArray[len1 - 3] << 6) + (byteArray[len1 - 2] << 13) + (byteArray[len1 - 1] << 17)) % 69) << 12) +
                             ((hashService1hash1 - 97) << 8));
 
 
                     int numBuff = 0;
-                    while((b = byteArray[++position])!=44){
+                    while((b = byteArray[position++])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -221,9 +222,9 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                     ip1 = (ip1<<8)+numBuff;
 
-                    int hashService2hash1 =  byteArray[++position];
+                    int hashService2hash1 =  byteArray[position++];
                     position+=10;
-                    while( byteArray[++position] != 44){
+                    while( byteArray[position++] != 44){
                     }
                     int len2 = position - 1;
 
@@ -233,7 +234,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
 
                     numBuff = 0;
-                    while((b = byteArray[++position])!=44){
+                    while((b = byteArray[position++])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -244,13 +245,13 @@ public class SolveMinuteByteBufferThread extends Thread {
                     ip2 = (ip2<<8)+numBuff;
 
 
-                    int success = (byteArray[++position]==116?0:1);
+                    int success = (byteArray[position++]==116?0:1);
                     position+=4+success;
 
 
 
                     int useTime = 0;
-                    while((b = byteArray[++position])!=44){
+                    while((b = byteArray[position++])!=44){
                         useTime = (b - 48) + useTime * 10;
                     }
 
@@ -283,7 +284,6 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                 }
-                System.out.println("position="+position+"limit="+limit);
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
