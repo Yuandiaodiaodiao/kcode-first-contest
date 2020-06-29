@@ -174,7 +174,12 @@ public class SolveMinuteByteBufferThread extends Thread {
                     payload2.failed += success ^ 1;
 
                 }
-                Field field = f.getClass().getDeclaredField("hb");
+//                Field[] fd = f.getClass().getSuperclass().getDeclaredFields();
+//                for(Field field : fd){
+//                    field.setAccessible(true);
+//                    System.out.println(field.getName()+":"+field.get(f));
+//                }
+                Field field = f.getClass().getSuperclass().getDeclaredField("hb");
                 field.setAccessible(true);
                 byte[] byteArray=(byte[])field.get(f);
                 while (f.hasRemaining()) {
