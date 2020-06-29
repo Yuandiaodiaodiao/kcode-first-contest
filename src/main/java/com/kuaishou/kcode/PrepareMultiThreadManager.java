@@ -86,10 +86,10 @@ public class PrepareMultiThreadManager {
 
             SolveRespondThread.solve();
             timeArray[4]=System.currentTimeMillis();
-            for(int a=1;a<=4;++a){
-                System.out.print(" "+(timeArray[a]-timeArray[a-1]));
-            }
-            System.out.println();
+//            for(int a=1;a<=4;++a){
+//                System.out.print(" "+(timeArray[a]-timeArray[a-1]));
+//            }
+//            System.out.println();
 //            Analyse.findIpPair();
             System.out.println("splite耗时"+SplitMinuteThread.splitTimeUse);
             System.out.println(SplitMinuteThread.maxBisectionTimes+" "+SplitMinuteThread.maxFindTimes+" T="+PrepareMultiThreadManager.THREAD_NUMBER+" DWS="+DiskReadThread.DiskRead_waitBuffer + " SWD="+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
