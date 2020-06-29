@@ -10,8 +10,8 @@ public class PrepareMultiThreadManager {
     public static SplitMinuteThread smt;
     public static ArrayBlockingQueue<ByteBuffer> canuse = new ArrayBlockingQueue<>(16);
     public static ArrayBlockingQueue<ByteBuffer> canread = new ArrayBlockingQueue<>(16);
-    public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(64);
-    public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(64);
+    public static ArrayBlockingQueue<ByteBuffer> unsolvedMinutes = new ArrayBlockingQueue<>(16);
+    public static ArrayBlockingQueue<ByteBuffer> solvedMinutes = new ArrayBlockingQueue<>(16);
     public static int MAXBUFFERLEN=476824288;
     public static int DIRECT_CHUNCK_SIZE = MAXBUFFERLEN;
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
