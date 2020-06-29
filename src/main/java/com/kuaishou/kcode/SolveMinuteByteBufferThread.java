@@ -34,7 +34,7 @@ public class SolveMinuteByteBufferThread extends Thread {
         try {
             Field field = ByteBuffer.allocate(1).getClass().getSuperclass().getDeclaredField("hb");
             field.setAccessible(true);
-            solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
+
             CheckPairPayLoad[][] cacheCheckPair = null;
             long allTime = 0;
             long solvedTimes = 0;
