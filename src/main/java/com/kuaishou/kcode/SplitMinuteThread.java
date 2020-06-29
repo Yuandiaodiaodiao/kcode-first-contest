@@ -22,10 +22,10 @@ public class SplitMinuteThread extends Thread {
     int lastBuffIndex = 0;
     int lastBuffLength = 0;
     ByteBuffer ba;
-    public static long maxBisectionTimes=0;
-    public static long maxFindTimes=0;
-    public static long splitTimeUse=0;
-    public static boolean useBisection=true;
+    public static long maxBisectionTimes = 0;
+    public static long maxFindTimes = 0;
+    public static long splitTimeUse = 0;
+    public static boolean useBisection = true;
     //    public static int MINBUFFERLEN=436773150;
     public static int MINBUFFERLEN = 431141347;
 //    public static int MINBUFFERLEN = 1347;
@@ -59,13 +59,14 @@ public class SplitMinuteThread extends Thread {
             buff = new byte[BUFF_SIZE];
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
-            byte[] baArray=(byte[])field.get(ba);
+            byte[] baArray = (byte[]) field.get(ba);
+            long bgetTime = 0;
             while (true) {
                 int remaining = 0;
-                long timestart=0;
+                long timestart = 0;
                 if (lastBuffLength > PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE / 4) {
 //                    System.out.println("单走一个6");
-                    timestart=System.currentTimeMillis();
+                    timestart = System.currentTimeMillis();
                 } else {
                     long t1 = System.currentTimeMillis();
                     ByteBuffer b = canread.take();
@@ -84,17 +85,22 @@ public class SplitMinuteThread extends Thread {
                         canread.put(b);
                         return;
                     }
-                    timestart=System.currentTimeMillis();
 
                     //直接拉满
                     remaining = b.remaining();
                     //从directbuffer中抽出来
+                    timestart = System.currentTimeMillis();
+
                     b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
+//                    System.out.println("b.get cost="+(System.currentTimeMillis()-timestart));
+                    bgetTime += (System.currentTimeMillis() - timestart);
+                    System.out.println("b.get Allcost=" + bgetTime);
+
                     canuse.put(b);
                 }
 
-                long[] timearray=new long[16];
-                timearray[0]=System.currentTimeMillis();
+                long[] timearray = new long[16];
+                timearray[0] = System.currentTimeMillis();
                 int startIndex = lastBuffIndex;
                 int bufferIndex = startIndex;
                 int endIndex = remaining + startIndex + lastBuffLength;
@@ -147,7 +153,7 @@ public class SplitMinuteThread extends Thread {
 //                    System.out.println("jump"+bufferIndex+" start="+startIndex);
                     //这样保证移动后到一个整行
                 }
-                timearray[1]=System.currentTimeMillis();
+                timearray[1] = System.currentTimeMillis();
 
                 //这个位置 开始二分 从bufferIndex 到endIndex 找出是否有time时间戳变化
                 //bufferIndex可能在一个句子的任何位置需要先向前推进一个\n
@@ -166,26 +172,26 @@ public class SplitMinuteThread extends Thread {
                         break;
                     }
                 }
-                timearray[2]=System.currentTimeMillis();
+                timearray[2] = System.currentTimeMillis();
 
-                if(!hasTwoMinute){
+                if (!hasTwoMinute) {
                     //当前buff内都是同一分钟的 可以直接结算了
-                    bufferIndex=endIndex;
-                    timearray[3]=System.currentTimeMillis();
+                    bufferIndex = endIndex;
+                    timearray[3] = System.currentTimeMillis();
 
-                }else{
+                } else {
                     //有分界线 说明需要找到分界
-                    if(useBisection){
+                    if (useBisection) {
 
                         //二分区间 bufferIndex~endIndex
                         int left = bufferIndex;
                         int right = endIndex;
-                        int searchTime=0;
+                        int searchTime = 0;
                         //[left,right)
                         while (true) {
-                            int mid=(left+right)/2;
-                            boolean isNextMinute=false;
-                            int enterIndex=-1;
+                            int mid = (left + right) / 2;
+                            boolean isNextMinute = false;
+                            int enterIndex = -1;
                             searchTime++;
 
                             {
@@ -204,34 +210,34 @@ public class SplitMinuteThread extends Thread {
                                 //查看\n是否属于下一分钟
                             }
 //                        System.out.println("size="+(right-left)+"("+left+","+right+")");
-                            if(isNextMinute){
+                            if (isNextMinute) {
                                 //mid是下一分钟 区间向左
-                                right=mid;
-                            }else{
+                                right = mid;
+                            } else {
                                 //mid是当前分钟 区间向右
-                                left=mid;
+                                left = mid;
                             }
-                            if(right-left<70){
+                            if (right - left < 70) {
                                 //说明左右都在一行里了
                                 //这时候取上一个\n就是上一minute的结尾
 //                                bufferIndex=left;
-                                for (enterIndex =left; buff[enterIndex] != 10; --enterIndex) {
+                                for (enterIndex = left; buff[enterIndex] != 10; --enterIndex) {
                                 }
                                 //enterIndex=上一个\n位置
-                                bufferIndex=enterIndex;
+                                bufferIndex = enterIndex;
                                 break;
                             }
                         }
-                        maxBisectionTimes=Math.max(maxBisectionTimes,(long)searchTime);
+                        maxBisectionTimes = Math.max(maxBisectionTimes, (long) searchTime);
 //                        System.out.println("二分次数"+searchTime);
                     }
-                    timearray[3]=System.currentTimeMillis();
+                    timearray[3] = System.currentTimeMillis();
 
-                    int findTimes=0;
+                    int findTimes = 0;
                     for (; bufferIndex < endIndex; ++bufferIndex) {
                         if (buff[bufferIndex] == 10) { //find \n
                             int secondTime = 0;
-                             findTimes++;
+                            findTimes++;
 
                             for (int i = nowSecondByteNum + 3; i > 3; --i) {
                                 secondTime = buff[bufferIndex - i] - 48 + secondTime * 10;
@@ -271,24 +277,24 @@ public class SplitMinuteThread extends Thread {
                             bufferIndex += 70;
                         }
                     }
-                    maxFindTimes=Math.max(maxFindTimes,(long)findTimes);
+                    maxFindTimes = Math.max(maxFindTimes, (long) findTimes);
 
 //                    System.out.println("查找次数"+findTimes);
 
 
                 }
-                timearray[4]=System.currentTimeMillis();
+                timearray[4] = System.currentTimeMillis();
 
-                if (bufferIndex>=endIndex) {
+                if (bufferIndex >= endIndex) {
                     //在最后刚好\n了 全部拷贝
                     System.arraycopy(buff, startIndex, baArray, ba.position(), endIndex - startIndex);
-                    ba.position(ba.position()+(endIndex - startIndex));
+                    ba.position(ba.position() + (endIndex - startIndex));
                     lastBuffIndex = 0;
                     lastBuffLength = 0;
                 } else {
                     //断了或者退出了 反正是会有字符串剩余 0 1 2 3\n  lastEnterIndex=3 startIndex=0 复制长度0 1 2 3 =4
                     System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
-                    ba.position(ba.position()+(lastEnterIndex - startIndex + 1));
+                    ba.position(ba.position() + (lastEnterIndex - startIndex + 1));
 
 
 //                    ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
@@ -306,26 +312,26 @@ public class SplitMinuteThread extends Thread {
 
                     }
                 }
-                timearray[5]=System.currentTimeMillis();
+                timearray[5] = System.currentTimeMillis();
 
 //                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
 
                 if (startMinute != nowTime) {
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.add(ba);
-                    splitTimeUse+=System.currentTimeMillis()-timestart;
+                    splitTimeUse += System.currentTimeMillis() - timestart;
 
                     long ta = System.currentTimeMillis();
                     ba = PrepareMultiThreadManager.solvedMinutes.take();
                     long tb = System.currentTimeMillis();
                     SplitMinute_waitBa += (tb - ta);
                     ba.clear();
-                    baArray=(byte[])field.get(ba);
-                }else{
-                    splitTimeUse+=System.currentTimeMillis()-timestart;
+                    baArray = (byte[]) field.get(ba);
+                } else {
+                    splitTimeUse += System.currentTimeMillis() - timestart;
 
                 }
-                timearray[6]=System.currentTimeMillis();
+                timearray[6] = System.currentTimeMillis();
 
 //                for(int i=1;i<=6;++i){
 //                    System.out.print((timearray[i]-timearray[i-1])+" ");
