@@ -276,9 +276,6 @@ public class SplitMinuteThread extends Thread {
                 }
                 timearray[4]=System.currentTimeMillis();
 
-//                if(nowTime==26538355){
-//                    System.out.println("我摊牌了");
-//                }
                 if (bufferIndex>=endIndex) {
                     //在最后刚好\n了 全部拷贝
                     ba.put(buff, startIndex, endIndex - startIndex);
@@ -289,9 +286,9 @@ public class SplitMinuteThread extends Thread {
 //                    if (lastEnterIndex - startIndex + 1 < 0 || lastEnterIndex - startIndex + 1 > buff.length || lastEnterIndex - startIndex + 1 > ba.limit()) {
 //                        System.out.println("aaaa");
 //                    }
-//                    long t = System.currentTimeMillis();
+                    long t = System.currentTimeMillis();
                     ba.put(buff, startIndex, lastEnterIndex - startIndex + 1);
-//                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(System.currentTimeMillis() - t)*1000)+"MB/s");
+                    System.out.println("ba.put耗时 ms" + (System.currentTimeMillis() - t) +" len="+(lastEnterIndex-startIndex+1) +" speed="+(1.0*(lastEnterIndex-startIndex+1)/1024/1024/(System.currentTimeMillis() - t)*1000)+"MB/s");
                     //并且要把buff续上
                     lastBuffLength = endIndex - (lastEnterIndex + 1);
                     if (1L + endIndex + PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE < buff.length - 100) {
@@ -307,15 +304,13 @@ public class SplitMinuteThread extends Thread {
                 }
                 timearray[5]=System.currentTimeMillis();
                 for(int i=1;i<=5;++i){
-                    timearray[i]-=timearray[0];
+                    System.out.print((timearray[i]-timearray[i-1])+" ");
                 }
+                System.out.println();
 //                System.out.println("t1="+timearray[1]+" t2="+timearray[2]+" t3="+timearray[3]+" t4="+timearray[4]+" t5="+timearray[5]);
-//                if(lastBuffLength==1539469608){
-//                    System.out.println("难顶");
-//                }
+
                 if (startMinute != nowTime) {
-//                    MAXBUFFERLEN=Math.max(MAXBUFFERLEN,ba.position());
-//                    MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
+
 
                     ba.flip();
                     PrepareMultiThreadManager.unsolvedMinutes.add(ba);

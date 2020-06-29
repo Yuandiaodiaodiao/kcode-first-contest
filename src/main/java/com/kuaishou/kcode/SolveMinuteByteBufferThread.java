@@ -281,7 +281,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 allTime += (t2 - t1);
                 solvedTimes++;
                 allIncrease += newCost2 - newCost;
-                System.out.println("平均处理时间=" + (1.0 * allTime / solvedTimes) );
+//                System.out.println("平均处理时间=" + (1.0 * allTime / solvedTimes) );
 
                 solvedMinutes.put(f);
 
