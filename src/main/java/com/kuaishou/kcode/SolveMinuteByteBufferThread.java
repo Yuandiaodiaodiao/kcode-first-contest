@@ -222,9 +222,9 @@ public class SolveMinuteByteBufferThread extends Thread {
                     int len2 = f.position() - 1;
 
                     int hashService2 = ((hashService2hash1 - 97) +
-                            ((((f.get(len2 - 6)) + (f.get(len2 - 5) << 5) +
-                                    (f.get(len2 - 4) << 10) + (f.get(len2 - 3) << 14) +
-                                    (f.get(len2 - 2) << 15) + (f.get(len2 - 1) << 24)) % 89) << 3));
+                            ((((byteArray[len2 - 6]) + (byteArray[len2 - 5] << 5) +
+                                    (byteArray[len2 - 4] << 10) + (byteArray[len2 - 3] << 14) +
+                                    (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
                     for (b = f.get(); b != 44; b = f.get()) {
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
