@@ -32,6 +32,8 @@ public class SolveMinuteByteBufferThread extends Thread {
     public void run() {
         super.run();
         try {
+            Field field = ByteBuffer.allocate(1).getClass().getSuperclass().getDeclaredField("hb");
+            field.setAccessible(true);
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
             CheckPairPayLoad[][] cacheCheckPair = null;
             long allTime = 0;
@@ -186,8 +188,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 //                    field.setAccessible(true);
 //                    System.out.println(field.getName()+":"+field.get(f));
 //                }
-                Field field = f.getClass().getSuperclass().getDeclaredField("hb");
-                field.setAccessible(true);
+
                 byte[] byteArray = (byte[]) field.get(f);
                 long t1 = System.currentTimeMillis();
                 int position = f.position();

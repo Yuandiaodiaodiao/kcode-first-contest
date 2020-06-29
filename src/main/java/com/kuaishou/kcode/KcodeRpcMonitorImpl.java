@@ -82,12 +82,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 //            manager.stop();
 //            tt=1;
 //        }
-        if(tt!=2222){
-//            throw new ArrayIndexOutOfBoundsException("prepareTime="+prepareTime);
-            throw new ArrayIndexOutOfBoundsException(" T="+PrepareMultiThreadManager.THREAD_NUMBER+ " prepare="+prepareTime+" DWS="+DiskReadThread.DiskRead_waitBuffer + " SWD="+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
-//            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
-//            throw new ArrayIndexOutOfBoundsException("MINSIZE="+SplitMinuteThread.MINBUFFERLEN);
-        }
+//        if(tt!=2222){
+////            throw new ArrayIndexOutOfBoundsException("prepareTime="+prepareTime);
+//            throw new ArrayIndexOutOfBoundsException(" T="+PrepareMultiThreadManager.THREAD_NUMBER+ " prepare="+prepareTime+" DWS="+DiskReadThread.DiskRead_waitBuffer + " SWD="+SplitMinuteThread.SplitMinute_waitBuffer + " SWM="+SplitMinuteThread.SplitMinute_waitBa);
+////            throw new ArrayIndexOutOfBoundsException("MAXSIZE="+SplitMinuteThread.MAXBUFFERLEN);
+////            throw new ArrayIndexOutOfBoundsException("MINSIZE="+SplitMinuteThread.MINBUFFERLEN);
+//        }
         if (statusQuery1 == 2) {
             queryIndex1=(queryIndex1+1)%queryLong1;
             return checkPairCache[queryIndex1];

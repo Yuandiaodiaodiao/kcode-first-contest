@@ -1,5 +1,6 @@
 package com.kuaishou.kcode;
 
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -53,7 +54,8 @@ public class SplitMinuteThread extends Thread {
         super.run();
         try {
 
-
+            Field field = ByteBuffer.allocate(1).getClass().getSuperclass().getDeclaredField("hb");
+            field.setAccessible(true);
             buff = new byte[BUFF_SIZE];
             ba = PrepareMultiThreadManager.solvedMinutes.take();
             ba.clear();
@@ -278,7 +280,12 @@ public class SplitMinuteThread extends Thread {
 
                 if (bufferIndex>=endIndex) {
                     //在最后刚好\n了 全部拷贝
-                    ba.put(buff, startIndex, endIndex - startIndex);
+                    byte[] baArray=(byte[])field.get(ba);
+
+                    System.arraycopy(buff, startIndex, baArray, ba.position(), endIndex - startIndex);
+                    ba.position(ba.position()+(endIndex - startIndex));
+
+//                    ba.put(buff, startIndex, endIndex - startIndex);
                     lastBuffIndex = 0;
                     lastBuffLength = 0;
                 } else {
@@ -328,6 +335,10 @@ public class SplitMinuteThread extends Thread {
 
             }
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
