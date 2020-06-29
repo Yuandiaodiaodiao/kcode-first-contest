@@ -206,9 +206,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                     position += 10;
                     while (byteArray[++position] != 44) {
                     }
-                    int len1 = position;
-                    int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
-                            (byteArray[len1 - 3] << 6) + (byteArray[len1 - 2] << 13) + (byteArray[len1 - 1] << 17)) % 69) << 12) +
+                    int hashService1 = ((((byteArray[position - 5] + (byteArray[position - 4] << 2) +
+                            (byteArray[position - 3] << 6) + (byteArray[position - 2] << 13) + (byteArray[position - 1] << 17)) % 69) << 12) +
                             ((hashService1hash1 - 97) << 8));
 
 
