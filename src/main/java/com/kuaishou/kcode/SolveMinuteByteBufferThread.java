@@ -36,6 +36,7 @@ public class SolveMinuteByteBufferThread extends Thread {
             CheckPairPayLoad[][] cacheCheckPair=null ;
             long allTime=0;
             long solvedTimes=0;
+            long allIncrease=0;
             while (true) {
                 ByteBuffer f = unsolvedMinutes.take();
                 if (f.limit() == 0) {
@@ -301,7 +302,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" 优化了="+(newCost-newCost2)+" 优化比="+(1.0*(newCost-newCost2)/newCost));
+                allIncrease+=newCost2-newCost;
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" 总优化="+(allIncrease)+" 优化比="+(1.0*(newCost2-newCost)/newCost2));
 
                 solvedMinutes.put(f);
 
