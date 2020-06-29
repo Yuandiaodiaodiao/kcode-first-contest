@@ -33,9 +33,9 @@ public class SolveMinuteByteBufferThread extends Thread {
         super.run();
         try {
             solvedMinutes.add(ByteBuffer.allocate(PrepareMultiThreadManager.Time_CHUNCK_SIZE));
-            CheckPairPayLoad[][] cacheCheckPair=null ;
-            long allTime=0;
-            long solvedTimes=0;
+            CheckPairPayLoad[][] cacheCheckPair = null;
+            long allTime = 0;
+            long solvedTimes = 0;
             while (true) {
                 ByteBuffer f = unsolvedMinutes.take();
                 if (f.limit() == 0) {
@@ -45,8 +45,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                     unsolvedMinutes.put(f);
                     return;
                 }
-                if(cacheCheckPair==null){
-                    cacheCheckPair= PrepareMultiThreadDataCore.newhashCheckPair();
+                if (cacheCheckPair == null) {
+                    cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
                 }
 
                 //直接拉满
@@ -54,7 +54,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 int startMinute = -1;
 
                 CheckResponderPayLoad[] cacheCheckResponder = new CheckResponderPayLoad[0];
-                long t0=System.currentTimeMillis();
+                long t0 = System.currentTimeMillis();
 
                 if (startMinute == -1) {
                     byte b = f.get();
@@ -187,21 +187,22 @@ public class SolveMinuteByteBufferThread extends Thread {
 //                }
                 Field field = f.getClass().getSuperclass().getDeclaredField("hb");
                 field.setAccessible(true);
-                byte[] byteArray=(byte[])field.get(f);
-                long t1=System.currentTimeMillis();
-                int position=f.position()-1;
+                byte[] byteArray = (byte[]) field.get(f);
+                long t1 = System.currentTimeMillis();
+                int position = f.position() - 1;
                 byte b;
-                int limit=f.limit()-1;
+                int limit = f.limit() - 1;
 //                System.out.println("找time"+(t1-t0));
-                while (position<limit) {
+                long tif = 0;
+                while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
 
                     int hashService1hash1 = byteArray[++position];
 //                    f.position(f.position() + 10);
-                    position+=10;
-                    while( byteArray[++position] != 44){
+                    position += 10;
+                    while (byteArray[++position] != 44) {
                     }
                     int len1 = position;
                     int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
@@ -210,20 +211,20 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                     int numBuff = 0;
-                    while((b = byteArray[++position])!=44){
+                    while ((b = byteArray[++position]) != 44) {
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
-                            ip1 = (ip1<<8)+numBuff;
+                            ip1 = (ip1 << 8) + numBuff;
                             numBuff = 0;
                         }
                     }
 
-                    ip1 = (ip1<<8)+numBuff;
+                    ip1 = (ip1 << 8) + numBuff;
 
-                    int hashService2hash1 =  byteArray[++position];
-                    position+=10;
-                    while( byteArray[++position] != 44){
+                    int hashService2hash1 = byteArray[++position];
+                    position += 10;
+                    while (byteArray[++position] != 44) {
                     }
                     int len2 = position - 1;
 
@@ -233,60 +234,60 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
 
                     numBuff = 0;
-                    while((b = byteArray[++position])!=44){
+                    while ((b = byteArray[++position]) != 44) {
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
-                            ip2 = (ip2<<8)+numBuff;
+                            ip2 = (ip2 << 8) + numBuff;
                             numBuff = 0;
                         }
                     }
-                    ip2 = (ip2<<8)+numBuff;
+                    ip2 = (ip2 << 8) + numBuff;
 
 
-                    int success = (byteArray[++position]==116?0:1);
-                    position+=4+success;
-
+                    int success = (byteArray[++position] == 116 ? 0 : 1);
+                    position += 4 + success;
 
 
                     int useTime = 0;
-                    while((b = byteArray[++position])!=44){
+                    while ((b = byteArray[++position]) != 44) {
                         useTime = (b - 48) + useTime * 10;
                     }
 
 
-                    position+=14;
+                    position += 14;
                     int stringHash = (hashService1 + hashService2) % 4999;
 
 
-                    int ipHash = (int)((((ip1-167772160)%3457)<<9)+((ip2-167772160)%2833))%2551;
+                    int ipHash = (int) ((((ip1 - 167772160) % 3457) << 9) + ((ip2 - 167772160) % 2833)) % 2551;
 
                     CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
+                    long tz = System.currentTimeMillis();
                     if (payload == null) {
                         payload = new CheckPairPayLoad();
                         cacheCheckPair[stringHash][ipHash] = payload;
                         payload.ip = (ip1 << 32) + ip2;
                     }
-
+                    tif += (System.currentTimeMillis() - tz);
                     //change payload
 
-                    payload.successTimes += success ^1;
+                    payload.successTimes += success ^ 1;
                     //1^1 =0 0^1 =1
-                    payload.failedTimes += success ;
+                    payload.failedTimes += success;
                     payload.bucket[useTime] += 1;
 
 
                     CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
 
-                    payload2.success += success ^1;
+                    payload2.success += success ^ 1;
                     payload2.failed += success;
 
 
                 }
-                long t2=System.currentTimeMillis();
-                allTime+=(t2-t1);
+                long t2 = System.currentTimeMillis();
+                allTime += (t2 - t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes));
+                System.out.println("平均处理时间=" + (1.0 * allTime / solvedTimes)+" tif="+tif);
 
                 solvedMinutes.put(f);
 
