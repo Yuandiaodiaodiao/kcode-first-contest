@@ -283,6 +283,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                 }
+                System.out.println("position="+position+"limit="+limit);
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
