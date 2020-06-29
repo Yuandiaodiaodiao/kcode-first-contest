@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d934383a-2fd5-4f8d-a13c-e192fac4544d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/PrepareMultiThreadManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +47,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
-  <component name="RunManager" selected="Application.KcodeRpcMonitorTest">
+  <component name="RunManager" selected="Python.git_push">
     <configuration name="KcodeRpcMonitorTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kuaishou.kcode.KcodeRpcMonitorTest" />
       <module name="kcodeRpcMonitor" />
@@ -91,8 +90,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.KcodeRpcMonitorTest" />
         <item itemvalue="Python.git_push" />
+        <item itemvalue="Application.KcodeRpcMonitorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -137,38 +136,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="102" key="#git_push/0.0.1920.1040@0.0.1920.1040" timestamp="1593357980673" />
-    <state width="1878" height="281" key="GridCell.Tab.0.bottom" timestamp="1593421958352">
+    <state width="1878" height="281" key="GridCell.Tab.0.bottom" timestamp="1593422230765">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593421958352" />
-    <state width="1878" height="281" key="GridCell.Tab.0.center" timestamp="1593421958351">
+    <state width="1878" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593422230765" />
+    <state width="1878" height="281" key="GridCell.Tab.0.center" timestamp="1593422230765">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593421958351" />
-    <state width="1878" height="281" key="GridCell.Tab.0.left" timestamp="1593421958351">
+    <state width="1878" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593422230765" />
+    <state width="1878" height="281" key="GridCell.Tab.0.left" timestamp="1593422230765">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593421958351" />
-    <state width="1878" height="281" key="GridCell.Tab.0.right" timestamp="1593421958351">
+    <state width="1878" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593422230765" />
+    <state width="1878" height="281" key="GridCell.Tab.0.right" timestamp="1593422230765">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593421958351" />
-    <state width="1878" height="282" key="GridCell.Tab.1.bottom" timestamp="1593359817750">
+    <state width="1878" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593422230765" />
+    <state width="1878" height="281" key="GridCell.Tab.1.bottom" timestamp="1593422030697">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
-    <state width="1878" height="282" key="GridCell.Tab.1.center" timestamp="1593359817750">
+    <state width="1878" height="281" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593422030697" />
+    <state width="1878" height="281" key="GridCell.Tab.1.center" timestamp="1593422030697">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
-    <state width="1878" height="282" key="GridCell.Tab.1.left" timestamp="1593359817750">
+    <state width="1878" height="281" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593422030697" />
+    <state width="1878" height="281" key="GridCell.Tab.1.left" timestamp="1593422030697">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
-    <state width="1878" height="282" key="GridCell.Tab.1.right" timestamp="1593359817750">
+    <state width="1878" height="281" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593422030697" />
+    <state width="1878" height="281" key="GridCell.Tab.1.right" timestamp="1593422030697">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="282" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593359817750" />
+    <state width="1878" height="281" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593422030697" />
     <state x="441" y="94" key="SettingsEditor" timestamp="1593357972524">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -179,6 +178,6 @@
     <state x="691" y="276" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593359097986" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593398844856" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593422230755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
