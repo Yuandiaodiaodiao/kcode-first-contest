@@ -244,7 +244,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                     int stringHash = (hashService1 + hashService2) % 4999;
 
 
-                    int ipHash = HashCode.hashIp(ip1, ip2);
+                    int ipHash = (int)((((ip1-167772160)%3457)<<9)+((ip2-167772160)%2833))%2551;
 
                     CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
                     if (payload == null) {
