@@ -211,7 +211,6 @@ public class SolveMinuteByteBufferThread extends Thread {
 
 
                     int numBuff = 0;
-                    newCost-=System.currentTimeMillis();
 
                     while((b = byteArray[++position])!=44){
                         if (b != 46) {
@@ -222,7 +221,6 @@ public class SolveMinuteByteBufferThread extends Thread {
                         }
                     }
                     ip1 = (ip1<<8)+numBuff;
-                    newCost+=System.currentTimeMillis();
 
                     int hashService2hash1 =  byteArray[++position];
                     position+=10;
@@ -236,14 +234,22 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
 
                     numBuff = 0;
+                    newCost-=System.currentTimeMillis();
+
                     while((b = byteArray[++position])!=44){
-                        if (b != 46) {
-                            numBuff = (b - 48) + numBuff * 10;
-                        } else {
-                            ip2 = (ip2<<8)+numBuff;
-                            numBuff = 0;
-                        }
+                        numBuff=(b!=46)?(b - 48) + numBuff * 10:numBuff;
+                        ip2= (b!=46)?ip2:(ip2<<8)+numBuff;
+                        numBuff=(b!=46)?numBuff:0;
+//
+//                        if (b != 46) {
+//                            numBuff = (b - 48) + numBuff * 10;
+//                        } else {
+//                            ip2 = (ip2<<8)+numBuff;
+//                            numBuff = 0;
+//                        }
                     }
+                    newCost+=System.currentTimeMillis();
+
                     ip2 = (ip2<<8)+numBuff;
 
 
