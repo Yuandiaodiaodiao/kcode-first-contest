@@ -215,12 +215,15 @@ public class SolveMinuteByteBufferThread extends Thread {
                     newCost-=System.currentTimeMillis();
 
                     while((b = byteArray[++position])!=44){
-                        if (b != 46) {
-                            numBuff = (b - 48) + numBuff * 10;
-                        } else {
-                            ip1 = (ip1<<8)+numBuff;
-                            numBuff = 0;
-                        }
+                        numBuff=(b!=46)?(b - 48) + numBuff * 10:numBuff;
+                        ip1= (b!=46)?ip1:(ip1<<8)+numBuff;
+                        numBuff=(b!=46)?numBuff:0;
+//                        if (b != 46) {
+//                            numBuff = (b - 48) + numBuff * 10;
+//                        } else {
+//                            ip1 = (ip1<<8)+numBuff;
+//                            numBuff = 0;
+//                        }
                     }
                     newCost+=System.currentTimeMillis();
 
@@ -241,16 +244,16 @@ public class SolveMinuteByteBufferThread extends Thread {
                     newCost2-=System.currentTimeMillis();
 
                     while((b = byteArray[++position])!=44){
-                        numBuff=(b!=46)?(b - 48) + numBuff * 10:numBuff;
-                        ip2= (b!=46)?ip2:(ip2<<8)+numBuff;
-                        numBuff=(b!=46)?numBuff:0;
+//                        numBuff=(b!=46)?(b - 48) + numBuff * 10:numBuff;
+//                        ip2= (b!=46)?ip2:(ip2<<8)+numBuff;
+//                        numBuff=(b!=46)?numBuff:0;
 
-//                        if (b != 46) {
-//                            numBuff = (b - 48) + numBuff * 10;
-//                        } else {
-//                            ip2 = (ip2<<8)+numBuff;
-//                            numBuff = 0;
-//                        }
+                        if (b != 46) {
+                            numBuff = (b - 48) + numBuff * 10;
+                        } else {
+                            ip2 = (ip2<<8)+numBuff;
+                            numBuff = 0;
+                        }
                     }
                     newCost2+=System.currentTimeMillis();
 
@@ -298,7 +301,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t2=System.currentTimeMillis();
                 allTime+=(t2-t1);
                 solvedTimes++;
-                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" 优化了="+(newCost2-newCost));
+                System.out.println("平均处理时间="+(1.0*allTime/solvedTimes)+" 优化了="+(newCost-newCost2)+" 优化比="+(1.0*(newCost-newCost2)/newCost));
 
                 solvedMinutes.put(f);
 
