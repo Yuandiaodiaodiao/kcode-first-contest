@@ -294,11 +294,12 @@ public class SplitMinuteThread extends Thread {
 //                        System.out.println("aaaa");
 //                    }
                     long t = System.currentTimeMillis();
-                    int end=lastEnterIndex - startIndex + 1;
+//                    int end=lastEnterIndex - startIndex ;
+//                    int i=ba.position()-1,j=startIndex-1;
+//                    while(i<end){
+//                        baArray[++i]=buff[++j];
+//                    }
 
-                    for(int i=ba.position(),j=startIndex;i<end;++i,++j){
-                        baArray[i]=buff[j];
-                    }
 
 
                     System.arraycopy(buff, startIndex, baArray, ba.position(), lastEnterIndex - startIndex + 1);
