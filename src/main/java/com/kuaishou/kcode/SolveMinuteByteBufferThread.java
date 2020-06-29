@@ -195,8 +195,8 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                     }
                     int len1 = f.position() - 1;
-                    int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
-                            (f.get(len1 - 3) << 6) + (f.get(len1 - 2) << 13) + (f.get(len1 - 1) << 17)) % 69) << 12) +
+                    int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
+                            (byteArray[len1 - 3] << 6) + (byteArray[len1 - 2] << 13) + (byteArray[len1 - 1] << 17)) % 69) << 12) +
                             ((hashService1hash1 - 97) << 8));
 
 
