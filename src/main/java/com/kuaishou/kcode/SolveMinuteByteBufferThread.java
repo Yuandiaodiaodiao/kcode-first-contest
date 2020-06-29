@@ -140,7 +140,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                         minTime /= 60;
                         startMinute = minTime - SplitMinuteThread.firstTime;
 
-                        for (int i = 0; i < 999; ++i) {
+                        for (int i = 0; i < 737; ++i) {
                             PrepareMultiThreadDataCore.hashCheckResponder[startMinute][i] = new CheckResponderPayLoad();
                         }
                         cacheCheckResponder = PrepareMultiThreadDataCore.hashCheckResponder[startMinute];
