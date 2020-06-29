@@ -90,9 +90,8 @@ public class SplitMinuteThread extends Thread {
                     remaining = b.remaining();
                     //从directbuffer中抽出来
                     timestart = System.currentTimeMillis();
-                    byte[] buffInside=(byte[])field.get(b);
-                    System.arraycopy(buffInside,0,buff,lastBuffIndex + lastBuffLength,remaining);
-//                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
+
+                    b.get(buff, lastBuffIndex + lastBuffLength, remaining); //也可以把下面的取数变成get 这样少一次拷贝 但是buff不能立刻归还
 //                    System.out.println("b.get cost="+(System.currentTimeMillis()-timestart));
                     bgetTime += (System.currentTimeMillis() - timestart);
 //                    System.out.println("b.get Allcost=" + bgetTime);
