@@ -74,12 +74,6 @@ public class SplitMinuteThread extends Thread {
                     SplitMinute_waitBuffer += (t2 - t1);
 //                    System.out.println("SplitMinute waitBuffer="+(t2-t1) +"ms");
                     if (b.limit() == 0) {
-                        //扔出最后一minute
-
-//                        System.out.println( name+"结束" + "ba状态" +"rmaning"+ba.remaining()+" pos"+ba.position()+"limit"+ba.limit());
-//                        MINBUFFERLEN=Math.min(MINBUFFERLEN,ba.position());
-//                        MAXBUFFERLEN=Math.max(MAXBUFFERLEN,ba.position());
-
                         ba.flip();
                         PrepareMultiThreadManager.unsolvedMinutes.put(ba);
                         canread.put(b);
