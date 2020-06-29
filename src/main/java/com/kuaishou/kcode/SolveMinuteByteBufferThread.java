@@ -186,28 +186,26 @@ public class SolveMinuteByteBufferThread extends Thread {
                 byte[] byteArray=(byte[])field.get(f);
                 long t1=System.currentTimeMillis();
                 int position=f.position();
-                while (f.hasRemaining()) {
-                    position=f.position();
-                    byte b = byteArray[position++];
-                    f.position(position);
+                byte b;
+                while (position<f.limit()) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
 
-                    int hashService1hash1 = b;
-                    f.position(f.position() + 10);
-
-                    while((f.get()) != 44){
+                    int hashService1hash1 = byteArray[position++];
+//                    f.position(f.position() + 10);
+                    position+=10;
+                    while( byteArray[position++] != 44){
 
                     }
-                    int len1 = f.position() - 1;
+                    int len1 = position - 1;
                     int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
                             (byteArray[len1 - 3] << 6) + (byteArray[len1 - 2] << 13) + (byteArray[len1 - 1] << 17)) % 69) << 12) +
                             ((hashService1hash1 - 97) << 8));
 
 
                     int numBuff = 0;
-                    for (b = f.get(); b != 44; b = f.get()) {
+                    while((b = byteArray[position++])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -216,22 +214,23 @@ public class SolveMinuteByteBufferThread extends Thread {
                             numBuff = 0;
                         }
                     }
+
                     ip1 <<= 8;
                     ip1 += numBuff;
                     numBuff = 0;
 
-                    b = f.get();
+                    b = byteArray[position++];
                     int hashService2hash1 = b;
-                    f.position(f.position() + 10);
-                    while((f.get()) != 44){
+                    position+=10;
+                    while( byteArray[position++] != 44){
                     }
-                    int len2 = f.position() - 1;
+                    int len2 = position - 1;
 
                     int hashService2 = ((hashService2hash1 - 97) +
                             ((((byteArray[len2 - 6]) + (byteArray[len2 - 5] << 5) +
                                     (byteArray[len2 - 4] << 10) + (byteArray[len2 - 3] << 14) +
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
-                    for (b = f.get(); b != 44; b = f.get()) {
+                    while((b = byteArray[position++])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -243,19 +242,18 @@ public class SolveMinuteByteBufferThread extends Thread {
                     ip2 <<= 8;
                     ip2 += numBuff;
 
-                    int success = ((f.get())==116?0:1);
-                    f.position(f.position() + 4+success);
+                    int success = (byteArray[position++]==116?0:1);
+                    position+=4+success;
 
 
 
                     int useTime = 0;
-                    for (b = f.get(); b != ','; b = f.get()) {
+                    while((b = byteArray[position++])!=44){
                         useTime = (b - 48) + useTime * 10;
                     }
 
 
-
-                    f.position(f.position() + 14);
+                    position+=14;
                     int stringHash = (hashService1 + hashService2) % 4999;
 
 
