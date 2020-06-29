@@ -288,7 +288,7 @@ public class SolveMinuteByteBufferThread extends Thread {
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
                 clearCheckPair(cacheCheckPair);
-
+                PrepareMultiThreadManager.endCountDown.countDown();
 //                System.out.println("处理分钟" + (timestart4 - timestart) + "桶排序" + (timestart3 - timestart2));
 
             }

@@ -2,6 +2,7 @@ package com.kuaishou.kcode;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 
 public class PrepareMultiThreadManager {
     String path;
@@ -17,8 +18,9 @@ public class PrepareMultiThreadManager {
     public static int Time_CHUNCK_SIZE = 476824288;
     public static Thread[] smbbt=new Thread[16];
     public static int THREAD_NUMBER=10;
-
+    public static CountDownLatch endCountDown;
     PrepareMultiThreadManager(){
+        endCountDown= new CountDownLatch(30);
         Thread prepareThread=new Thread(()->{
 
 
@@ -68,23 +70,8 @@ public class PrepareMultiThreadManager {
             System.out.println();
             smt.join();
             smt.freeMemory();
-            timeArray[1]=System.currentTimeMillis();
+            endCountDown.await();
 
-            ByteBuffer b=ByteBuffer.allocate(1);
-            b.limit(0);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
-            unsolvedMinutes.put(b);
-            for(int i=0;i<THREAD_NUMBER;++i){
-                smbbt[i].join();
-            }
-            timeArray[2]=System.currentTimeMillis();
-
-            while(!solvedMinutes.isEmpty()){
-                solvedMinutes.poll();
-            }
-            timeArray[3]=System.currentTimeMillis();
 
             SolveRespondThread.solve();
             timeArray[4]=System.currentTimeMillis();
