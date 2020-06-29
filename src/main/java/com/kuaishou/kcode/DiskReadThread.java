@@ -42,7 +42,13 @@ public class DiskReadThread extends Thread {
         try {
 
             ByteBuffer buf = ByteBuffer.allocate(1);
+            canuse.add(ByteBuffer.allocateDirect(PrepareMultiThreadManager.DIRECT_CHUNCK_SIZE));
+
             for (long i = 0; i <= fileLength; i += CHUNCK_SIZE) {
+
+                if(canuse.size()==0){
+                    System.out.println("DiskWait");
+                }
                 long t1=System.currentTimeMillis();
                 buf = canuse.take();
                 long t2=System.currentTimeMillis();
@@ -51,7 +57,7 @@ public class DiskReadThread extends Thread {
                 buf.clear();
                 channel.read(buf);
                 buf.flip();
-                canread.put(buf);
+                canread.offer(buf);
 
             }
             buf= ByteBuffer.allocate(1);

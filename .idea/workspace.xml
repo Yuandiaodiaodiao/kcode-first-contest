@@ -47,7 +47,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
-  <component name="RunManager" selected="Python.git_push">
+  <component name="RunManager" selected="Application.KcodeRpcMonitorTest">
     <configuration name="KcodeRpcMonitorTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kuaishou.kcode.KcodeRpcMonitorTest" />
       <module name="kcodeRpcMonitor" />
@@ -90,8 +90,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.git_push" />
         <item itemvalue="Application.KcodeRpcMonitorTest" />
+        <item itemvalue="Python.git_push" />
       </list>
     </recent_temporary>
   </component>
