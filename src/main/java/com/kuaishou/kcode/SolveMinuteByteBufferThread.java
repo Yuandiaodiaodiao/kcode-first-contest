@@ -203,15 +203,14 @@ public class SolveMinuteByteBufferThread extends Thread {
                     position+=10;
                     while( byteArray[++position] != 44){
                     }
-                    position++;
-                    int len1 = position - 1;
+                    int len1 = position;
                     int hashService1 = ((((byteArray[len1 - 5] + (byteArray[len1 - 4] << 2) +
                             (byteArray[len1 - 3] << 6) + (byteArray[len1 - 2] << 13) + (byteArray[len1 - 1] << 17)) % 69) << 12) +
                             ((hashService1hash1 - 97) << 8));
 
 
                     int numBuff = 0;
-                    while((b = byteArray[position++])!=44){
+                    while((b = byteArray[++position])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -219,14 +218,13 @@ public class SolveMinuteByteBufferThread extends Thread {
                             numBuff = 0;
                         }
                     }
-
                     ip1 = (ip1<<8)+numBuff;
 
-                    int hashService2hash1 =  byteArray[position++];
+                    int hashService2hash1 =  byteArray[++position];
                     position+=10;
-                    while( byteArray[position++] != 44){
+                    while( byteArray[++position] != 44){
                     }
-                    int len2 = position - 1;
+                    int len2 = position;
 
                     int hashService2 = ((hashService2hash1 - 97) +
                             ((((byteArray[len2 - 6]) + (byteArray[len2 - 5] << 5) +
@@ -234,7 +232,7 @@ public class SolveMinuteByteBufferThread extends Thread {
                                     (byteArray[len2 - 2] << 15) + (byteArray[len2 - 1] << 24)) % 89) << 3));
 
                     numBuff = 0;
-                    while((b = byteArray[position++])!=44){
+                    while((b = byteArray[++position])!=44){
                         if (b != 46) {
                             numBuff = (b - 48) + numBuff * 10;
                         } else {
@@ -245,18 +243,18 @@ public class SolveMinuteByteBufferThread extends Thread {
                     ip2 = (ip2<<8)+numBuff;
 
 
-                    int success = (byteArray[position++]==116?0:1);
+                    int success = (byteArray[++position]==116?0:1);
                     position+=4+success;
 
 
 
                     int useTime = 0;
-                    while((b = byteArray[position++])!=44){
+                    while((b = byteArray[++position])!=44){
                         useTime = (b - 48) + useTime * 10;
                     }
 
 
-                    position+=14;
+                    position+=15;
                     int stringHash = (hashService1 + hashService2) % 4999;
 
 
