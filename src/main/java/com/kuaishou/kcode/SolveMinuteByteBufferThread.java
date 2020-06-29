@@ -187,7 +187,8 @@ public class SolveMinuteByteBufferThread extends Thread {
                 long t1=System.currentTimeMillis();
                 int position=f.position();
                 byte b;
-                while (position<f.limit()) {
+                int limit=f.limit();
+                while (position<limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
                     long ip2 = 0;
