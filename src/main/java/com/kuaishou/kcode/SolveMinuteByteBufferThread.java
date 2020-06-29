@@ -180,8 +180,10 @@ public class SolveMinuteByteBufferThread extends Thread {
                     long ip2 = 0;
 
                     int hashService1hash1 = b;
-                    f.position(f.position() + 10);
-                    for (; b != 44; b = f.get()) {
+                    f.position(f.position() + 9);
+                  
+                    while((b = f.get()) != 44){
+
                     }
                     int len1 = f.position() - 1;
                     int hashService1 = ((((f.get(len1 - 5) + (f.get(len1 - 4) << 2) +
