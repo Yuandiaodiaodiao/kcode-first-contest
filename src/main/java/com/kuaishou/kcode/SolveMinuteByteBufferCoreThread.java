@@ -4,19 +4,23 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public final class SolveMinuteByteBufferCoreThread extends Thread {
 
-    public ArrayBlockingQueue<BufferAndCountDownPayload> payloadQueue;
+    private final ArrayBlockingQueue<BufferAndCountDownPayload> payloadQueue=new ArrayBlockingQueue<>(4);
+    public void execute(BufferAndCountDownPayload payload){
+        payloadQueue.offer(payload);
+    }
 
     @Override
     public void run() {
         super.run();
         try {
             while (true) {
-
                 BufferAndCountDownPayload queuepayload = payloadQueue.take();
                 int position = queuepayload.startIndex;
                 int limit = queuepayload.endIndex;
                 byte[] byteArray = queuepayload.buffer;
                 Byte b;
+                CheckPairPayLoad[][] cacheCheckPair = queuepayload.cacheCheckPair;
+                CheckResponderPayLoad[] cacheCheckResponder = queuepayload.cacheCheckResponder;
                 while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
@@ -102,9 +106,6 @@ public final class SolveMinuteByteBufferCoreThread extends Thread {
             }
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
-        } catch (
-                InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }

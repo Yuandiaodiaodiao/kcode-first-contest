@@ -8,4 +8,5 @@ public class BufferAndCountDownPayload {
     int endIndex;
     CountDownLatch countDown;
     CheckPairPayLoad[][] cacheCheckPair;
+    CheckResponderPayLoad[] cacheCheckResponder;
 }

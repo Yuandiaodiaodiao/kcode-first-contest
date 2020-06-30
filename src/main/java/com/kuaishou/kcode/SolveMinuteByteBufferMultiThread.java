@@ -27,11 +27,13 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
         long t2 = System.currentTimeMillis();
 //        System.out.println("清空耗时="+(t2-t1));
     }
-
+    Thread threadHelpSolve=null;
     @Override
     public void run() {
         super.run();
         try {
+
+
             Field field = ByteBuffer.allocate(1).getClass().getSuperclass().getDeclaredField("hb");
             field.setAccessible(true);
 
@@ -41,6 +43,8 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
             long allIncrease = 0;
             while (true) {
                 ByteBuffer f = unsolvedMinutes.take();
+
+
                 if (f.limit() == 0) {
 //                Thread t = Thread.currentThread();
 //                String name = t.getName();
@@ -48,6 +52,11 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
                     unsolvedMinutes.put(f);
                     return;
                 }
+                if(threadHelpSolve==null){
+                    threadHelpSolve=new SolveMinuteByteBufferCoreThread();
+                    threadHelpSolve.start();
+                }
+
                 if (cacheCheckPair == null) {
                     cacheCheckPair = PrepareMultiThreadDataCore.newhashCheckPair();
                 }
@@ -197,6 +206,11 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
                 long newCost = 0;
                 long newCost2 = 0;
 //                System.out.println("找time"+(t1-t0));
+
+                int mid=(limit-position)/2+position;
+                while(byteArray[++mid]==10){
+                };
+                mid++
                 while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
