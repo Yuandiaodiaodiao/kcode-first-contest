@@ -38,29 +38,33 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         manager = new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
-        manager.stop();
+        Thread tstop=new Thread(()->{
+            for(int i=0;i<1024;++i){
+                ansCache[i]=NOANSWER;
+            }
+            for(int i=0;i<5000;++i){
+                checkPairCache[i]=NOANSWERARRAY;
+            }
+            manager.stop();
+        });
+        tstop.start();
     }
 
     public void prepare(String path) {
-        for(int i=0;i<1024;++i){
-            ansCache[i]=NOANSWER;
-        }
-        for(int i=0;i<5000;++i){
-            checkPairCache[i]=NOANSWERARRAY;
-        }
+
 
         Long startTime = System.currentTimeMillis();
         System.out.println("嘿嘿 来了嗷 只有你们想不到的 没有老八做不到的");
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
-//        try {
-//            long sleeplen=3600;
-//            System.out.println("睡"+sleeplen);
-//            Thread.sleep(sleeplen);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            long sleeplen=5000;
+            System.out.println("睡"+sleeplen);
+            Thread.sleep(sleeplen);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println("准备时间" + prepareTime);
 //        HeatCache.HeatCheckPair();
 
