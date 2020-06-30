@@ -210,7 +210,7 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
 
                 int mid=(limit-position)/20*9+position;
                 //定位到换行
-                while(byteArray[++mid]==10){
+                while(byteArray[++mid]!=10){
                 }
                 int limit2=limit;
                 limit=mid;
