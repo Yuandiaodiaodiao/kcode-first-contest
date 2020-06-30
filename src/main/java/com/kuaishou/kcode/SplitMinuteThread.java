@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.kuaishou.kcode.PrepareMultiThreadManager.Time_CHUNCK_SIZE;
 
-public class SplitMinuteThread extends Thread {
+public final class SplitMinuteThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> canuse;
     ArrayBlockingQueue<ByteBuffer> canread;
 

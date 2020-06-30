@@ -22,7 +22,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * 实际提交时请维持包名和类名不变
  */
 
-public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
+public final class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     public double prepareTime = 0;
     public PrepareMultiThreadManager manager;

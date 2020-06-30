@@ -7,12 +7,12 @@ import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-public final class SolveMinuteByteBufferThread extends Thread {
+public class SolveMinuteByteBufferMultiThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> unsolvedMinutes;
     ArrayBlockingQueue<ByteBuffer> solvedMinutes;
 
 
-    SolveMinuteByteBufferThread(ArrayBlockingQueue<ByteBuffer> unsolvedMinutes, ArrayBlockingQueue<ByteBuffer> solvedMinutes) {
+    SolveMinuteByteBufferMultiThread(ArrayBlockingQueue<ByteBuffer> unsolvedMinutes, ArrayBlockingQueue<ByteBuffer> solvedMinutes) {
         this.solvedMinutes = solvedMinutes;
         this.unsolvedMinutes = unsolvedMinutes;
     }

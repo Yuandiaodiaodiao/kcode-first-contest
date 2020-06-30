@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-public class PrepareMultiThreadManager {
+public final class PrepareMultiThreadManager {
     String path;
     public static DiskReadThread drt;
     public static SplitMinuteThread smt;
