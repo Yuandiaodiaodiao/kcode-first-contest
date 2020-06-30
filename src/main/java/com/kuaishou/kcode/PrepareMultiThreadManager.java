@@ -18,7 +18,7 @@ public final class PrepareMultiThreadManager {
     public static int RAM_CHUNCK_SIZE = MAXBUFFERLEN*3;
     public static int Time_CHUNCK_SIZE = 476824288;
     public static Thread[] smbbt=new Thread[16];
-    public static int THREAD_NUMBER=10;
+    public static int THREAD_NUMBER=1;
     public static CountDownLatch endCountDown;
     PrepareMultiThreadManager(){
         endCountDown= new CountDownLatch(30);
@@ -34,7 +34,7 @@ public final class PrepareMultiThreadManager {
 //            System.out.println("smt启动");
 //            System.out.println("第二个directbuffer加载完成");
             for(int i=0;i<THREAD_NUMBER;++i){
-                smbbt[i]=new SolveMinuteByteBufferThread(unsolvedMinutes,solvedMinutes);
+                smbbt[i]=new SolveMinuteByteBufferMultiThread(unsolvedMinutes,solvedMinutes);
                 smbbt[i].start();
             }
 

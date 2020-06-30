@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 
 
 public final class SolveMinuteByteBufferMultiThread extends Thread {
@@ -27,7 +28,7 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
         long t2 = System.currentTimeMillis();
 //        System.out.println("清空耗时="+(t2-t1));
     }
-    Thread threadHelpSolve=null;
+    SolveMinuteByteBufferCoreThread threadHelpSolve=null;
     @Override
     public void run() {
         super.run();
@@ -207,7 +208,7 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
                 long newCost2 = 0;
 //                System.out.println("找time"+(t1-t0));
 
-                int mid=(limit-position)/2+position;
+                int mid=(limit-position)/20*9+position;
                 //定位到换行
                 while(byteArray[++mid]==10){
                 }
@@ -215,8 +216,8 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
                 limit=mid;
                 //定位到换行下一位
                 mid++;
-                int position2=mid;
-
+                CountDownLatch countDown=new CountDownLatch(1);
+                threadHelpSolve.execute(new BufferAndCountDownPayload(byteArray,mid,limit2,countDown,cacheCheckPair,cacheCheckResponder));
                 while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
@@ -303,7 +304,7 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
                 solvedTimes++;
                 allIncrease += newCost2 - newCost;
 //                System.out.println("平均处理时间=" + (1.0 * allTime / solvedTimes) );
-
+                countDown.await();
                 solvedMinutes.put(f);
 
                 SolveMinuteArrayListAnswerThread.solve(startMinute, cacheCheckPair);
