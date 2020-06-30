@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class CheckPairPayLoad {
     public AtomicInteger successTimes=new AtomicInteger();
-    public int failedTimes=0;
+    public AtomicInteger failedTimes=new AtomicInteger();
     public long ip;
     public AtomicIntegerArray bucket=new AtomicIntegerArray(300);
 }

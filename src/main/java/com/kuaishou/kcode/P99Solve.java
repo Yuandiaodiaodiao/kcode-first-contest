@@ -1,12 +1,14 @@
 package com.kuaishou.kcode;
 
+import java.util.concurrent.atomic.AtomicIntegerArray;
+
 public class P99Solve {
-    public static int solve(int[] bucket,int allNum){
+    public static int solve(AtomicIntegerArray bucket, int allNum){
         double i=0.99*allNum;
         int p99= (int) Math.ceil(i);
-        int bucketIndex=bucket.length;
+        int bucketIndex=bucket.length();
         while(--bucketIndex>=0){
-            allNum-=bucket[bucketIndex];
+            allNum-=bucket.get(bucketIndex);
             if(allNum<p99){
                 return bucketIndex;
             }
@@ -18,7 +20,7 @@ public class P99Solve {
         for(int a=1;a<=101;++a){
             bucket[a]+=1;
         }
-        int p99=solve(bucket,100);
-        System.out.println("p99="+p99);
+//        int p99=solve(bucket,100);
+//        System.out.println("p99="+p99);
     }
 }

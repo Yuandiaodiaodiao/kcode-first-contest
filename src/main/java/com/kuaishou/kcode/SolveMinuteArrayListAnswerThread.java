@@ -36,8 +36,8 @@ public final class SolveMinuteArrayListAnswerThread extends Thread {
                 CheckPairPayLoad payLoad =hArray2[j];
                 if(payLoad==null)continue;
                 long ipTwo = payLoad.ip;
-                int allTimes = payLoad.successTimes + payLoad.failedTimes;
-                double rate = ((double) payLoad.successTimes) / allTimes;
+                int allTimes = payLoad.successTimes.get() + payLoad.failedTimes.get();
+                double rate = ((double) payLoad.successTimes.get()) / allTimes;
                 int p99 = P99Solve.solve(payLoad.bucket, allTimes);
                 StringBuilder str = new StringBuilder(40);
                 int ip2 = (int) (long) (ipTwo);

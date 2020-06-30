@@ -23,12 +23,12 @@ public class SolveRespondThread extends Thread {
 
             for (int t = 0; t <= 31; ++t) {
                 CheckResponderPayLoad payload = PrepareMultiThreadDataCore.hashCheckResponder[t][i];
-                if (payload==null||(payload.failed+payload.success==0)) {
+                if (payload==null||(payload.failed.get()+payload.success.get()==0)) {
                     continue;
                 }
                 ct = new CheckResponderTimePayLoad();
                 ct.time = t;
-                ct.rate = ((double) payload.success) / (payload.success + payload.failed);
+                ct.rate = ((double) payload.success.get()) / (payload.success.get() + payload.failed.get());
                 if (!al.isEmpty()) {
                     ct.rate += lastct.rate;
                     al.add(ct);

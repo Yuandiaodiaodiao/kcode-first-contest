@@ -171,16 +171,16 @@ public final class SolveMinuteByteBufferThread extends Thread {
 
                     //change payload
 
-                    payload.successTimes += success;
+                    payload.successTimes.getAndAdd( success ^ 1);
                     //1^1 =0 0^1 =1
-                    payload.failedTimes += success ^ 1;
-                    payload.bucket[useTime] += 1;
+                    payload.failedTimes.getAndAdd(success);
+                    payload.bucket.getAndIncrement(useTime);
 
 
-                    CheckResponderPayLoad payload2 = cacheCheckResponder[secondServicesHash];
+                    CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
 
-                    payload2.success += success;
-                    payload2.failed += success ^ 1;
+                    payload2.success.getAndAdd(success ^ 1);
+                    payload2.failed.getAndAdd(success);
 
                 }
 //                Field[] fd = f.getClass().getSuperclass().getDeclaredFields();
@@ -265,16 +265,16 @@ public final class SolveMinuteByteBufferThread extends Thread {
                     }
                     //change payload
 
-                    payload.successTimes += success ^ 1;
+                    payload.successTimes.getAndAdd( success ^ 1);
                     //1^1 =0 0^1 =1
-                    payload.failedTimes += success;
-                    payload.bucket[useTime] += 1;
+                    payload.failedTimes.getAndAdd(success);
+                    payload.bucket.getAndIncrement(useTime);
 
 
                     CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
 
-                    payload2.success += success ^ 1;
-                    payload2.failed += success;
+                    payload2.success.getAndAdd(success ^ 1);
+                    payload2.failed.getAndAdd(success);
 
 
                 }

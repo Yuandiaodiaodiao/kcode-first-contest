@@ -1,6 +1,8 @@
 package com.kuaishou.kcode;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class CheckResponderPayLoad {
-    public int success=0;
-    public int failed=0;
+    public AtomicInteger success=new AtomicInteger();
+    public AtomicInteger failed=new AtomicInteger();
 }

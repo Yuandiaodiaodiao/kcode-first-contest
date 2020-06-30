@@ -89,16 +89,16 @@ public final class SolveMinuteByteBufferCoreThread extends Thread {
                     }
                     //change payload
 
-                    payload.successTimes += success ^ 1;
+                    payload.successTimes.getAndAdd( success ^ 1);
                     //1^1 =0 0^1 =1
-                    payload.failedTimes += success;
+                    payload.failedTimes.getAndAdd(success);
                     payload.bucket.getAndIncrement(useTime);
 
 
                     CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
 
-                    payload2.success += success ^ 1;
-                    payload2.failed += success;
+                    payload2.success.getAndAdd(success ^ 1);
+                    payload2.failed.getAndAdd(success);
 
 
                 }
