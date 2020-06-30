@@ -92,7 +92,7 @@ public final class SolveMinuteByteBufferCoreThread extends Thread {
                     payload.successTimes += success ^ 1;
                     //1^1 =0 0^1 =1
                     payload.failedTimes += success;
-                    payload.bucket[useTime] += 1;
+                    payload.bucket.getAndIncrement(useTime);
 
 
                     CheckResponderPayLoad payload2 = cacheCheckResponder[hashService2];
