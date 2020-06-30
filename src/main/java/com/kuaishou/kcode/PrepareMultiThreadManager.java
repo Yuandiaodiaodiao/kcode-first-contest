@@ -1,6 +1,7 @@
 package com.kuaishou.kcode;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
@@ -64,6 +65,14 @@ public class PrepareMultiThreadManager {
     }
     public void stop(){
         try {
+            KcodeRpcMonitorImpl.ansCache=new String[1024];
+            KcodeRpcMonitorImpl.checkPairCache=new ArrayList[5000];
+            for(int i=0;i<1024;++i){
+                KcodeRpcMonitorImpl.ansCache[i]=KcodeRpcMonitorImpl.NOANSWER;
+            }
+            for(int i=0;i<5000;++i){
+                KcodeRpcMonitorImpl.checkPairCache[i]=KcodeRpcMonitorImpl.NOANSWERARRAY;
+            }
             drt.join();
             long[] timeArray=new long[5];
             timeArray[0]=System.currentTimeMillis();

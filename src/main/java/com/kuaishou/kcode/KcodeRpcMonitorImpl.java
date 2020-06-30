@@ -33,21 +33,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     }
 
-    Thread tstop;
+
     public void newPrepare(String path) {
         manager = new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
-        tstop=new Thread(()->{
-            for(int i=0;i<1024;++i){
-                ansCache[i]=NOANSWER;
-            }
-            for(int i=0;i<5000;++i){
-                checkPairCache[i]=NOANSWERARRAY;
-            }
-            manager.stop();
-        });
-        tstop.start();
+        manager.stop();
     }
 
     public void prepare(String path) {
@@ -58,13 +49,13 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
         newPrepare(path);
         Long endTime = System.currentTimeMillis();
         prepareTime = (endTime - startTime);
-        try {
-            long sleeplen=5000;
-            System.out.println("睡"+sleeplen);
-            Thread.sleep(sleeplen);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            long sleeplen=3600;
+//            System.out.println("睡"+sleeplen);
+//            Thread.sleep(sleeplen);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        System.out.println("准备时间" + prepareTime);
 //        HeatCache.HeatCheckPair();
 
@@ -77,7 +68,7 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     //查询1
     int tt = -1;
-    ArrayList<String>[] checkPairCache=new ArrayList[5000];
+    public static ArrayList<String>[] checkPairCache=null;
     int statusQuery1=0;
     long hashQuery1;
     int queryIndex1=0;
@@ -162,11 +153,11 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
     }
 
 
-    private static final String NOANSWER = "-1.00%";
+    public static final String NOANSWER = "-1.00%";
     //查询2
     int statusQuery = 0;
     long hashQuery;
-     String[] ansCache = new String[1024];
+    public static String[] ansCache =null;
     int queryIndex=0;
     int queryLong=-1;
     public final String checkResponder(String str2, String start, String end) {
