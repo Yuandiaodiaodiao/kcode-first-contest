@@ -208,9 +208,15 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
 //                System.out.println("找time"+(t1-t0));
 
                 int mid=(limit-position)/2+position;
+                //定位到换行
                 while(byteArray[++mid]==10){
-                };
-                mid++
+                }
+                int limit2=limit;
+                limit=mid;
+                //定位到换行下一位
+                mid++;
+                int position2=mid;
+
                 while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
