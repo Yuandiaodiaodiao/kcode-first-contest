@@ -280,8 +280,9 @@ public final class SolveMinuteByteBufferMultiThread extends Thread {
 
                     CheckPairPayLoad payload = cacheCheckPair[stringHash][ipHash];
                     if (payload == null) {
-                        payload = new CheckPairPayLoad();
-                        cacheCheckPair[stringHash][ipHash] = payload;
+
+                        cacheCheckPair[stringHash][ipHash] = new CheckPairPayLoad();
+                        payload=  cacheCheckPair[stringHash][ipHash];
                         payload.ip = (ip1 << 32) + ip2;
                     }
                     //change payload
