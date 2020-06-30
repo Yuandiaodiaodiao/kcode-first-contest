@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static java.lang.System.nanoTime;
 
-public class SolveMinuteArrayListAnswerThread extends Thread {
+public final class SolveMinuteArrayListAnswerThread extends Thread {
     public static ArrayList<String> NOANSWERARRAY = new ArrayList<String>();
 
     @Override

@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
-public class SolveMinuteByteBufferMultiThread extends Thread {
+public final class SolveMinuteByteBufferMultiThread extends Thread {
     ArrayBlockingQueue<ByteBuffer> unsolvedMinutes;
     ArrayBlockingQueue<ByteBuffer> solvedMinutes;
 
