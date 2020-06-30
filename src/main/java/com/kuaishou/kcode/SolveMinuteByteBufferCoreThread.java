@@ -12,8 +12,11 @@ public final class SolveMinuteByteBufferCoreThread extends Thread {
         try {
             while (true) {
 
-                BufferAndCountDownPayload payload = payloadQueue.take();
-
+                BufferAndCountDownPayload queuepayload = payloadQueue.take();
+                int position = queuepayload.startIndex;
+                int limit = queuepayload.endIndex;
+                byte[] byteArray = queuepayload.buffer;
+                Byte b;
                 while (position < limit) {
 //                    if (b == 10) continue;
                     long ip1 = 0;
@@ -95,12 +98,13 @@ public final class SolveMinuteByteBufferCoreThread extends Thread {
 
 
                 }
+                queuepayload.countDown.countDown();
             }
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        } catch (
+                InterruptedException e) {
+            e.printStackTrace();
         }
-    } catch(
-    InterruptedException e)
-
-    {
-        e.printStackTrace();
     }
 }

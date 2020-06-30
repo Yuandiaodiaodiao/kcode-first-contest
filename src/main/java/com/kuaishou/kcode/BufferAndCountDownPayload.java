@@ -7,5 +7,5 @@ public class BufferAndCountDownPayload {
     int startIndex;
     int endIndex;
     CountDownLatch countDown;
-
+    CheckPairPayLoad[][] cacheCheckPair;
 }
