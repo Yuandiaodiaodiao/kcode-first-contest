@@ -33,12 +33,12 @@ public class KcodeRpcMonitorImpl implements KcodeRpcMonitor {
 
     }
 
-
+    Thread tstop;
     public void newPrepare(String path) {
         manager = new PrepareMultiThreadManager();
         manager.setPath(path);
         manager.start();
-        Thread tstop=new Thread(()->{
+        tstop=new Thread(()->{
             for(int i=0;i<1024;++i){
                 ansCache[i]=NOANSWER;
             }
