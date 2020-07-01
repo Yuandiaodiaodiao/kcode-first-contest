@@ -19,10 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d934383a-2fd5-4f8d-a13c-e192fac4544d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferMultiThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferMultiThread.java" afterDir="false" />
-    </list>
+    <list default="true" id="d934383a-2fd5-4f8d-a13c-e192fac4544d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,7 +117,7 @@
       <updated>1593356649941</updated>
       <workItem from="1593356656509" duration="758000" />
       <workItem from="1593443437484" duration="8423000" />
-      <workItem from="1593519181130" duration="6578000" />
+      <workItem from="1593519181130" duration="7268000" />
     </task>
     <servers />
   </component>
@@ -214,16 +211,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferThread.java</url>
           <line>58</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferCoreThread.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/kuaishou/kcode/SolveMinuteByteBufferMultiThread.java</url>
-          <line>219</line>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
