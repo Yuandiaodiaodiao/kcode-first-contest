@@ -57,7 +57,7 @@
       <recent name="D:\Github\KcodeRpcMonitor-master\backup" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.KcodeRpcMonitorTest">
+  <component name="RunManager" selected="Python.git_push">
     <configuration name="KcodeRpcMonitorTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.kuaishou.kcode.KcodeRpcMonitorTest" />
       <module name="kcodeRpcMonitor" />
@@ -100,8 +100,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.KcodeRpcMonitorTest" />
         <item itemvalue="Python.git_push" />
+        <item itemvalue="Application.KcodeRpcMonitorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -228,6 +228,6 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593525636524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kcodeRpcMonitor$git_push.coverage" NAME="git_push Coverage Results" MODIFIED="1593597574758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
